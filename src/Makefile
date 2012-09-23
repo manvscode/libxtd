@@ -53,7 +53,7 @@ am__v_at_0 = @
 libutility_a_AR = $(AR) $(ARFLAGS)
 libutility_a_LIBADD =
 am_libutility_a_OBJECTS = bytes.$(OBJEXT) crash.$(OBJEXT) \
-	exceptions.$(OBJEXT)
+	exceptions.$(OBJEXT) mime.$(OBJEXT)
 libutility_a_OBJECTS = $(am_libutility_a_OBJECTS)
 DEFAULT_INCLUDES = -I.
 depcomp = $(SHELL) $(top_srcdir)/depcomp
@@ -86,7 +86,7 @@ AUTOMAKE = ${SHELL} /home/joe/projects/libutility/missing --run automake-1.11
 AWK = gawk
 CC = gcc -std=gnu99
 CCDEPMODE = depmode=gcc3
-CFLAGS =  -Wall -pedantic -g -ggdb -pg -O0 -D_DEBUG 
+CFLAGS =  -Wall -pedantic -g -ggdb -pg -O0 -D_DEBUG -I../../libcollections/src/ -lcollections
 CPP = gcc -std=gnu99 -E
 CPPFLAGS = 
 CYGPATH_W = echo
@@ -168,7 +168,7 @@ top_srcdir = ..
 noinst_LIBRARIES = libutility.a
 
 # Add new files in alphabetical order. Thanks.
-libutility_a_SOURCES = bytes.c crash.c exceptions.c 
+libutility_a_SOURCES = bytes.c crash.c exceptions.c mime.c
 all: all-am
 
 .SUFFIXES:
@@ -220,6 +220,7 @@ distclean-compile:
 include ./$(DEPDIR)/bytes.Po
 include ./$(DEPDIR)/crash.Po
 include ./$(DEPDIR)/exceptions.Po
+include ./$(DEPDIR)/mime.Po
 
 .c.o:
 	$(AM_V_CC)$(COMPILE) -MT $@ -MD -MP -MF $(DEPDIR)/$*.Tpo -c -o $@ $<

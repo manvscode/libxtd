@@ -86,7 +86,7 @@ AUTOMAKE = ${SHELL} /home/joe/projects/libutility/missing --run automake-1.11
 AWK = gawk
 CC = gcc -std=gnu99
 CCDEPMODE = depmode=gcc3
-CFLAGS =  -Wall -pedantic -g -ggdb -pg -O0 -D_DEBUG 
+CFLAGS =  -Wall -pedantic -g -ggdb -pg -O0 -D_DEBUG -I../../libcollections/src/ -lcollections
 CPP = gcc -std=gnu99 -E
 CPPFLAGS = 
 CYGPATH_W = echo
