@@ -13,6 +13,10 @@ CFLAGS=" -Wall -pedantic -g -ggdb -pg -O0 -D_DEBUG -I../../libcollections/src/ -
 dnl CFLAGS=" -Wall -pedantic -O3  -lcollections"
 LDFLAGS=""
 
+LT_INIT([shared static])
+
+AC_PROG_LIBTOOL
+AM_PROG_LIBTOOL
 AC_PROG_RANLIB
 
 
@@ -20,10 +24,12 @@ dnl AC_CONFIG_HEADERS([src/config.h])
 
 AC_PROG_INSTALL
 
+echo " ------------------------------ "
 echo ""
-echo " CFLAGS = $CFLAGS"
-echo "LDFLAGS = $LDFLAGS"
+echo "  CFLAGS = $CFLAGS"
+echo " LDFLAGS = $LDFLAGS"
 echo ""
+echo " ------------------------------ "
 
 AC_CONFIG_FILES([
 	Makefile
