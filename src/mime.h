@@ -4,7 +4,7 @@
 #ifdef _DEBUG_MIME
 #define _DEBUG_VECTOR
 #endif
-#include "vector.h"
+#include <libcollections/vector.h>
 
 typedef vector_t mime_table_t; /* table of mime records */
 

@@ -1,4 +1,4 @@
 noinst_LIBRARIES = libutility.a
 
 # Add new files in alphabetical order. Thanks.
-libutility_a_SOURCES = bytes.c crash.c exceptions.c mime.c
+libutility_a_SOURCES = bytes.c crash.c exceptions.c fileio.c mime.c

@@ -53,7 +53,7 @@ am__v_at_0 = @
 libutility_a_AR = $(AR) $(ARFLAGS)
 libutility_a_LIBADD =
 am_libutility_a_OBJECTS = bytes.$(OBJEXT) crash.$(OBJEXT) \
-	exceptions.$(OBJEXT) mime.$(OBJEXT)
+	exceptions.$(OBJEXT) fileio.$(OBJEXT) mime.$(OBJEXT)
 libutility_a_OBJECTS = $(am_libutility_a_OBJECTS)
 DEFAULT_INCLUDES = -I.@am__isrc@
 depcomp = $(SHELL) $(top_srcdir)/depcomp
@@ -168,7 +168,7 @@ top_srcdir = @top_srcdir@
 noinst_LIBRARIES = libutility.a
 
 # Add new files in alphabetical order. Thanks.
-libutility_a_SOURCES = bytes.c crash.c exceptions.c mime.c
+libutility_a_SOURCES = bytes.c crash.c exceptions.c fileio.c mime.c
 all: all-am
 
 .SUFFIXES:
@@ -220,6 +220,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/bytes.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/crash.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/exceptions.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/fileio.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/mime.Po@am__quote@
 
 .c.o:
