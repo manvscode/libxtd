@@ -26,6 +26,7 @@ extern "C" {
 #endif 
 
 #include <stdlib.h>
+#include <stdbool.h>
 
 
 typedef enum random_string_type {
@@ -38,26 +39,32 @@ typedef enum random_string_type {
 } random_string_type_t;
 
 void        crash              ( void );
-void        scramble_string    ( const char* key, char* string, size_t len, unsigned short pivot );
-void        unscramble_string  ( const char* key, char* string, size_t len, unsigned short pivot );
+void        scramble_string    ( const char* restrict key, char* restrict string, size_t len, unsigned short pivot );
+void        unscramble_string  ( const char* restrict key, char* restrict string, size_t len, unsigned short pivot );
 void        random_string      ( random_string_type_t type, char* string, size_t length );
 const char* ordinal_string     ( long number );
-void        xor_bytes          ( const void* a, size_t a_size, const void* b, size_t b_size, void* result );
-void        swap               ( void* left, void *right, size_t size );
+void        xor_bytes          ( const void* restrict a, size_t a_size, const void* restrict b, size_t b_size, void* restrict result );
+void        swap               ( void* restrict left, void* restrict right, size_t size );
 
 /*
  * File IO
  */
-int         file_exists        ( const char *path );
-int         file_is_writeable  ( const char *path );
-int         file_is_readable   ( const char *path );
-int         file_is_executable ( const char *path );
-int         file_copy          ( const char *src_path, const char *dst_path );
-int         file_delete        ( const char *path );
-long        file_size          ( const char *path );
-int         file_age           ( const char *path ); // Returns -1 on error 
-int         is_file            ( const char *path );
-int         is_dir             ( const char *path );
+bool        file_exists        ( const char* path );
+bool        file_is_writeable  ( const char* path );
+bool        file_is_readable   ( const char* path );
+bool        file_is_executable ( const char* path );
+bool        file_copy          ( const char* src_path, const char* dst_path );
+bool        file_delete        ( const char* path );
+long        file_size          ( const char* path );
+int         file_age           ( const char* path ); /* Returns -1 on error */
+bool        is_file            ( const char* path );
+bool        is_dir             ( const char* path );
+
+/*
+ * Compression
+ */
+bool       huffman_encode ( const void* restrict original, size_t size, void** restrict compressed, size_t* compressed_size );
+bool       huffman_decode ( const void* restrict compressed, size_t compressed_size, void** restrict original, size_t* size );
 
 #ifdef __cplusplus
 }
