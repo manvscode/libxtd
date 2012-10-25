@@ -26,7 +26,7 @@
 
 typedef unsigned char byte_t;
 
-void scramble_string( const char* key, char* string, size_t len, unsigned short pivot )
+void scramble_string( const char* restrict key, char* restrict string, size_t len, unsigned short pivot )
 {
 	long string_len = len;
 	size_t key_len  = strlen( key );
@@ -39,7 +39,7 @@ void scramble_string( const char* key, char* string, size_t len, unsigned short 
 	}
 }
 
-void unscramble_string( const char* key, char* string, size_t len, unsigned short pivot )
+void unscramble_string( const char* restrict key, char* restrict string, size_t len, unsigned short pivot )
 {
 	long string_len = len; 
 	size_t key_len  = strlen( key );
@@ -145,7 +145,7 @@ const char* ordinal_string( long number )
 
 
 
-void xor_bytes( const void* a, size_t a_size, const void* b, size_t b_size, void* result )
+void xor_bytes( const void* restrict a, size_t a_size, const void* restrict b, size_t b_size, void* restrict result )
 {
 	const byte_t* p_a = a;
 	const byte_t* p_b = b;
@@ -160,7 +160,7 @@ void xor_bytes( const void* a, size_t a_size, const void* b, size_t b_size, void
 	}
 }
 
-void swap( void* left, void *right, size_t size )
+void swap( void* restrict left, void* restrict right, size_t size )
 {
 	unsigned char tmp[ size ];
 
