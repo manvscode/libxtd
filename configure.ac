@@ -9,7 +9,7 @@ dnlAC_C_INLINE
 AC_HEADER_STDC
 
 
-CFLAGS=" -Wall -pedantic -g -ggdb -pg -O0 -D_DEBUG -I../../libcollections/src/ -lcollections"
+CFLAGS="-std=gnu99 -Wall -pedantic -g -ggdb -pg -O0 -D_DEBUG -I../../libcollections/src/ -lcollections"
 dnl CFLAGS=" -Wall -pedantic -O3  -lcollections"
 LDFLAGS=""
 

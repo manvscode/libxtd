@@ -20,37 +20,38 @@
  * THE SOFTWARE.
  */
 #include <stdio.h>
+#include <stdbool.h>
 #include <time.h>
 #include <unistd.h>
 #include <dirent.h>
 #include <sys/stat.h>
 #include "utility.h"
 
-int file_exists( const char *path )
+bool file_exists( const char* path )
 {
 	return access( path, F_OK ) == 0;
 }
 
-int file_is_writeable( const char *path )
+bool file_is_writeable( const char* path )
 {
 	return access( path, W_OK ) == 0;
 }
 
-int file_is_readable( const char *path )
+bool file_is_readable( const char* path )
 {
 	return access( path, R_OK ) == 0;
 }
 
-int file_is_executable( const char *path )
+bool file_is_executable( const char* path )
 {
 	return access( path, X_OK ) == 0;
 }
 
 
-int file_copy( const char *src_path, const char *dst_path )
+bool file_copy( const char* src_path, const char* dst_path )
 {
-	FILE *src_file = NULL;
-	FILE *dst_file = NULL;
+	FILE* src_file = NULL;
+	FILE* dst_file = NULL;
 	char buffer[ 4096 ];
 
 	src_file = fopen( src_path, "rb" );
@@ -84,11 +85,11 @@ int file_copy( const char *src_path, const char *dst_path )
 	return 1;
 }
 
-int file_delete( const char *path )
+bool file_delete( const char* path )
 {
 	if( is_dir(path) )
 	{
-		DIR *d = opendir( path );
+		DIR* d = opendir( path );
 		int result = 1;
 
 		if( d )
@@ -106,7 +107,7 @@ int file_delete( const char *path )
 	}
 }
 
-long file_size( const char *path )
+long file_size( const char* path )
 {
     struct stat s;
 
@@ -118,7 +119,7 @@ long file_size( const char *path )
 	return 0L;
 }
 
-int file_age( const char *path ) // Return age of file in seconds. -1 = doesnt exist or error
+int file_age( const char* path ) // Return age of file in seconds. -1 = doesnt exist or error
 {
     struct stat s;
 
@@ -130,7 +131,7 @@ int file_age( const char *path ) // Return age of file in seconds. -1 = doesnt e
 	return -1;
 }
 
-int is_file( const char *path )
+bool is_file( const char* path )
 {
 	struct stat s;
 
@@ -142,7 +143,7 @@ int is_file( const char *path )
 	return 0;
 }
 
-int is_dir( const char *path )
+bool is_dir( const char* path )
 {
     struct stat s;
 
