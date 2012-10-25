@@ -22,6 +22,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <strings.h>
 #include <ctype.h>
 #include <assert.h>
 #include "mime.h"
@@ -58,7 +59,7 @@ boolean mime_create_from_file( mime_table_t *p_table, const char *s_mime_file )
 
 	assert( p_table );
 
-	vector_create( p_table, sizeof(mime_record), 128, mime_record_destroy );
+	vector_create( p_table, sizeof(mime_record), 128, mime_record_destroy, malloc, free );
 
 	f = fopen( s_mime_file, "rb" );
 
@@ -89,8 +90,8 @@ boolean mime_create_from_file( mime_table_t *p_table, const char *s_mime_file )
 			{
 				mime_record record;
 
-				record.mime_type = strdup( mime_type );
-				record.extension = strdup( token );
+				record.mime_type = strndup( mime_type, sizeof(buffer) );
+				record.extension = strndup( token, sizeof(buffer) );
 
 				vector_push( p_table, &record ); 
 			}
