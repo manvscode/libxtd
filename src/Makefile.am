@@ -3,7 +3,7 @@
 # Add new files in alphabetical order. Thanks.
 #libutility_a_SOURCES = bytes.c crash.c exceptions.c fileio.c mime.c
 
-source = bytes.c crash.c exceptions.c fileio.c mime.c
+source = bytes.c crash.c exceptions.c fileio.c huffman.c mime.c
 headers = exceptions.h mime.h utility.h
 
 library_includedir = $(includedir)/libutility/
