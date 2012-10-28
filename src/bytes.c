@@ -21,10 +21,25 @@
  */
 #include <stdlib.h>
 #include <ctype.h>
+#include <limits.h>
 #include <string.h>
 #include "utility.h"
 
 typedef unsigned char byte_t;
+
+const char* byte_to_binary( uint8_t x )
+{
+    static char b[ CHAR_BIT + 1 ];
+    b[0] = '\0';
+
+    for( uint16_t z = SCHAR_MAX + 1; z > 0; z >>= 1)
+    {
+        strcat(b, ((x & z) == z) ? "1" : "0");
+    }
+
+    return b;
+}
+
 
 void scramble_string( const char* restrict key, char* restrict string, size_t len, unsigned short pivot )
 {

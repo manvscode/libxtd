@@ -1,61 +1,95 @@
+/*
+ * Copyright (C) 2010 by Joseph A. Marrero and Shrewd LLC. http://www.manvscode.com/
+ * 
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ * 
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ * 
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
+ */
 #include <stdlib.h>
 #include <stdint.h>
+#include <stdbool.h>
 #include <limits.h>
+#include <assert.h>
 #include <libcollections/bheap.h>
-#include <libcollections/vector.h>
+#ifdef DEBUG_HUFFMAN
+#include <stdio.h>
+#include <math.h>
+#endif
 #include "utility.h"
 
 #define ASCII_COUNT   (UCHAR_MAX + 1)   /* 256 possible ascii characters */
+#ifndef max
+#define _max( x, y )              ((x) ^ (((x) ^ (y)) & -((x) < (y))))
+#endif
 
 typedef struct huffman_code {
 	uint16_t code;
 	uint16_t size;
-	bool     used;
+	uint16_t used;
 } huffman_code_t;
 
 typedef struct huffman_node {
 	uint8_t symbol;
-	uint8_t frequency; /* scaled value */
+	size_t frequency; /* scaled value */
 
 	struct huffman_node* left;
 	struct huffman_node* right;
 	struct huffman_node* parent;
 } huffman_node_t;
 
-static inline void huffman_build_tree             ( huffman_node_t** root, size_t* frequencies );
-static inline void huffman_build_codes            ( huffman_node_t* root, huffman_code_t* codes, uint16_t code, uint16_t size );
-static inline huffman_node_t* huffman_node_create ( uint8_t symbol, size_t frequency, huffman_node_t* left, huffman_node_t* right, huffman_node_t* parent );
-static inline void huffman_node_destroy           ( huffman_node_t** node );
-#ifndef max
-#define _max( x, y )              ((x) ^ (((x) ^ (y)) & -((x) < (y))))
-#endif
+static inline void            huffman_build_tree    ( huffman_node_t** root, uint8_t frequencies[] );
+static inline void            huffman_build_codes   ( huffman_node_t* root, huffman_code_t codes[], uint16_t code, uint16_t size );
+static inline int             huffman_node_compare  ( const void* restrict p_data_left, const void* restrict p_data_right );
+static inline huffman_node_t* huffman_node_create   ( uint8_t symbol, size_t frequency, huffman_node_t* left, huffman_node_t* right, huffman_node_t* parent );
+static inline void            huffman_node_destroy  ( huffman_node_t** node );
 
-bool huffman_encode( const void* restrict _original, size_t size, void** restrict compressed, size_t* compressed_size )
+
+bool huffman_encode( const void* restrict _original, size_t original_size, void** restrict _compressed, size_t* compressed_size )
 {
-	const unsigned char* restrict original   = _original;
+	const unsigned char* restrict original = _original;
+	uint8_t frequency_table[ ASCII_COUNT ] = { 0 };
+	size_t max = 1;
 
 	if( !original )
 	{
-		*compressed = NULL;
+		*_compressed = NULL;
 		return false;
 	}
 	
-	size_t frequency_table[ ASCII_COUNT ] = { 0 };
-
-	for( size_t i = 0; i < size; i++ )
+	for( size_t i = 0; i < original_size; i++ )
 	{
 		uint8_t currentByte = original[ i ];
 		frequency_table[ currentByte ]++;
 	}
 
 
-	size_t max = 0;
-	for( uint8_t symbol = 0; symbol <  ASCII_COUNT; symbol++ )
+	for( size_t symbol = 0; symbol <  ASCII_COUNT; symbol++ )
 	{
+		#if 0
 		max = _max( frequency_table[ symbol ], max );
+		#else
+		if( frequency_table[ symbol ] > max )
+		{
+			max = frequency_table[ symbol ];
+		}
+		#endif
 	}
 
-	for( uint8_t symbol = 0; symbol < ASCII_COUNT; symbol++ )
+	for( size_t symbol = 0; symbol < ASCII_COUNT; symbol++ )
 	{
 		uint8_t scaled_freq = UCHAR_MAX * (frequency_table[ symbol ] / ((double)max));
 
@@ -65,6 +99,10 @@ bool huffman_encode( const void* restrict _original, size_t size, void** restric
 		}
 
 		frequency_table[ symbol ] = scaled_freq;
+
+		#ifdef DEBUG_HUFFMAN_FREQUENCY_TABLE
+		printf( "%lu := %d\n", symbol, scaled_freq );
+		#endif
 	}
 
 
@@ -79,72 +117,197 @@ bool huffman_encode( const void* restrict _original, size_t size, void** restric
 
 	size_t header_size = sizeof(size_t) + sizeof(uint8_t) * ASCII_COUNT;
 
-	unsigned char* _compressed = (unsigned char*) malloc( header_size );
+	unsigned char* compressed = (unsigned char*) malloc( header_size );
 	*compressed_size = header_size;
 
-	if( _compressed )
+	if( !compressed )
 	{
 		return false;
 	}
 
-	memcpy( _compressed, &size, sizeof(size_t) );
+	memcpy( compressed, &original_size, sizeof(size_t) );
 
-	for( size_t i = sizeof(size_t); i < header_size; i++ )
+	size_t start_of_freq_table = sizeof(size_t);
+	for( size_t i = start_of_freq_table; i < header_size; i++ )
 	{
-		_compressed[ i ] = frequency_table[ i ];
+		compressed[ i ] = frequency_table[ i - start_of_freq_table ];
 	}
-
-
-	size_t output_bits = CHAR_BIT * header_size;
-	// compress the data	
-	for( size_t i = 0; i < size; i++ )
+		
+	#ifdef DEBUG_HUFFMAN_CODES
+	size_t total_entropy = 0;
+	for( size_t i = 0; i < original_size; i++ )
 	{
+		uint8_t symbol      = original[ i ];
+		huffman_code_t code = codes[ symbol ];
 
-		uint8_t symbol = original[ i ];
+		printf( "code = %#06x %10s (%d bits)\n", code.code, byte_to_binary(code.code), code.size );
+		total_entropy += code.size;
+	}
+	printf( "Compressed to %ld bytes (%ld bits used)\n", (long) ceil(total_entropy / ((double)CHAR_BIT)), total_entropy );
+	#endif
+	
+	size_t output_bits = CHAR_BIT * header_size;
+
+	for( size_t i = 0; i < original_size; i++ )
+	{
+		uint8_t symbol      = original[ i ];
 		huffman_code_t code = codes[ symbol ];
 
 		assert( code.used && code.size > 0 );
 
-
 		for( size_t b = 0; b < code.size; b++ )
 		{
-			if( output_bits % CHAR_BIT == 0 )
+			if( output_bits % CHAR_BIT == 0 ) // enlarge buffer
 			{
-				size_t new_size = output_bits / CHAR_BIT + 1;
-				void *new_buffer = (void*) realloc( _compressed, new_size );
-				*compressed_size = new_size;
+				size_t new_size  = (output_bits / CHAR_BIT) + 1;
+				void *new_buffer = (void*) realloc( compressed, new_size );
 
-				if( new_buffer )
+				if( !new_buffer )
 				{
-					free( _compressed );
+					free( compressed );
 					return false;
+				}
+				else
+				{
+					compressed = new_buffer;
+					*compressed_size = new_size;
+					compressed[ new_size - 1 ] = 0;
 				}
 			}
 
-			bool is_on = code.code & (1 << (code.size - b));
-			_compressed[ output_bits / CHAR_BIT ] |=  is_on << (output_bits % CHAR_BIT);
+			bool is_on = code.code & (1 << (code.size - 1 - b));
+			#ifdef DEBUG_HUFFMAN
+			printf( is_on ? "1" : "0" );
+			#endif
+
+			if( is_on )
+			{
+				assert( (output_bits / CHAR_BIT) < *compressed_size );
+				compressed[ output_bits / CHAR_BIT ] |=  (0x80 >> output_bits % CHAR_BIT);
+			}
+			else
+			{
+				assert( (output_bits / CHAR_BIT) < *compressed_size );
+				compressed[ output_bits / CHAR_BIT ] &=  ~(0x80 >> (output_bits % CHAR_BIT));
+			}
+
+			output_bits++;
 		}
+		#ifdef DEBUG_HUFFMAN
+		printf( " " );
+		#endif
 		
 	}	
+	#ifdef DEBUG_HUFFMAN
+	printf( "\n" );
+	#endif
 
-	*compressed = _compressed;
+	*_compressed = compressed;
 
 	return true;
 }
 
-bool huffman_decode( const void* restrict compressed, size_t compressed_size, void** restrict original, size_t* size )
+bool huffman_decode( const void* restrict _compressed, size_t compressed_size, void** restrict _original, size_t* original_size )
 {
+	const unsigned char* restrict compressed = _compressed;
+	uint8_t frequency_table[ ASCII_COUNT ] = { 0 };
 
+	if( !compressed )
+	{
+		*_original = NULL;
+		return false;
+	}
+
+	memcpy( original_size, compressed, sizeof(size_t) );	
+
+	unsigned char* restrict original = (unsigned char*) malloc( *original_size + 1 );
+
+	if( !original )
+	{
+		*_original = NULL;
+		return false;
+	}
+
+	size_t header_size         = sizeof(size_t) + sizeof(uint8_t) * ASCII_COUNT;
+	size_t start_of_freq_table = sizeof(size_t);
+
+	for( size_t i = start_of_freq_table; i < header_size; i++ )
+	{
+		frequency_table[ i - start_of_freq_table ] = compressed[ i ];
+
+		#ifdef DEBUG_HUFFMAN_FREQUENCY_TABLE
+		printf( "%lu := %d\n", i - start_of_freq_table, frequency_table[ i - start_of_freq_table ] );
+		#endif
+	}
+	
+	huffman_node_t* root = NULL;
+	huffman_build_tree( &root, frequency_table );
+
+	#ifdef DEBUG_HUFFMAN_CODES
+	huffman_code_t codes[ ASCII_COUNT ];
+	memset( codes, 0, sizeof(huffman_code_t) * ASCII_COUNT );
+	huffman_build_codes( root, codes, 0, 0 );
+	size_t total_entropy = 0;
+	for( size_t i = 0; i < ASCII_COUNT; i++ )
+	{	
+		huffman_code_t code = codes[ i ];
+		printf( "code = %#06x %10s (%d bits)\n", code.code, byte_to_binary(code.code), code.size );
+		total_entropy += code.size;
+	}
+	#endif
+
+	size_t original_position = 0;
+	size_t last_bit = compressed_size * CHAR_BIT;
+	size_t bit = header_size * CHAR_BIT;
+
+	while( bit < last_bit )
+	{
+		huffman_node_t* tree = root;
+
+		while( tree && tree->left && tree->right )
+		{
+			if( bit >= last_bit )
+			{
+				tree = NULL;
+				break;
+			}
+	
+			assert( (bit / CHAR_BIT) < compressed_size );
+			bool is_on = compressed[ (bit / CHAR_BIT) ] & (0x80 >> (bit % CHAR_BIT));
+
+			if( is_on )
+			{
+				tree = tree->right;
+			}
+			else
+			{
+				tree = tree->left;
+			}
+			
+			bit++;
+			assert( tree );	
+		}
+
+		if( tree )
+		{
+			assert( original_position < original_size );
+			original[ original_position++ ] = tree->symbol;	
+		}
+	}
+
+	*_original = original;
+
+	huffman_node_destroy( &root );
 	return true;
 }
 
-static int node_compare( const void* restrict p_data_left, const void* restrict p_data_right )
+int huffman_node_compare( const void* restrict p_data_left, const void* restrict p_data_right )
 {
 	const huffman_node_t* left  = p_data_left;
 	const huffman_node_t* right = p_data_right;
 
 	/* smallest to largest */
-	return left->frequency - right->frequency;
+	return right->frequency - left->frequency;
 }
 
 huffman_node_t* huffman_node_create( uint8_t symbol, size_t frequency, huffman_node_t* left, huffman_node_t* right, huffman_node_t* parent )
@@ -179,13 +342,12 @@ void huffman_node_destroy( huffman_node_t** node )
 	*node = NULL;
 }
 
-
-void huffman_build_tree( huffman_node_t** root, size_t* frequencies )
+void huffman_build_tree( huffman_node_t** root, uint8_t frequencies[] )
 {
 	pbheap_t heap;
-	pbheap_create( &heap, ASCII_COUNT, node_compare, malloc, free );
+	pbheap_create( &heap, ASCII_COUNT, huffman_node_compare, malloc, free );
 
-	for( uint8_t symbol = 0; symbol < ASCII_COUNT; symbol++ )
+	for( size_t symbol = 0; symbol < ASCII_COUNT; symbol++ )
 	{
 		if( frequencies[symbol] > 0 )
 		{
@@ -217,11 +379,28 @@ void huffman_build_tree( huffman_node_t** root, size_t* frequencies )
 	pbheap_destroy( &heap );
 }
 
-
-void huffman_build_codes( huffman_node_t* root, huffman_code_t* codes, uint16_t code, uint16_t size )
+void huffman_build_codes( huffman_node_t* root, huffman_code_t codes[], uint16_t code, uint16_t size )
 {
+	static size_t count = 0;
+
 	if( !root->left && !root->right ) // leaf node
 	{
+		count++;
+
+		assert( root->symbol >= 0 && root->symbol < ASCII_COUNT );
+
+
+		#ifdef DEBUG_HUFFMAN
+		if( root->symbol == '\0' )
+		{
+			printf( "'\\0' --> %s\n", byte_to_binary(code) );
+		}
+		else
+		{
+			printf( " '%c' --> %s\n", root->symbol, byte_to_binary(code) );
+		}
+		#endif
+
 		codes[ root->symbol ].code = code;
 		codes[ root->symbol ].size = size;
 		codes[ root->symbol ].used = true;
@@ -237,7 +416,7 @@ void huffman_build_codes( huffman_node_t* root, huffman_code_t* codes, uint16_t 
 		if( root->right )
 		{
 			/* add a 1 to the code */
-			huffman_build_codes( root->left, codes, code << 1 | 0x0001, size + 1 );
+			huffman_build_codes( root->right, codes, code << 1 | 0x0001, size + 1 );
 		}
 	}
 }

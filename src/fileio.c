@@ -47,8 +47,7 @@ bool file_is_executable( const char* path )
 	return access( path, X_OK ) == 0;
 }
 
-
-bool file_copy( const char* src_path, const char* dst_path )
+bool file_copy( const char* restrict src_path, const char* restrict dst_path )
 {
 	FILE* src_file = NULL;
 	FILE* dst_file = NULL;

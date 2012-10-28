@@ -1,14 +1,36 @@
+/*
+ * Copyright (C) 2010 by Joseph A. Marrero and Shrewd LLC. http://www.manvscode.com/
+ * 
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ * 
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ * 
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
+ */
 #include <stdio.h>
+#include <stdint.h>
 #include <string.h>
+#include <ctype.h>
+#include <limits.h>
 #include <time.h>
-#include <utility.h>
+#include "utility.h"
 
 
 int main( int argc, char *argv[] )
 {
-	const char* divider =
-		"--------------------------------------------------------------------------------";
-	const char* moby_dick = 
+	const char* restrict moby_dick = 
 		"Call me Ishmael. Some years ago- never mind how long precisely- having little or no money in my purse, "
 		"and nothing particular to interest me on shore, I thought I would sail about a little and see the watery "
 		"part of the world. It is a way I have of driving off the spleen and regulating the circulation. Whenever "
@@ -19,37 +41,59 @@ int main( int argc, char *argv[] )
 		"off- then, I account it high time to get to sea as soon as I can. This is my substitute for pistol and ball. "
 		"With a philosophical flourish Cato throws himself upon his sword; I quietly take to the ship. There is nothing "
 		"surprising in this. If they but knew it, almost all men in their degree, some time or other, cherish very "
-		"nearly the same feelings towards the ocean with me."
-		"\r\n\r\n"
+		"nearly the same feelings towards the ocean with me.\n\n"
 		"There now is your insular city of the Manhattoes, belted round by wharves as Indian isles by coral reefs- "
 		"commerce surrounds it with her surf. Right and left, the streets take you waterward. Its extreme downtown is "
 		"the battery, where that noble mole is washed by waves, and cooled by breezes, which a few hours previous "
-		"were out of sight of land. Look at the crowds of water-gazers there."
-		"\r\n\r\n"
-		"Circumambulate the city of a dreamy Sabbath afternoon. Go from Corlears Hook to Coenties Slip, and from "
-		"thence, by Whitehall, northward. What do you see?- Posted like silent sentinels all around the town, stand "
-		"thousands upon thousands of mortal men fixed in ocean reveries. Some leaning against the spiles; some seated "
-		"upon the pier-heads; some looking over the bulwarks of ships from China; some high aloft in the rigging, as "
-		"if striving to get a still better seaward peep. But these are all landsmen; of week days pent up in lath and "
-		"plaster- tied to counters, nailed to benches, clinched to desks. How then is this? Are the green fields gone? "
-		"What do they here?";
+		"were out of sight of land. Look at the crowds of water-gazers there.\n\n"
+		"Circumambulate the city of a dreamy Sabbath afternoon. Go from Corlears Hook to Coenties Slip, and from thence, "
+		"by Whitehall, northward. What do you see?--Posted like silent sentinels all around the town, stand thousands "
+		"upon thousands of mortal men fixed in ocean reveries. Some leaning against the spiles; some seated upon the pier-"
+		"heads; some looking over the bulwarks of ships from China; some high aloft in the rigging, as if striving to get "
+		"a still better seaward peep. But these are all landsmen; of week days pent up in lath and plaster--tied to "
+		"counters, nailed to benches, clinched to desks. How then is this? Are the green fields gone? What do they here?\n";
+	char* restrict compressed = NULL;
+	size_t compressed_size    = 0;
+	char* restrict original   = NULL;
+	size_t original_size      = 0;
 
 
-	printf( "%s\n", divider );	
-	printf( "%s\n", moby_dick );	
-	printf( "%s\n", divider );	
+	print_divider( stdout, "[ Moby Dick ]" );
+	size_t moby_dick_size = strlen(moby_dick) + 1;
+	printf( "%s\n", moby_dick );
+	print_divider( stdout, "[ Before Encoding ]" );
 
-	char* compressed = NULL;
-	size_t size = 0;
-
-	huffman_encode( moby_dick, strlen(moby_dick) + 1, (void**) &compressed, &size );
-
-	for( size_t i = 0; i < size; i++ )
+	for( size_t i = 0; i < moby_dick_size; i++ )
 	{
-		printf( "%c", compressed[ i ] );
+		printf( "%02x", (uint8_t) moby_dick[ i ] );
 	}
-	printf( "%s\n", divider );	
+	printf( " (%ld bytes)\n", moby_dick_size );
 
+	if( huffman_encode( moby_dick, moby_dick_size, (void**) &compressed, &compressed_size ) )
+	{
+		print_divider( stdout, "[ Huffman Encoded ]" );
 
+		size_t header_size = sizeof(size_t) + (UCHAR_MAX + 1 );
+		for( size_t i = header_size; i < compressed_size; i++ )
+		{
+			printf( "%02x", (uint8_t) compressed[ i ] );
+		}
+		printf( " (%ld header bytes + %ld bytes = %ld total bytes)\n", header_size, compressed_size - header_size, compressed_size );
+	}
+
+	if( huffman_decode( compressed, compressed_size, (void**) &original, &original_size ) )
+	{
+		print_divider( stdout, "[ Huffman Decoded ]" );
+		printf( "%s\n", original );
+
+		for( size_t i = 0; i < original_size; i++ )
+		{
+			printf( "%02x", (uint8_t) original[ i ] );
+		}
+		printf( " (%ld bytes)\n", original_size );
+	}	
+
+	free( compressed );
+	free( original );
 	return 0;
 }
