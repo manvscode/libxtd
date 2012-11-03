@@ -6,6 +6,7 @@
 libutility_sources = \
 huffman.c \
 bytes.c \
+caesar.c \
 crash.c \
 exceptions.c \
 fileio.c \

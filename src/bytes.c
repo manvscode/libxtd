@@ -185,3 +185,89 @@ void swap( void* restrict left, void* restrict right, size_t size )
 }
 
 
+static size_t size_powers[] = {
+	1,                   // 10^0, 2^0 byte
+
+	1000,                // 10^3   kilobyte
+	1000000,             // 10^6   megabyte
+	1000000000,          // 10^9   gigabyte
+	1000000000000,       // 10^12  terabyte
+	1000000000000000,    // 10^15  petabyte
+	1000000000000000000, // 10^18  exabyte
+
+	1024,                // 2^10   kibibyte
+	1048576,             // 2^20   mebibyte
+	1073741824,          // 2^30   gibibyte
+	1099511627776,       // 2^40   tebibyte
+	1125899906842624,    // 2^50   pebibyte
+	1152921504606846976, // 2^60   exibyte
+};
+
+static const char* size_units[] = {
+	"B",       // 0
+	"KB",      // 1
+	"MB",      // 2
+	"GB",      // 3
+	"TB",      // 4
+	"PB",      // 5
+	"EB",      // 6
+	"KiB",     // 7
+	"MiB",     // 8
+	"GiB",     // 9
+	"TiB",     // 10
+	"PiB",     // 11
+	"EiB"      // 12
+};
+
+const char* size_in_units( size_t size, size_units_t unit, int precision )
+{
+	double unit_size = ((double) size) / size_powers[ unit ];
+
+	#if REENTRANT	
+	size_t len = snprintf( NULL, 0, "%lf %s", unit_size, size_units[ unit ] );
+
+	result = malloc( (len + 1) * sizeof(char) );
+	if( result )
+	{
+		len = snprintf( result, len + 1, "%.*lf %s", precision, unit_size, size_units[ unit ] );
+	}
+	#else
+	static char result[ 128 ];
+	snprintf( result, sizeof(result), "%.*lf %s", precision, unit_size, size_units[ unit ] );
+	#endif
+
+	return result;
+}
+
+const char* appropriate_size( size_t size, bool use_base_two, int precision )
+{
+	size_t t = use_base_two ? unit_kibibytes - unit_kilobytes : 0;
+
+	if( size < size_powers[ unit_kilobytes + t ] )
+	{
+		return size_in_units( size, unit_bytes, precision );
+	}
+	else if( size < size_powers[ unit_megabytes + t] )
+	{
+		return size_in_units( size, unit_kilobytes + t, precision );
+	}
+	else if( size < size_powers[ unit_gigabytes + t] )
+	{
+		return size_in_units( size, unit_megabytes + t, precision );
+	}
+	else if( size < size_powers[ unit_terabytes + t] )
+	{
+		return size_in_units( size, unit_gigabytes + t, precision );
+	}
+	else if( size < size_powers[ unit_petabytes + t] )
+	{
+		return size_in_units( size, unit_terabytes + t, precision );
+	}
+	else if( size < size_powers[ unit_exabytes + t] )
+	{
+		return size_in_units( size, unit_petabytes + t, precision );
+	}
+
+	// otherwise display in bytes
+	return size_in_units( size, unit_bytes, 1 );
+}

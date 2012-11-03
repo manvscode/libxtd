@@ -43,6 +43,26 @@ int   file_age           ( const char* path ); /* Returns -1 on error */
 bool  is_file            ( const char* path );
 bool  is_dir             ( const char* path );
 
+typedef enum size_units {
+	unit_bytes = 0,
+
+	unit_kilobytes,
+	unit_megabytes,
+	unit_gigabytes,
+	unit_terabytes,
+	unit_petabytes,
+	unit_exabytes,
+
+	unit_kibibytes,
+	unit_mebibytes,
+	unit_gibibytes,
+	unit_tebibytes,
+	unit_exibytes
+} size_units_t;
+
+const char* size_in_units    ( size_t size, size_units_t unit, int precision );
+const char* appropriate_size ( size_t size, bool use_base_two, int precision );
+
 /*
  * Compression
  */
@@ -70,6 +90,13 @@ void        random_string      ( random_string_type_t type, char* string, size_t
 const char* ordinal_string     ( long number );
 void        xor_bytes          ( const void* restrict a, size_t a_size, const void* restrict b, size_t b_size, void* restrict result );
 void        swap               ( void* restrict left, void* restrict right, size_t size );
+const char* friendly_size      ( size_t size );
+
+/*
+ *  Encryption
+ */
+void caesar_cypher_encryption ( void* text, size_t size, size_t n );
+void caesar_cypher_decryption ( void* text, size_t size, size_t n );
 
 #ifdef __cplusplus
 }
