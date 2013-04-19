@@ -70,6 +70,16 @@ bool huffman_encode( const void* restrict original, size_t size, void** restrict
 bool huffman_decode( const void* restrict compressed, size_t compressed_size, void** restrict original, size_t* size );
 
 /*
+ * Checksums
+ */
+uint32_t java_hash         ( const uint8_t *data, size_t len ); 
+uint32_t xor8              ( const uint8_t *data, size_t len );
+uint32_t adler32           ( const uint8_t *data, size_t len );
+uint16_t fletcher16_simple ( uint8_t *data, size_t len );
+void     fletcher16        ( uint8_t *checkA, uint8_t *checkB, uint8_t *data, size_t len ); /* faster */
+uint32_t fletcher32        ( uint16_t *data, size_t len );
+
+/*
  * Misscellaneous
  */
 typedef enum random_string_type {
