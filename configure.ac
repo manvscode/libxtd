@@ -1,7 +1,7 @@
 AC_INIT([libutility], [0.1], [manvscode@gmail.com], [libutility], [http://www.manvscode.com/])
 AM_INIT_AUTOMAKE([-Wall -Werror foreign])
 
-AM_SILENT_RULES([no])
+AM_SILENT_RULES([yes])
 AC_CONFIG_HEADERS([src/libutility-config.h])
 
 AC_PROG_CC

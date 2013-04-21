@@ -1,4 +1,6 @@
 #include <stdio.h>
+#include <string.h>
+#include <ctype.h>
 
 void print_divider( FILE* fd, const char* title )
 {
@@ -29,7 +31,7 @@ void print_divider( FILE* fd, const char* title )
 				break;
 			}
 		}
-		
+
 		for( size_t i = sizeof(buffer) - 1; i >= 0; i-- )
 		{
 			if( isspace( buffer[i] ) || buffer[i] == '\0' )
@@ -44,6 +46,6 @@ void print_divider( FILE* fd, const char* title )
 
 		buffer[ sizeof(buffer) - 1 ] = '\0';
 
-		fprintf( fd, "--%s--\n", buffer );	
+		fprintf( fd, "--%s--\n", buffer );
 	}
 }

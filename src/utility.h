@@ -23,10 +23,36 @@
 #define _UTILITY_H_
 #include <stdlib.h>
 #include <stdio.h>
+#if defined(__STDC_VERSION__) && (__STDC_VERSION__ >= 199901L)
 #include <stdbool.h>
 #include <stdint.h>
+#ifdef __restrict
+#undef __restrict
+#define __restrict restrict
+#endif
+#ifdef __inline
+#undef __inline
+#define __inline inline
+#endif
+#else
+#define bool int
+#define true 1
+#define false 0
+#ifdef __restrict
+#undef __restrict
+#define __restrict
+#endif
+#ifdef __inline
+#undef __inline
+#define __inline
+#endif
+#endif
+
+
+
 #ifdef __cplusplus
 extern "C" {
+namespace utility {
 #endif 
 
 /*
@@ -36,10 +62,11 @@ bool  file_exists        ( const char* path );
 bool  file_is_writeable  ( const char* path );
 bool  file_is_readable   ( const char* path );
 bool  file_is_executable ( const char* path );
-bool  file_copy          ( const char* restrict src_path, const char* restrict dst_path );
+bool  file_copy          ( const char* __restrict src_path, const char* __restrict dst_path );
 bool  file_delete        ( const char* path );
 long  file_size          ( const char* path );
 int   file_age           ( const char* path ); /* Returns -1 on error */
+char* file_load_contents ( const char* path, size_t* size );
 bool  is_file            ( const char* path );
 bool  is_dir             ( const char* path );
 
@@ -66,8 +93,8 @@ const char* appropriate_size ( size_t size, bool use_base_two, int precision );
 /*
  * Compression
  */
-bool huffman_encode( const void* restrict original, size_t size, void** restrict compressed, size_t* compressed_size );
-bool huffman_decode( const void* restrict compressed, size_t compressed_size, void** restrict original, size_t* size );
+bool huffman_encode( const void* __restrict original, size_t size, void** __restrict compressed, size_t* compressed_size );
+bool huffman_decode( const void* __restrict compressed, size_t compressed_size, void** __restrict original, size_t* size );
 
 /*
  * Checksums
@@ -94,12 +121,12 @@ typedef enum random_string_type {
 void        print_divider      ( FILE* fd, const char* title );
 const char* byte_to_binary     ( uint8_t x );
 void        crash              ( void );
-void        scramble_string    ( const char* restrict key, char* restrict string, size_t len, unsigned short pivot );
-void        unscramble_string  ( const char* restrict key, char* restrict string, size_t len, unsigned short pivot );
+void        scramble_string    ( const char* __restrict key, char* __restrict string, size_t len, unsigned short pivot );
+void        unscramble_string  ( const char* __restrict key, char* __restrict string, size_t len, unsigned short pivot );
 void        random_string      ( random_string_type_t type, char* string, size_t length );
 const char* ordinal_string     ( long number );
-void        xor_bytes          ( const void* restrict a, size_t a_size, const void* restrict b, size_t b_size, void* restrict result );
-void        swap               ( void* restrict left, void* restrict right, size_t size );
+void        xor_bytes          ( const void* __restrict a, size_t a_size, const void* __restrict b, size_t b_size, void* __restrict result );
+void        swap               ( void* __restrict left, void* __restrict right, size_t size );
 const char* friendly_size      ( size_t size );
 
 /*
@@ -110,5 +137,6 @@ void caesar_cypher_decryption ( void* text, size_t size, size_t n );
 
 #ifdef __cplusplus
 }
+} /* namespace utility */
 #endif 
 #endif /* _UTILITY_H_ */

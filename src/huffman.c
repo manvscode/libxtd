@@ -1,16 +1,16 @@
 /*
  * Copyright (C) 2010 by Joseph A. Marrero and Shrewd LLC. http://www.manvscode.com/
- * 
+ *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
  * in the Software without restriction, including without limitation the rights
  * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
  * copies of the Software, and to permit persons to whom the Software is
  * furnished to do so, subject to the following conditions:
- * 
+ *
  * The above copyright notice and this permission notice shall be included in
  * all copies or substantial portions of the Software.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -20,8 +20,6 @@
  * THE SOFTWARE.
  */
 #include <stdlib.h>
-#include <stdint.h>
-#include <stdbool.h>
 #include <limits.h>
 #include <assert.h>
 #include <libcollections/bheap.h>
@@ -51,16 +49,16 @@ typedef struct huffman_node {
 	struct huffman_node* parent;
 } huffman_node_t;
 
-static inline void            huffman_build_tree    ( huffman_node_t** root, uint8_t frequencies[] );
-static inline void            huffman_build_codes   ( huffman_node_t* root, huffman_code_t codes[], uint16_t code, uint16_t size );
-static inline int             huffman_node_compare  ( const void* restrict p_data_left, const void* restrict p_data_right );
-static inline huffman_node_t* huffman_node_create   ( uint8_t symbol, size_t frequency, huffman_node_t* left, huffman_node_t* right, huffman_node_t* parent );
-static inline void            huffman_node_destroy  ( huffman_node_t** node );
+static __inline void            huffman_build_tree    ( huffman_node_t** root, uint8_t frequencies[] );
+static __inline void            huffman_build_codes   ( huffman_node_t* root, huffman_code_t codes[], uint16_t code, uint16_t size );
+static __inline int             huffman_node_compare  ( const void* __restrict p_data_left, const void* __restrict p_data_right );
+static __inline huffman_node_t* huffman_node_create   ( uint8_t symbol, size_t frequency, huffman_node_t* left, huffman_node_t* right, huffman_node_t* parent );
+static __inline void            huffman_node_destroy  ( huffman_node_t** node );
 
 
-bool huffman_encode( const void* restrict _original, size_t original_size, void** restrict _compressed, size_t* compressed_size )
+bool huffman_encode( const void* __restrict _original, size_t original_size, void** __restrict _compressed, size_t* compressed_size )
 {
-	const unsigned char* restrict original = _original;
+	const unsigned char* __restrict original = _original;
 	uint8_t frequency_table[ ASCII_COUNT ] = { 0 };
 	size_t max = 1;
 
@@ -69,7 +67,7 @@ bool huffman_encode( const void* restrict _original, size_t original_size, void*
 		*_compressed = NULL;
 		return false;
 	}
-	
+
 	for( size_t i = 0; i < original_size; i++ )
 	{
 		uint8_t currentByte = original[ i ];
@@ -132,7 +130,7 @@ bool huffman_encode( const void* restrict _original, size_t original_size, void*
 	{
 		compressed[ i ] = frequency_table[ i - start_of_freq_table ];
 	}
-		
+
 	#ifdef DEBUG_HUFFMAN_CODES
 	size_t total_entropy = 0;
 	for( size_t i = 0; i < original_size; i++ )
@@ -145,7 +143,7 @@ bool huffman_encode( const void* restrict _original, size_t original_size, void*
 	}
 	printf( "Compressed to %ld bytes (%ld bits used)\n", (long) ceil(total_entropy / ((double)CHAR_BIT)), total_entropy );
 	#endif
-	
+
 	size_t output_bits = CHAR_BIT * header_size;
 
 	for( size_t i = 0; i < original_size; i++ )
@@ -196,8 +194,8 @@ bool huffman_encode( const void* restrict _original, size_t original_size, void*
 		#ifdef DEBUG_HUFFMAN
 		printf( " " );
 		#endif
-		
-	}	
+
+	}
 	#ifdef DEBUG_HUFFMAN
 	printf( "\n" );
 	#endif
@@ -207,9 +205,9 @@ bool huffman_encode( const void* restrict _original, size_t original_size, void*
 	return true;
 }
 
-bool huffman_decode( const void* restrict _compressed, size_t compressed_size, void** restrict _original, size_t* original_size )
+bool huffman_decode( const void* __restrict _compressed, size_t compressed_size, void** __restrict _original, size_t* original_size )
 {
-	const unsigned char* restrict compressed = _compressed;
+	const unsigned char* __restrict compressed = _compressed;
 	uint8_t frequency_table[ ASCII_COUNT ] = { 0 };
 
 	if( !compressed )
@@ -218,9 +216,9 @@ bool huffman_decode( const void* restrict _compressed, size_t compressed_size, v
 		return false;
 	}
 
-	memcpy( original_size, compressed, sizeof(size_t) );	
+	memcpy( original_size, compressed, sizeof(size_t) );
 
-	unsigned char* restrict original = (unsigned char*) malloc( *original_size + 1 );
+	unsigned char* __restrict original = (unsigned char*) malloc( *original_size + 1 );
 
 	if( !original )
 	{
@@ -239,7 +237,7 @@ bool huffman_decode( const void* restrict _compressed, size_t compressed_size, v
 		printf( "%lu := %d\n", i - start_of_freq_table, frequency_table[ i - start_of_freq_table ] );
 		#endif
 	}
-	
+
 	huffman_node_t* root = NULL;
 	huffman_build_tree( &root, frequency_table );
 
@@ -249,7 +247,7 @@ bool huffman_decode( const void* restrict _compressed, size_t compressed_size, v
 	huffman_build_codes( root, codes, 0, 0 );
 	size_t total_entropy = 0;
 	for( size_t i = 0; i < ASCII_COUNT; i++ )
-	{	
+	{
 		huffman_code_t code = codes[ i ];
 		printf( "code = %#06x %10s (%d bits)\n", code.code, byte_to_binary(code.code), code.size );
 		total_entropy += code.size;
@@ -271,7 +269,7 @@ bool huffman_decode( const void* restrict _compressed, size_t compressed_size, v
 				tree = NULL;
 				break;
 			}
-	
+
 			assert( (bit / CHAR_BIT) < compressed_size );
 			bool is_on = compressed[ (bit / CHAR_BIT) ] & (0x80 >> (bit % CHAR_BIT));
 
@@ -283,15 +281,15 @@ bool huffman_decode( const void* restrict _compressed, size_t compressed_size, v
 			{
 				tree = tree->left;
 			}
-			
+
 			bit++;
-			assert( tree );	
+			assert( tree );
 		}
 
 		if( tree )
 		{
-			assert( original_position < original_size );
-			original[ original_position++ ] = tree->symbol;	
+			assert( original_position < *original_size );
+			original[ original_position++ ] = tree->symbol;
 		}
 	}
 
@@ -301,7 +299,7 @@ bool huffman_decode( const void* restrict _compressed, size_t compressed_size, v
 	return true;
 }
 
-int huffman_node_compare( const void* restrict p_data_left, const void* restrict p_data_right )
+int huffman_node_compare( const void* __restrict p_data_left, const void* __restrict p_data_right )
 {
 	const huffman_node_t* left  = p_data_left;
 	const huffman_node_t* right = p_data_right;
