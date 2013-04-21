@@ -1,16 +1,16 @@
 /*
  * Copyright (C) 2010 by Joseph A. Marrero and Shrewd LLC. http://www.manvscode.com/
- * 
+ *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
  * in the Software without restriction, including without limitation the rights
  * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
  * copies of the Software, and to permit persons to whom the Software is
  * furnished to do so, subject to the following conditions:
- * 
+ *
  * The above copyright notice and this permission notice shall be included in
  * all copies or substantial portions of the Software.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -130,6 +130,40 @@ int file_age( const char* path ) // Return age of file in seconds. -1 = doesnt e
 	return -1;
 }
 
+char* file_load_contents( const char* path, size_t *size )
+{
+	FILE* file = fopen( path, "r" );
+	char* result = NULL;
+
+	if( file )
+	{
+		fseek( file, 0, SEEK_END );
+		size_t file_size = ftell( file ); /* TODO: what if size is 0 */
+		fseek( file, 0, SEEK_SET );
+
+		if( file_size > 0 )
+		{
+			*size = file_size + 1;
+			result = (char*) malloc( sizeof(char) * (*size) );
+
+			if( result )
+			{
+				char* buffer = result;
+				while( !feof( file ) )
+				{
+					size_t bytes_read = fread( buffer, sizeof(char), file_size, file );
+					buffer += bytes_read;
+				}
+				buffer[ *size ] = '\0';
+			}
+		}
+
+		fclose( file );
+	}
+
+	return result;
+}
+
 bool is_file( const char* path )
 {
 	struct stat s;
@@ -138,7 +172,7 @@ bool is_file( const char* path )
 	{
 		return S_ISREG( s.st_mode );
 	}
-		
+
 	return 0;
 }
 
@@ -150,7 +184,7 @@ bool is_dir( const char* path )
 	{
         return S_ISDIR(s.st_mode);
     }
-	
+
 	return 0;
 }
 

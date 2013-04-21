@@ -27,6 +27,7 @@
 #include <stdint.h>
 #ifdef __cplusplus
 extern "C" {
+namespace utility {
 #endif 
 
 /*
@@ -40,6 +41,7 @@ bool  file_copy          ( const char* restrict src_path, const char* restrict d
 bool  file_delete        ( const char* path );
 long  file_size          ( const char* path );
 int   file_age           ( const char* path ); /* Returns -1 on error */
+char* file_load_contents ( const char* path, size_t* size );
 bool  is_file            ( const char* path );
 bool  is_dir             ( const char* path );
 
@@ -110,5 +112,6 @@ void caesar_cypher_decryption ( void* text, size_t size, size_t n );
 
 #ifdef __cplusplus
 }
+} /* namespace utility */
 #endif 
 #endif /* _UTILITY_H_ */
