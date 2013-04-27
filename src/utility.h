@@ -47,12 +47,8 @@
 #define __inline
 #endif
 #endif
-
-
-
 #ifdef __cplusplus
 extern "C" {
-namespace utility {
 #endif 
 
 /*
@@ -129,13 +125,8 @@ void        xor_bytes          ( const void* __restrict a, size_t a_size, const 
 void        swap               ( void* __restrict left, void* __restrict right, size_t size );
 const char* friendly_size      ( size_t size );
 bool        is_big_endian      ( void );
-#ifdef WORDS_BIGENDIAN
-#define     hton( mem, size ) /* do nothing */
-#define     ntoh( mem, size ) /* do nothing */
-#else
 void        hton               ( void *mem, size_t size );
 void        ntoh               ( void *mem, size_t size );
-#endif
 
 /*
  *  Encryption
@@ -144,7 +135,44 @@ void caesar_cypher_encryption ( void* text, size_t size, size_t n );
 void caesar_cypher_decryption ( void* text, size_t size, size_t n );
 
 #ifdef __cplusplus
-}
-} /* namespace utility */
+} /* extern "C" */
+namespace utility {
+	using ::file_exists;
+	using ::file_is_writeable;
+	using ::file_is_readable;
+	using ::file_is_executable;
+	using ::file_copy;
+	using ::file_delete;
+	using ::file_size;
+	using ::file_age;
+	using ::file_load_contents;
+	using ::is_file;
+	using ::is_dir;
+	using ::size_in_units;
+	using ::appropriate_size;
+	using ::huffman_encode;
+	using ::huffman_decode;
+	using ::java_hash; 
+	using ::xor8;
+	using ::adler32;
+	using ::fletcher16_simple;
+	using ::fletcher16;
+	using ::fletcher32;
+	using ::print_divider;
+	using ::byte_to_binary;
+	using ::crash;
+	using ::scramble_string;
+	using ::unscramble_string;
+	using ::random_string;
+	using ::ordinal_string;
+	using ::xor_bytes;
+	using ::swap;
+	using ::friendly_size;
+	using ::is_big_endian;
+	using ::hton;
+	using ::ntoh;
+	using ::caesar_cypher_encryption;
+	using ::caesar_cypher_decryption;
+} /* namespace */
 #endif 
 #endif /* _UTILITY_H_ */
