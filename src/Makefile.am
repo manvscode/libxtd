@@ -9,6 +9,7 @@ bytes.c \
 caesar.c \
 checksums.c \
 crash.c \
+endianess.c \
 exceptions.c \
 fileio.c \
 mime.c \

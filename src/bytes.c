@@ -1,16 +1,16 @@
 /*
  * Copyright (C) 2010 by Joseph A. Marrero and Shrewd LLC. http://www.manvscode.com/
- * 
+ *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
  * in the Software without restriction, including without limitation the rights
  * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
  * copies of the Software, and to permit persons to whom the Software is
  * furnished to do so, subject to the following conditions:
- * 
+ *
  * The above copyright notice and this permission notice shall be included in
  * all copies or substantial portions of the Software.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -56,7 +56,7 @@ void scramble_string( const char* restrict key, char* restrict string, size_t le
 
 void unscramble_string( const char* restrict key, char* restrict string, size_t len, unsigned short pivot )
 {
-	long string_len = len; 
+	long string_len = len;
 	size_t key_len  = strlen( key );
 
 	while( string_len >= 0 )
@@ -223,7 +223,7 @@ const char* size_in_units( size_t size, size_units_t unit, int precision )
 {
 	double unit_size = ((double) size) / size_powers[ unit ];
 
-	#if REENTRANT	
+	#if REENTRANT
 	size_t len = snprintf( NULL, 0, "%lf %s", unit_size, size_units[ unit ] );
 
 	result = malloc( (len + 1) * sizeof(char) );

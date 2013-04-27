@@ -128,6 +128,14 @@ const char* ordinal_string     ( long number );
 void        xor_bytes          ( const void* __restrict a, size_t a_size, const void* __restrict b, size_t b_size, void* __restrict result );
 void        swap               ( void* __restrict left, void* __restrict right, size_t size );
 const char* friendly_size      ( size_t size );
+bool        is_big_endian      ( void );
+#ifdef WORDS_BIGENDIAN
+#define     hton( mem, size ) /* do nothing */
+#define     ntoh( mem, size ) /* do nothing */
+#else
+void        hton               ( void *mem, size_t size );
+void        ntoh               ( void *mem, size_t size );
+#endif
 
 /*
  *  Encryption

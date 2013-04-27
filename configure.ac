@@ -17,6 +17,8 @@ AH_BOTTOM([
 #endif /* _LIBUTILITY_CONFIG_H_ */
 ])
 
+# If big endian define WORDS_BIGENDIAN
+AC_C_BIGENDIAN
 
 #CFLAGS="-std=gnu99 -Wall -pedantic -g -ggdb -O0 -DDEBUG -I/usr/local/include/"
 CFLAGS=" -Wall -pedantic -O3  -lcollections"
