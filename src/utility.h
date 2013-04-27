@@ -148,6 +148,7 @@ namespace utility {
 	using ::file_load_contents;
 	using ::is_file;
 	using ::is_dir;
+	using ::size_units_t;
 	using ::size_in_units;
 	using ::appropriate_size;
 	using ::huffman_encode;
@@ -158,6 +159,7 @@ namespace utility {
 	using ::fletcher16_simple;
 	using ::fletcher16;
 	using ::fletcher32;
+	using ::random_string_type_t;
 	using ::print_divider;
 	using ::byte_to_binary;
 	using ::crash;
