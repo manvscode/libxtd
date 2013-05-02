@@ -26,7 +26,7 @@
 #endif
 
 
-uint32_t java_hash( const uint8_t *data, size_t len )
+uint32_t java_hash( const uint8_t* data, size_t len )
 {
 	size_t hash = 0;
 	size_t i;
@@ -39,7 +39,7 @@ uint32_t java_hash( const uint8_t *data, size_t len )
 	return hash;
 }
 
-uint32_t xor8( const uint8_t *data, size_t len )
+uint32_t xor8( const uint8_t* data, size_t len )
 {
 	uint32_t lrc = 0;
 	size_t index;
@@ -53,7 +53,7 @@ uint32_t xor8( const uint8_t *data, size_t len )
 }
 
 /* where data is the location of the data in physical memory and len is the length of the data in bytes */
-uint32_t adler32( const uint8_t *data, size_t len )
+uint32_t adler32( const uint8_t* data, size_t len )
 {
 	uint32_t a = 1, b = 0;
 	size_t index;
@@ -83,7 +83,7 @@ uint16_t fletcher16_simple( uint8_t* data, size_t len )
 	return (sum2 << 8) | sum1;
 }
 
-void fletcher16( uint8_t *checkA, uint8_t *checkB, uint8_t *data, size_t len )
+void fletcher16( uint8_t* checkA, uint8_t* checkB, uint8_t* data, size_t len )
 {
 	uint16_t sum1 = 0xff, sum2 = 0xff;
 
@@ -105,7 +105,7 @@ void fletcher16( uint8_t *checkA, uint8_t *checkB, uint8_t *data, size_t len )
 	return;
 }
 
-uint32_t fletcher32( uint16_t *data, size_t len )
+uint32_t fletcher32( uint16_t* data, size_t len )
 {
 	uint32_t sum1 = 0xffff, sum2 = 0xffff;
 

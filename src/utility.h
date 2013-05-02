@@ -1,16 +1,16 @@
 /*
  * Copyright (C) 2010 by Joseph A. Marrero and Shrewd LLC. http://www.manvscode.com/
- * 
+ *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
  * in the Software without restriction, including without limitation the rights
  * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
  * copies of the Software, and to permit persons to whom the Software is
  * furnished to do so, subject to the following conditions:
- * 
+ *
  * The above copyright notice and this permission notice shall be included in
  * all copies or substantial portions of the Software.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -49,7 +49,7 @@
 #endif
 #ifdef __cplusplus
 extern "C" {
-#endif 
+#endif
 
 /*
  * File IO
@@ -86,6 +86,30 @@ typedef enum size_units {
 const char* size_in_units    ( size_t size, size_units_t unit, int precision );
 const char* appropriate_size ( size_t size, bool use_base_two, int precision );
 
+
+/*
+ * Finite State Machine
+ */
+typedef short fsm_state_t;
+typedef short fsm_event_t;
+
+typedef struct fsm_transition {
+    fsm_state_t src_state;
+    fsm_event_t event;
+    fsm_state_t dst_state;
+} fsm_transition_t;
+
+typedef fsm_event_t (*fsm_state_fxn)( void* data );
+typedef fsm_state_fxn fsm_callbacks_table_t[];
+typedef fsm_transition_t fsm_transition_table_t[];
+
+struct fsm;
+typedef struct fsm fsm_t;
+
+fsm_t* fsm_create  ( size_t max_states, fsm_transition_table_t transitions, fsm_callbacks_table_t callbacks, fsm_state_t start, fsm_event_t end );
+void   fsm_destroy ( fsm_t** fsm );
+void   fsm_run     ( fsm_t* fsm, void* data );
+
 /*
  * Compression
  */
@@ -95,12 +119,12 @@ bool huffman_decode( const void* __restrict compressed, size_t compressed_size, 
 /*
  * Checksums
  */
-uint32_t java_hash         ( const uint8_t *data, size_t len ); 
-uint32_t xor8              ( const uint8_t *data, size_t len );
-uint32_t adler32           ( const uint8_t *data, size_t len );
-uint16_t fletcher16_simple ( uint8_t *data, size_t len );
-void     fletcher16        ( uint8_t *checkA, uint8_t *checkB, uint8_t *data, size_t len ); /* faster */
-uint32_t fletcher32        ( uint16_t *data, size_t len );
+uint32_t java_hash         ( const uint8_t* data, size_t len );
+uint32_t xor8              ( const uint8_t* data, size_t len );
+uint32_t adler32           ( const uint8_t* data, size_t len );
+uint16_t fletcher16_simple ( uint8_t* data, size_t len );
+void     fletcher16        ( uint8_t* checkA, uint8_t* checkB, uint8_t* data, size_t len ); /* faster */
+uint32_t fletcher32        ( uint16_t* data, size_t len );
 
 /*
  * Misscellaneous
@@ -125,8 +149,8 @@ void        xor_bytes          ( const void* __restrict a, size_t a_size, const 
 void        swap               ( void* __restrict left, void* __restrict right, size_t size );
 const char* friendly_size      ( size_t size );
 bool        is_big_endian      ( void );
-void        hton               ( void *mem, size_t size );
-void        ntoh               ( void *mem, size_t size );
+void        hton               ( void* mem, size_t size );
+void        ntoh               ( void* mem, size_t size );
 
 /*
  *  Encryption
@@ -153,7 +177,7 @@ namespace utility {
 	using ::appropriate_size;
 	using ::huffman_encode;
 	using ::huffman_decode;
-	using ::java_hash; 
+	using ::java_hash;
 	using ::xor8;
 	using ::adler32;
 	using ::fletcher16_simple;
@@ -176,5 +200,5 @@ namespace utility {
 	using ::caesar_cypher_encryption;
 	using ::caesar_cypher_decryption;
 } /* namespace */
-#endif 
+#endif
 #endif /* _UTILITY_H_ */

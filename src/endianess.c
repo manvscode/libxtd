@@ -37,7 +37,7 @@ void swap_every_two_bytes( void* mem, size_t size )
 	}
 }
 
-void hton( void *mem, size_t size )
+void hton( void* mem, size_t size )
 {
 	#ifndef WORDS_BIGENDIAN
 	if( !is_big_endian( ) )
@@ -47,7 +47,7 @@ void hton( void *mem, size_t size )
 	#endif
 }
 
-void ntoh( void *mem, size_t size )
+void ntoh( void* mem, size_t size )
 {
 	#ifndef WORDS_BIGENDIAN
 	if( !is_big_endian( ) )
