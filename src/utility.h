@@ -93,22 +93,22 @@ const char* appropriate_size ( size_t size, bool use_base_two, int precision );
 typedef short fsm_state_t;
 typedef short fsm_event_t;
 
+typedef fsm_event_t (*fsm_state_fxn)( void* data );
+
 typedef struct fsm_transition {
     fsm_state_t src_state;
     fsm_event_t event;
     fsm_state_t dst_state;
 } fsm_transition_t;
 
-typedef fsm_event_t (*fsm_state_fxn)( void* data );
-typedef fsm_state_fxn fsm_callbacks_table_t[];
-typedef fsm_transition_t fsm_transition_table_t[];
 
 struct fsm;
 typedef struct fsm fsm_t;
 
-fsm_t* fsm_create  ( size_t max_states, fsm_transition_table_t transitions, fsm_callbacks_table_t callbacks, fsm_state_t start, fsm_event_t end );
-void   fsm_destroy ( fsm_t** fsm );
-void   fsm_run     ( fsm_t* fsm, void* data );
+fsm_t* fsm_create     ( size_t max_transitions, fsm_transition_t* transitions, fsm_state_fxn* callbacks, fsm_state_t start, fsm_event_t end );
+void   fsm_destroy    ( fsm_t** fsm );
+void   fsm_initialize ( fsm_t* fsm, size_t max_transitions, fsm_transition_t* transitions, fsm_state_fxn* callbacks, fsm_state_t start, fsm_event_t end );
+void   fsm_run        ( fsm_t* fsm, void* data );
 
 /*
  * Compression

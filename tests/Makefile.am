@@ -7,9 +7,11 @@ bin_PROGRAMS = \
 $(top_builddir)/bin/test-exceptions \
 $(top_builddir)/bin/test-scrambling \
 $(top_builddir)/bin/test-huffman \
-$(top_builddir)/bin/test-file 
+$(top_builddir)/bin/test-file \
+$(top_builddir)/bin/test-fsm
 
 __top_builddir__bin_test_exceptions_SOURCES  = test-exceptions.c
 __top_builddir__bin_test_scrambling_SOURCES  = test-scrambling.c
 __top_builddir__bin_test_huffman_SOURCES     = test-huffman.c
 __top_builddir__bin_test_file_SOURCES        = test-file.c
+__top_builddir__bin_test_fsm_SOURCES         = test-fsm.c

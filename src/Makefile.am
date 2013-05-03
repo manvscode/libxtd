@@ -12,6 +12,7 @@ crash.c \
 endianess.c \
 exceptions.c \
 fileio.c \
+fsm.c \
 mime.c \
 console.c
 
