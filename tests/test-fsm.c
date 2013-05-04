@@ -24,16 +24,6 @@
 #include <ctype.h>
 #include "utility.h"
 
-typedef enum app_states {
-	st_menu,
-	st_input_message,
-	st_encrypt_message,
-	st_decrypt_message,
-	st_print_msessage,
-	st_exit,
-	STATE_COUNT
-} app_states_t;
-
 typedef enum app_events {
 	EVT_INPUT_MESSAGE,
 	EVT_ENCRYPT_MESSAGE,
@@ -50,27 +40,17 @@ fsm_event_t app_on_encrypt_message( void* data );
 fsm_event_t app_on_decrypt_message( void* data );
 fsm_event_t app_on_print_message( void* data );
 
-fsm_state_fxn states_handlers[] = {
-	app_on_menu,
-	app_on_input_message,
-	app_on_encrypt_message,
-	app_on_decrypt_message,
-	app_on_print_message,
-	app_on_exit,
-	NULL
-};
-
 fsm_transition_t app_transitions[] = {
-	{ st_menu, EVT_INPUT_MESSAGE, st_input_message },
-	{ st_menu, EVT_ENCRYPT_MESSAGE, st_encrypt_message },
-	{ st_menu, EVT_DECRYPT_MESSAGE, st_decrypt_message },
-	{ st_menu, EVT_PRINT_MESSAGE, st_print_msessage },
-	{ st_menu, EVT_DISPLAY_MENU, st_menu },
-	{ st_input_message, EVT_DISPLAY_MENU, st_menu },
-	{ st_encrypt_message, EVT_DISPLAY_MENU, st_menu },
-	{ st_decrypt_message, EVT_DISPLAY_MENU, st_menu },
-	{ st_print_msessage, EVT_DISPLAY_MENU, st_menu },
-	{ st_menu, EVT_EXIT, st_exit },
+	{ app_on_menu, EVT_INPUT_MESSAGE, app_on_input_message },
+	{ app_on_menu, EVT_ENCRYPT_MESSAGE, app_on_encrypt_message },
+	{ app_on_menu, EVT_DECRYPT_MESSAGE, app_on_decrypt_message },
+	{ app_on_menu, EVT_PRINT_MESSAGE, app_on_print_message },
+	{ app_on_menu, EVT_DISPLAY_MENU, app_on_menu },
+	{ app_on_input_message, EVT_DISPLAY_MENU, app_on_menu },
+	{ app_on_encrypt_message, EVT_DISPLAY_MENU, app_on_menu },
+	{ app_on_decrypt_message, EVT_DISPLAY_MENU, app_on_menu },
+	{ app_on_print_message, EVT_DISPLAY_MENU, app_on_menu },
+	{ app_on_menu, EVT_EXIT, app_on_exit },
 };
 
 struct {
@@ -80,7 +60,7 @@ struct {
 
 int main( int argc, char *argv[] )
 {
-	fsm_t* fsm = fsm_create( sizeof(app_transitions) / sizeof(app_transitions[0]), app_transitions, states_handlers, st_menu, st_exit );
+	fsm_t* fsm = fsm_create( sizeof(app_transitions) / sizeof(app_transitions[0]), app_transitions, app_on_menu, app_on_exit );
 	fsm_run( fsm, NULL );
 	fsm_destroy( &fsm );
 	return 0;
@@ -99,11 +79,12 @@ fsm_event_t app_on_menu( void* data )
 	printf( "-----------------------------------\n" );
 	printf( "Selection: " );
 
-	fsm_event_t e;
-	//scanf( "%c", &input );
-	input = getchar( );
-	getchar( );
+	char input_buffer[6];
+	fgets( input_buffer, sizeof(input_buffer), stdin );
+	input_buffer[ sizeof(input_buffer) - 1 ] = '\0';
+	sscanf( input_buffer, "%c", &input );
 	printf( "\n" );
+	fsm_event_t e;
 
 	switch( input )
 	{
@@ -140,6 +121,7 @@ fsm_event_t app_on_input_message( void* data )
 	printf( "\n" );
 	printf( "Type your message: " );
 	fgets( app_data.buffer, sizeof(app_data.buffer), stdin );
+	app_data.buffer[ sizeof(app_data.buffer) - 1 ] = '\0';
 	printf( "\n" );
 	return EVT_DISPLAY_MENU;
 }

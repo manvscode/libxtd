@@ -90,24 +90,22 @@ const char* appropriate_size ( size_t size, bool use_base_two, int precision );
 /*
  * Finite State Machine
  */
-typedef short fsm_state_t;
 typedef short fsm_event_t;
-
 typedef fsm_event_t (*fsm_state_fxn)( void* data );
 
 typedef struct fsm_transition {
-    fsm_state_t src_state;
+    fsm_state_fxn src_state;
     fsm_event_t event;
-    fsm_state_t dst_state;
+    fsm_state_fxn dst_state;
 } fsm_transition_t;
 
 
 struct fsm;
 typedef struct fsm fsm_t;
 
-fsm_t* fsm_create     ( size_t max_transitions, fsm_transition_t* transitions, fsm_state_fxn* callbacks, fsm_state_t start, fsm_event_t end );
+fsm_t* fsm_create     ( size_t max_transitions, fsm_transition_t* transitions, fsm_state_fxn start, fsm_state_fxn end );
 void   fsm_destroy    ( fsm_t** fsm );
-void   fsm_initialize ( fsm_t* fsm, size_t max_transitions, fsm_transition_t* transitions, fsm_state_fxn* callbacks, fsm_state_t start, fsm_event_t end );
+void   fsm_initialize ( fsm_t* fsm, size_t max_transitions, fsm_transition_t* transitions, fsm_state_fxn start, fsm_state_fxn end );
 void   fsm_run        ( fsm_t* fsm, void* data );
 
 /*
