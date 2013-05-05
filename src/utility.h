@@ -86,7 +86,6 @@ typedef enum size_units {
 const char* size_in_units    ( size_t size, size_units_t unit, int precision );
 const char* appropriate_size ( size_t size, bool use_base_two, int precision );
 
-
 /*
  * Finite State Machine
  */
@@ -98,7 +97,6 @@ typedef struct fsm_transition {
     fsm_event_t event;
     fsm_state_fxn dst_state;
 } fsm_transition_t;
-
 
 struct fsm;
 typedef struct fsm fsm_t;
@@ -173,6 +171,14 @@ namespace utility {
 	using ::size_units_t;
 	using ::size_in_units;
 	using ::appropriate_size;
+	using ::fsm_event_t;
+	using ::fsm_state_fxn;
+	using ::fsm_transition_t;
+	using ::fsm_t;
+	using ::fsm_create;
+	using ::fsm_destroy;
+	using ::fsm_initialize;
+	using ::fsm_run;
 	using ::huffman_encode;
 	using ::huffman_decode;
 	using ::java_hash;

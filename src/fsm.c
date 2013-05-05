@@ -19,8 +19,16 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
+//#define FSM_BENCH_MARK
+//#define FSM_HASH_TRANSITIONS
 #include <stdlib.h>
 #include <assert.h>
+#ifdef FSM_HASH_TRANSITIONS
+#include <string.h>
+#endif
+#ifdef FSM_BENCH_MARK
+#include <libcollections/bench-mark.h>
+#endif
 #include "utility.h"
 
 #define FSM_STATE_UNINITIALIZED        NULL
@@ -32,12 +40,19 @@ struct fsm {
     fsm_state_fxn end_state;
     fsm_state_fxn current_state;
     fsm_transition_t* transitions;
+	#ifdef FSM_HASH_TRANSITIONS
+    fsm_transition_t** lookup_table;
+	#endif
+	#ifdef FSM_BENCH_MARK
+	bench_mark_t bm;
+	#endif
 };
 
-
-static fsm_state_fxn fsm_lookup_transition  ( const fsm_t* fsm, fsm_event_t e );
+static __inline fsm_state_fxn fsm_lookup_transition  ( const fsm_t* fsm, fsm_event_t e );
 static int           fsm_transition_compare ( const void* left, const void* right );
-
+#ifdef FSM_HASH_TRANSITIONS
+static __inline size_t hash_transition( const fsm_transition_t* p_transition );
+#endif
 
 /*
  *   Create a finite state machine.
@@ -65,7 +80,26 @@ void fsm_initialize( fsm_t* fsm, size_t max_transitions, fsm_transition_t* trans
 	fsm->current_state   = start;
 	fsm->transitions     = transitions;
 
+	#ifdef FSM_HASH_TRANSITIONS
+    fsm->lookup_table = malloc( sizeof(fsm_transition_t*) * fsm->max_transitions );
+	memset( fsm->lookup_table, 0, sizeof(fsm_transition_t*) * fsm->max_transitions );
+	for( size_t i = 0; i < fsm->max_transitions; i++ )
+	{
+		size_t index = hash_transition( &fsm->transitions[ i ] ) % fsm->max_transitions;
+		while( fsm->lookup_table[ index ] )
+		{
+			index = (index + 1) % fsm->max_transitions;
+		}
+		assert( fsm->lookup_table[ index ] == NULL );
+		fsm->lookup_table[ index ] = &fsm->transitions[ i ];
+	}
+	#else
 	qsort( fsm->transitions, fsm->max_transitions, sizeof(fsm_transition_t), fsm_transition_compare );
+	#endif
+
+	#ifdef FSM_BENCH_MARK
+	fsm->bm = bench_mark_create( "FSM Transition" );
+	#endif
 }
 
 /*
@@ -75,6 +109,12 @@ void fsm_destroy( fsm_t** fsm )
 {
     if( fsm && *fsm )
     {
+		#ifdef FSM_BENCH_MARK
+		bench_mark_destroy( (*fsm)->bm );
+		#endif
+		#ifdef FSM_HASH_TRANSITIONS
+		free( (*fsm)->lookup_table );
+		#endif
         free( *fsm );
         *fsm = NULL;
     }
@@ -93,16 +133,33 @@ void fsm_run( fsm_t* fsm, void* data )
 		assert( fsm->current_state );
         e = fsm->current_state( data );
 
+		#ifdef FSM_BENCH_MARK
+		bench_mark_start( fsm->bm );
+		#endif
         fsm->current_state = fsm_lookup_transition( fsm, e );
+		#ifdef FSM_BENCH_MARK
+		bench_mark_end( fsm->bm );
+		bench_mark_report( fsm->bm );
+		#endif
         assert( fsm->current_state != FSM_STATE_UNINITIALIZED );
     }
 }
 
 fsm_state_fxn fsm_lookup_transition( const fsm_t* fsm, fsm_event_t e )
 {
+	#ifdef FSM_HASH_TRANSITIONS
+    fsm_transition_t key = { fsm->current_state, e, 0 };
+	size_t index = hash_transition( &key ) % fsm->max_transitions;
+	while( fsm_transition_compare( fsm->lookup_table[ index ], &key ) != 0 )
+	{
+		index = (index + 1) % fsm->max_transitions;
+	}
+	return fsm->lookup_table[ index ]->dst_state;
+	#else
     fsm_transition_t key = { fsm->current_state, e, 0 };
     fsm_transition_t* t = bsearch( &key, fsm->transitions, fsm->max_transitions, sizeof(fsm_transition_t), fsm_transition_compare );
     return t ? t->dst_state : FSM_STATE_UNINITIALIZED;
+	#endif
 }
 
 int fsm_transition_compare( const void* left, const void* right )
@@ -112,3 +169,21 @@ int fsm_transition_compare( const void* left, const void* right )
     int diff = (long) tl->src_state - (long) tr->src_state;
     return diff == 0 ? tl->event - tr->event : diff;
 }
+
+
+#ifdef FSM_HASH_TRANSITIONS
+size_t hash_transition( const fsm_transition_t* p_transition )
+{
+	const unsigned char *bytes = (const unsigned char*) p_transition;
+	size_t size                = sizeof(fsm_state_fxn) + sizeof(fsm_event_t);
+	size_t hash_code           = 0;
+	size_t i;
+
+	for( i = 0; i < size; i++ )
+	{
+		hash_code = 31 * hash_code + bytes[ i ];
+	}
+
+	return hash_code;
+}
+#endif
