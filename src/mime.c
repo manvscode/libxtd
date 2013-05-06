@@ -1,16 +1,16 @@
 /*
  * Copyright (C) 2010 by Joseph A. Marrero and Shrewd LLC. http://www.manvscode.com/
- * 
+ *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
  * in the Software without restriction, including without limitation the rights
  * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
  * copies of the Software, and to permit persons to whom the Software is
  * furnished to do so, subject to the following conditions:
- * 
+ *
  * The above copyright notice and this permission notice shall be included in
  * all copies or substantial portions of the Software.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -70,21 +70,21 @@ boolean mime_create_from_file( mime_table_t *p_table, const char *s_mime_file )
 
 	while( !feof(f) )
 	{
-		fgets( buffer, sizeof(buffer), f );	
+		fgets( buffer, sizeof(buffer), f );
 
 		char *trimmed = strtrim_right( strtrim_left( buffer ) );
 		if( *trimmed == '#' ) continue;
 
 
 		int token_count = 0;
-		char *mime_type = NULL;	
+		char *mime_type = NULL;
 		char *token     = strtok( buffer, "\t\n\r " );
 
 		while( token )
 		{
 			if( token_count == 0 )
 			{
-				mime_type = token;	
+				mime_type = token;
 			}
 			else
 			{
@@ -93,9 +93,9 @@ boolean mime_create_from_file( mime_table_t *p_table, const char *s_mime_file )
 				record.mime_type = strndup( mime_type, sizeof(buffer) );
 				record.extension = strndup( token, sizeof(buffer) );
 
-				vector_push( p_table, &record ); 
+				vector_push( p_table, &record );
 			}
-		
+
 			token_count += 1;
 			token        = strtok( NULL, "\t\n\r " );
 		}
@@ -104,7 +104,7 @@ boolean mime_create_from_file( mime_table_t *p_table, const char *s_mime_file )
 	/* sort the table */
 	qsort( vector_array(p_table), vector_size(p_table), sizeof(mime_record), mime_record_compare );
 
-	return TRUE;	
+	return TRUE;
 }
 
 void mime_destroy( mime_table_t *p_table )
@@ -134,7 +134,7 @@ void mime_debug_table( const mime_table_t *p_table )
 	}
 
 	printf( "     ===============================================\n" );
-	printf( "                   # of records: %lu\n", vector_size(p_table) );
+	printf( "                   # of records: %zu\n", vector_size(p_table) );
 }
 
 const char *mime_type( const mime_table_t *p_table, const char *extension )
@@ -177,7 +177,7 @@ char *strtrim_left( char *string )
 	}
 
 	return first_char;
-} 
+}
 
 char *strtrim_right( char *string )
 {

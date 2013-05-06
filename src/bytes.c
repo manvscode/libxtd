@@ -185,7 +185,7 @@ void swap( void* restrict left, void* restrict right, size_t size )
 }
 
 
-static size_t size_powers[] = {
+static uint64_t size_powers[] = {
 	1,                   // 10^0, 2^0 byte
 
 	1000,                // 10^3   kilobyte
@@ -241,7 +241,7 @@ const char* size_in_units( size_t size, size_units_t unit, int precision )
 
 const char* appropriate_size( size_t size, bool use_base_two, int precision )
 {
-	size_t t = use_base_two ? unit_kibibytes - unit_kilobytes : 0;
+	uint64_t t = use_base_two ? unit_kibibytes - unit_kilobytes : 0;
 
 	if( size < size_powers[ unit_kilobytes + t ] )
 	{
