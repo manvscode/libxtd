@@ -32,7 +32,7 @@ void print_divider( FILE* fd, const char* title )
 			}
 		}
 
-		for( size_t i = sizeof(buffer) - 1; i >= 0; i-- )
+		for( size_t i = sizeof(buffer) - 1; ; i-- )
 		{
 			if( isspace( buffer[i] ) || buffer[i] == '\0' )
 			{

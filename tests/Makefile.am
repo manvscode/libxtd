@@ -1,6 +1,6 @@
 #AM_CFLAGS = $(DEPS_CFLAGS) -I../src/ -L../src/ -L.
 
-AM_CFLAGS = -std=gnu99 -g -ggdb -O0 -I$(top_builddir)/src/ -L$(top_builddir)/src/ -L$(top_builddir)/lib/.libs/ -L$(top_builddir)/lib/  -I/usr/local/include/libutility -L/usr/local/lib
+AM_CFLAGS = -std=gnu99 -g -ggdb -O0 -I$(top_builddir)/src/  -I/usr/local/include/libutility
 LDADD     = $(top_builddir)/lib/libutility.la
 
 bin_PROGRAMS = \

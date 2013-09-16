@@ -20,9 +20,11 @@ AH_BOTTOM([
 # If big endian define WORDS_BIGENDIAN
 AC_C_BIGENDIAN
 
-CFLAGS="-std=gnu99 -Wall -pedantic -g -ggdb -O0 -DDEBUG -I/usr/local/include/"
-#CFLAGS=" -Wall -pedantic -O3  -lcollections"
+#CFLAGS="-std=gnu99 -Wall -pedantic -g -ggdb -O0 -DDEBUG -I/usr/local/include/"
+CFLAGS="-std=gnu99 -Wall -pedantic -g -ggdb -O3 -I/usr/local/include/"
 LDFLAGS="-lcollections -lm"
+
+AM_PROG_AR
 
 LT_INIT([shared static])
 AC_PROG_LIBTOOL
