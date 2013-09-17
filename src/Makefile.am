@@ -14,6 +14,7 @@ exceptions.c \
 fileio.c \
 fsm.c \
 mime.c \
+strings.c \
 console.c
 
 libutility_headers = \

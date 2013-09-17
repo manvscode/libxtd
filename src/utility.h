@@ -149,6 +149,15 @@ void        hton               ( void* mem, size_t size );
 void        ntoh               ( void* mem, size_t size );
 
 /*
+ * Strings
+ */
+size_t string_left_trim  ( char* s, const char* delimeters );
+size_t string_right_trim ( char* s, const char* delimeters );
+size_t string_trim       ( char* s, const char* delimeters );
+char*  string_to_lower   ( char* s );
+char*  string_to_upper   ( char* s );
+
+/*
  *  Encryption
  */
 void caesar_cypher_encryption ( void* text, size_t size, size_t n );
