@@ -145,6 +145,31 @@ void fsm_run( fsm_t* fsm, void* data )
     }
 }
 
+/*
+ *   Execute the finite state machine from a loop.
+ */
+void fsm_iterative_run( fsm_t* fsm, void* data )
+{
+	fsm_event_t e;
+    fsm->current_state = fsm->start_state;
+
+    if( fsm->end_state != fsm->current_state && fsm->current_state != FSM_STATE_UNINITIALIZED )
+    {
+		assert( fsm->current_state );
+        e = fsm->current_state( data );
+
+		#ifdef FSM_BENCH_MARK
+		bench_mark_start( fsm->bm );
+		#endif
+        fsm->current_state = fsm_lookup_transition( fsm, e );
+		#ifdef FSM_BENCH_MARK
+		bench_mark_end( fsm->bm );
+		bench_mark_report( fsm->bm );
+		#endif
+        assert( fsm->current_state != FSM_STATE_UNINITIALIZED );
+    }
+}
+
 fsm_state_fxn fsm_lookup_transition( const fsm_t* fsm, fsm_event_t e )
 {
 	#ifdef FSM_HASH_TRANSITIONS
