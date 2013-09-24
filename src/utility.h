@@ -123,6 +123,28 @@ void     fletcher16        ( uint8_t* checkA, uint8_t* checkB, uint8_t* data, si
 uint32_t fletcher32        ( uint16_t* data, size_t len );
 
 /*
+ * Strings
+ */
+size_t string_left_trim  ( char* s, const char* delimeters );
+size_t string_right_trim ( char* s, const char* delimeters );
+size_t string_trim       ( char* s, const char* delimeters );
+char*  string_to_lower   ( char* s );
+char*  string_to_upper   ( char* s );
+
+/*
+ * Observers
+ */
+typedef void (*obs_notify_fxn)( void* observer, void* user_data );
+
+struct obs_subject;
+typedef struct obs_subject obs_subject_t;
+
+obs_subject_t* obs_subject_create ( size_t size, size_t grow_amount );
+void obs_subject_destroy          ( obs_subject_t** p_subject );
+bool obs_subject_register         ( obs_subject_t* p_subject, void* observer, obs_notify_fxn notify );
+void obs_subject_notify           ( const obs_subject_t* p_subject, void* user_data );
+
+/*
  * Misscellaneous
  */
 typedef enum random_string_type {
@@ -147,15 +169,6 @@ const char* friendly_size      ( size_t size );
 bool        is_big_endian      ( void );
 void        hton               ( void* mem, size_t size );
 void        ntoh               ( void* mem, size_t size );
-
-/*
- * Strings
- */
-size_t string_left_trim  ( char* s, const char* delimeters );
-size_t string_right_trim ( char* s, const char* delimeters );
-size_t string_trim       ( char* s, const char* delimeters );
-char*  string_to_lower   ( char* s );
-char*  string_to_upper   ( char* s );
 
 /*
  *  Encryption
