@@ -27,7 +27,7 @@
 #endif
 #include <libcollections/vector.h>
 
-typedef vector_t mime_table_t; /* table of mime records */
+typedef lc_vector_t mime_table_t; /* table of mime records */
 
 boolean     mime_create           ( mime_table_t *p_table );
 boolean     mime_create_from_file ( mime_table_t *p_table, const char *s_mime_file );

@@ -385,7 +385,7 @@ void huffman_build_codes( huffman_node_t* root, huffman_code_t codes[], uint16_t
 	{
 		count++;
 
-		assert( root->symbol >= 0 && root->symbol < ASCII_COUNT );
+		assert( root->symbol >= 0 );
 
 
 		#ifdef DEBUG_HUFFMAN

@@ -59,7 +59,11 @@ boolean mime_create_from_file( mime_table_t *p_table, const char *s_mime_file )
 
 	assert( p_table );
 
+	#if defined(VECTOR_DESTROY_CHECK) || defined(DESTROY_CHECK_ALL)
 	vector_create( p_table, sizeof(mime_record), 128, mime_record_destroy, malloc, free );
+	#else
+	vector_create( p_table, sizeof(mime_record), 128, malloc, free );
+	#endif
 
 	f = fopen( s_mime_file, "rb" );
 
@@ -109,6 +113,12 @@ boolean mime_create_from_file( mime_table_t *p_table, const char *s_mime_file )
 
 void mime_destroy( mime_table_t *p_table )
 {
+	#if defined(VECTOR_DESTROY_CHECK) || defined(DESTROY_CHECK_ALL)
+	for( size_t i = 0; i < vector_size(p_table); i++ )
+	{
+		mime_record_destroy( vector_get( p_table, i ) );
+	}
+	#endif
 	vector_destroy( p_table );
 }
 
