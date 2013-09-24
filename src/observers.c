@@ -54,6 +54,7 @@ void obs_subject_destroy( obs_subject_t** p_subject )
 	{
 		array_destroy( &(*p_subject)->array );
 		free( *p_subject );
+		*p_subject = NULL;
 	}
 }
 

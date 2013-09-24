@@ -87,27 +87,6 @@ const char* size_in_units    ( size_t size, size_units_t unit, int precision );
 const char* appropriate_size ( size_t size, bool use_base_two, int precision );
 
 /*
- * Finite State Machine
- */
-typedef short fsm_event_t;
-typedef fsm_event_t (*fsm_state_fxn)( void* data );
-
-typedef struct fsm_transition {
-    fsm_state_fxn src_state;
-    fsm_event_t event;
-    fsm_state_fxn dst_state;
-} fsm_transition_t;
-
-struct fsm;
-typedef struct fsm fsm_t;
-
-fsm_t* fsm_create        ( size_t max_transitions, fsm_transition_t* transitions, fsm_state_fxn start, fsm_state_fxn end );
-void   fsm_destroy       ( fsm_t** fsm );
-void   fsm_initialize    ( fsm_t* fsm, size_t max_transitions, fsm_transition_t* transitions, fsm_state_fxn start, fsm_state_fxn end );
-void   fsm_run           ( fsm_t* fsm, void* data );
-void   fsm_iterative_run ( fsm_t* fsm, void* data );
-
-/*
  * Compression
  */
 bool huffman_encode( const void* __restrict original, size_t size, void** __restrict compressed, size_t* compressed_size );
@@ -131,6 +110,27 @@ size_t string_right_trim ( char* s, const char* delimeters );
 size_t string_trim       ( char* s, const char* delimeters );
 char*  string_to_lower   ( char* s );
 char*  string_to_upper   ( char* s );
+
+/*
+ * Finite State Machine
+ */
+typedef short fsm_event_t;
+typedef fsm_event_t (*fsm_state_fxn)( void* data );
+
+typedef struct fsm_transition {
+    fsm_state_fxn src_state;
+    fsm_event_t event;
+    fsm_state_fxn dst_state;
+} fsm_transition_t;
+
+struct fsm;
+typedef struct fsm fsm_t;
+
+fsm_t* fsm_create        ( size_t max_transitions, fsm_transition_t* transitions, fsm_state_fxn start, fsm_state_fxn end );
+void   fsm_destroy       ( fsm_t** fsm );
+void   fsm_initialize    ( fsm_t* fsm, size_t max_transitions, fsm_transition_t* transitions, fsm_state_fxn start, fsm_state_fxn end );
+void   fsm_run           ( fsm_t* fsm, void* data );
+void   fsm_iterative_run ( fsm_t* fsm, void* data );
 
 /*
  * Observers
