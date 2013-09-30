@@ -48,6 +48,7 @@ struct fsm {
 	#endif
 };
 
+static void fsm_initialize ( fsm_t* fsm, size_t max_transitions, fsm_transition_t* transitions, fsm_state_fxn start, fsm_state_fxn end );
 static __inline fsm_state_fxn fsm_lookup_transition  ( const fsm_t* fsm, fsm_event_t e );
 static int           fsm_transition_compare ( const void* left, const void* right );
 #ifdef FSM_HASH_TRANSITIONS
@@ -151,7 +152,6 @@ void fsm_run( fsm_t* fsm, void* data )
 void fsm_iterative_run( fsm_t* fsm, void* data )
 {
 	fsm_event_t e;
-    fsm->current_state = fsm->start_state;
 
     if( fsm->end_state != fsm->current_state && fsm->current_state != FSM_STATE_UNINITIALIZED )
     {

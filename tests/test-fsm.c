@@ -61,7 +61,14 @@ struct {
 int main( int argc, char *argv[] )
 {
 	fsm_t* fsm = fsm_create( sizeof(app_transitions) / sizeof(app_transitions[0]), app_transitions, app_on_menu, app_on_exit );
+	#if USE_IN_LOOP
+	while( 1 )
+	{
+		fsm_iterative_run( fsm, NULL );
+	}
+	#else
 	fsm_run( fsm, NULL );
+	#endif
 	fsm_destroy( &fsm );
 	return 0;
 }

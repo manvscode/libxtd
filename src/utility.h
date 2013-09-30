@@ -128,7 +128,6 @@ typedef struct fsm fsm_t;
 
 fsm_t* fsm_create        ( size_t max_transitions, fsm_transition_t* transitions, fsm_state_fxn start, fsm_state_fxn end );
 void   fsm_destroy       ( fsm_t** fsm );
-void   fsm_initialize    ( fsm_t* fsm, size_t max_transitions, fsm_transition_t* transitions, fsm_state_fxn start, fsm_state_fxn end );
 void   fsm_run           ( fsm_t* fsm, void* data );
 void   fsm_iterative_run ( fsm_t* fsm, void* data );
 
@@ -200,7 +199,6 @@ namespace utility {
 	using ::fsm_t;
 	using ::fsm_create;
 	using ::fsm_destroy;
-	using ::fsm_initialize;
 	using ::fsm_run;
 	using ::huffman_encode;
 	using ::huffman_decode;
