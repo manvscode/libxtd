@@ -20,7 +20,7 @@
  * THE SOFTWARE.
  */
 //#define FSM_BENCH_MARK
-//#define FSM_HASH_TRANSITIONS
+#define FSM_HASH_TRANSITIONS
 #include <stdlib.h>
 #include <assert.h>
 #ifdef FSM_HASH_TRANSITIONS
@@ -149,11 +149,12 @@ void fsm_run( fsm_t* fsm, void* data )
 /*
  *   Execute the finite state machine from a loop.
  */
-void fsm_iterative_run( fsm_t* fsm, void* data )
+bool fsm_iterative_run( fsm_t* fsm, void* data )
 {
 	fsm_event_t e;
+	bool done = fsm->end_state == fsm->current_state;
 
-    if( fsm->end_state != fsm->current_state && fsm->current_state != FSM_STATE_UNINITIALIZED )
+    if( !done && fsm->current_state != FSM_STATE_UNINITIALIZED )
     {
 		assert( fsm->current_state );
         e = fsm->current_state( data );
@@ -168,6 +169,8 @@ void fsm_iterative_run( fsm_t* fsm, void* data )
 		#endif
         assert( fsm->current_state != FSM_STATE_UNINITIALIZED );
     }
+
+	return done;
 }
 
 fsm_state_fxn fsm_lookup_transition( const fsm_t* fsm, fsm_event_t e )

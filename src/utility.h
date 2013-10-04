@@ -129,7 +129,7 @@ typedef struct fsm fsm_t;
 fsm_t* fsm_create        ( size_t max_transitions, fsm_transition_t* transitions, fsm_state_fxn start, fsm_state_fxn end );
 void   fsm_destroy       ( fsm_t** fsm );
 void   fsm_run           ( fsm_t* fsm, void* data );
-void   fsm_iterative_run ( fsm_t* fsm, void* data );
+bool   fsm_iterative_run ( fsm_t* fsm, void* data );
 
 /*
  * Observers
@@ -139,10 +139,10 @@ typedef void (*obs_notify_fxn)( void* observer, void* user_data );
 struct obs_subject;
 typedef struct obs_subject obs_subject_t;
 
-obs_subject_t* obs_subject_create ( size_t size, size_t grow_amount );
-void obs_subject_destroy          ( obs_subject_t** p_subject );
-bool obs_subject_register         ( obs_subject_t* p_subject, void* observer, obs_notify_fxn notify );
-void obs_subject_notify           ( const obs_subject_t* p_subject, void* user_data );
+obs_subject_t* obs_subject_create   ( size_t size, size_t grow_amount );
+void           obs_subject_destroy  ( obs_subject_t** p_subject );
+bool           obs_subject_register ( obs_subject_t* p_subject, void* observer, obs_notify_fxn notify );
+void           obs_subject_notify   ( const obs_subject_t* p_subject, void* user_data );
 
 /*
  * Misscellaneous
