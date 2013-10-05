@@ -126,7 +126,7 @@ typedef struct fsm_transition {
 struct fsm;
 typedef struct fsm fsm_t;
 
-fsm_t* fsm_create        ( size_t max_transitions, fsm_transition_t* transitions, fsm_state_fxn start, fsm_state_fxn end );
+fsm_t* fsm_create        ( size_t max_transitions, const fsm_transition_t* transitions, fsm_state_fxn start, fsm_state_fxn end );
 void   fsm_destroy       ( fsm_t** fsm );
 void   fsm_run           ( fsm_t* fsm, void* data );
 bool   fsm_iterative_run ( fsm_t* fsm, void* data );

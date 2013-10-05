@@ -39,7 +39,7 @@ struct fsm {
     fsm_state_fxn start_state;
     fsm_state_fxn end_state;
     fsm_state_fxn current_state;
-    fsm_transition_t* transitions;
+    const fsm_transition_t* transitions;
 	#ifdef FSM_HASH_TRANSITIONS
     fsm_transition_t** lookup_table;
 	#endif
@@ -48,7 +48,7 @@ struct fsm {
 	#endif
 };
 
-static void fsm_initialize ( fsm_t* fsm, size_t max_transitions, fsm_transition_t* transitions, fsm_state_fxn start, fsm_state_fxn end );
+static void fsm_initialize ( fsm_t* fsm, size_t max_transitions, const fsm_transition_t* transitions, fsm_state_fxn start, fsm_state_fxn end );
 static __inline fsm_state_fxn fsm_lookup_transition  ( const fsm_t* fsm, fsm_event_t e );
 static int           fsm_transition_compare ( const void* left, const void* right );
 #ifdef FSM_HASH_TRANSITIONS
@@ -58,7 +58,7 @@ static __inline size_t hash_transition( const fsm_transition_t* p_transition );
 /*
  *   Create a finite state machine.
  */
-fsm_t* fsm_create( size_t max_transitions, fsm_transition_t* transitions, fsm_state_fxn start, fsm_state_fxn end )
+fsm_t* fsm_create( size_t max_transitions, const fsm_transition_t* transitions, fsm_state_fxn start, fsm_state_fxn end )
 {
     fsm_t* fsm = malloc( sizeof(fsm_t) );
 
@@ -73,7 +73,7 @@ fsm_t* fsm_create( size_t max_transitions, fsm_transition_t* transitions, fsm_st
 /*
  *   Initialize a finite state machine.
  */
-void fsm_initialize( fsm_t* fsm, size_t max_transitions, fsm_transition_t* transitions, fsm_state_fxn start, fsm_state_fxn end )
+void fsm_initialize( fsm_t* fsm, size_t max_transitions, const fsm_transition_t* transitions, fsm_state_fxn start, fsm_state_fxn end )
 {
 	fsm->max_transitions = max_transitions;
 	fsm->start_state     = start;
