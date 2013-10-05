@@ -92,10 +92,10 @@ void fsm_initialize( fsm_t* fsm, size_t max_transitions, const fsm_transition_t*
 			index = (index + 1) % fsm->max_transitions;
 		}
 		assert( fsm->lookup_table[ index ] == NULL );
-		fsm->lookup_table[ index ] = &fsm->transitions[ i ];
+		fsm->lookup_table[ index ] = (fsm_transition_t*) &fsm->transitions[ i ];
 	}
 	#else
-	qsort( fsm->transitions, fsm->max_transitions, sizeof(fsm_transition_t), fsm_transition_compare );
+	qsort( (void*) fsm->transitions, fsm->max_transitions, sizeof(fsm_transition_t), fsm_transition_compare );
 	#endif
 
 	#ifdef FSM_BENCH_MARK
