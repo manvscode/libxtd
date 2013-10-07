@@ -22,7 +22,10 @@
 #include <stdio.h>
 #include <stdbool.h>
 #include <time.h>
+#include <string.h>
+#ifndef WIN32
 #include <unistd.h>
+#endif
 #include <dirent.h>
 #include <sys/stat.h>
 #include "utility.h"
@@ -128,6 +131,42 @@ int file_age( const char* path ) // Return age of file in seconds. -1 = doesnt e
     }
 
 	return -1;
+}
+
+const char* file_basename( const char* filename )
+{
+	const char *base = filename;
+
+	while (*filename)
+	{
+		if (*filename++ == '/')
+		{
+			base = filename;
+		}
+	}
+
+	return base;
+}
+
+const char* file_extension( const char* filename )
+{
+	const char* extension = strrchr( filename, '.' );
+
+	if( !extension )
+	{
+		return NULL;
+	}
+	else
+	{
+		extension += 1;
+
+		if( !extension )
+		{
+			return NULL;
+		}
+	}
+
+	return extension;
 }
 
 char* file_load_contents( const char* path, size_t *size )

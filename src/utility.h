@@ -54,17 +54,19 @@ extern "C" {
 /*
  * File IO
  */
-bool  file_exists        ( const char* path );
-bool  file_is_writeable  ( const char* path );
-bool  file_is_readable   ( const char* path );
-bool  file_is_executable ( const char* path );
-bool  file_copy          ( const char* __restrict src_path, const char* __restrict dst_path );
-bool  file_delete        ( const char* path );
-long  file_size          ( const char* path );
-int   file_age           ( const char* path ); /* Returns -1 on error */
-char* file_load_contents ( const char* path, size_t* size );
-bool  is_file            ( const char* path );
-bool  is_dir             ( const char* path );
+bool        file_exists        ( const char* path );
+bool        file_is_writeable  ( const char* path );
+bool        file_is_readable   ( const char* path );
+bool        file_is_executable ( const char* path );
+bool        file_copy          ( const char* __restrict src_path, const char* __restrict dst_path );
+bool        file_delete        ( const char* path );
+long        file_size          ( const char* path );
+int         file_age           ( const char* path ); /* Returns -1 on error */
+const char* file_basename      ( const char* filename );
+const char* file_extension     ( const char* filename );
+char*       file_load_contents ( const char* path, size_t* size );
+bool        is_file            ( const char* path );
+bool        is_dir             ( const char* path );
 
 typedef enum size_units {
 	unit_bytes = 0,
