@@ -1,5 +1,4 @@
-#AM_CFLAGS = $(DEPS_CFLAGS) -I../src/ -L../src/ -L.
-
+if ENABLE_TESTS
 AM_CFLAGS = -std=gnu99 -g -ggdb -O0 -I$(top_builddir)/src/  -I/usr/local/include/libutility
 LDADD     = $(top_builddir)/lib/libutility.la
 
@@ -17,3 +16,4 @@ __top_builddir__bin_test_huffman_SOURCES     = test-huffman.c
 __top_builddir__bin_test_file_SOURCES        = test-file.c
 __top_builddir__bin_test_observers_SOURCES   = test-observers.c
 __top_builddir__bin_test_fsm_SOURCES         = test-fsm.c
+endif

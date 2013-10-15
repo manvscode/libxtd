@@ -1,11 +1,11 @@
-AC_INIT([libutility], [0.1], [manvscode@gmail.com], [libutility], [http://www.manvscode.com/])
+AC_INIT([libutility], [0.2], [manvscode@gmail.com], [libutility], [http://www.manvscode.com/])
 AM_INIT_AUTOMAKE([-Wall -Werror foreign])
 
 AM_SILENT_RULES([yes])
 AC_CONFIG_HEADERS([src/libutility-config.h])
 
 AC_PROG_CC
-AC_PROG_CC_C99
+AC_PROG_CC_STDC
 AC_C_INLINE
 AC_HEADER_STDC
 
@@ -21,7 +21,7 @@ AH_BOTTOM([
 AC_C_BIGENDIAN
 
 #CFLAGS="-std=gnu99 -Wall -pedantic -g -ggdb -O0 -DDEBUG -I/usr/local/include/"
-CFLAGS="-std=gnu99 -Wall -pedantic -g -ggdb -O3 -I/usr/local/include/"
+CFLAGS="$CFLAGS"
 LDFLAGS="-lcollections -lm"
 
 AM_PROG_AR
@@ -38,6 +38,14 @@ echo "  CFLAGS = $CFLAGS"
 echo " LDFLAGS = $LDFLAGS"
 echo ""
 echo " ------------------------------ "
+
+AC_ARG_ENABLE([tests],
+	[AS_HELP_STRING([--disable-tests], [Enable test programs.])],
+	[:],
+	[enable_tests=no])
+
+AM_CONDITIONAL([ENABLE_TESTS], [test "$enable_tests" = "yes"])
+
 
 AC_CONFIG_FILES([
 	Makefile

@@ -342,7 +342,7 @@ void huffman_node_destroy( huffman_node_t** node )
 
 void huffman_build_tree( huffman_node_t** root, uint8_t frequencies[] )
 {
-	pbheap_t heap;
+	lc_pbheap_t heap;
 	pbheap_create( &heap, ASCII_COUNT, huffman_node_compare, malloc, free );
 
 	for( size_t symbol = 0; symbol < ASCII_COUNT; symbol++ )
