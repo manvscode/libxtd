@@ -109,7 +109,7 @@ bool file_delete( const char* path )
 	}
 }
 
-long file_size( const char* path )
+long long file_size( const char* path )
 {
     struct stat s;
 

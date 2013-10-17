@@ -241,7 +241,7 @@ const char* size_in_units( size_t size, size_units_t unit, int precision )
 
 const char* appropriate_size( size_t size, bool use_base_two, int precision )
 {
-	uint64_t t = use_base_two ? unit_kibibytes - unit_kilobytes : 0;
+	uint16_t t = use_base_two ? unit_kibibytes - unit_kilobytes : 0;
 
 	if( size < size_powers[ unit_kilobytes + t ] )
 	{

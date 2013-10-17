@@ -60,7 +60,7 @@ bool        file_is_readable   ( const char* path );
 bool        file_is_executable ( const char* path );
 bool        file_copy          ( const char* __restrict src_path, const char* __restrict dst_path );
 bool        file_delete        ( const char* path );
-long        file_size          ( const char* path );
+long long   file_size          ( const char* path );
 int         file_age           ( const char* path ); /* Returns -1 on error */
 const char* file_basename      ( const char* filename );
 const char* file_extension     ( const char* filename );
