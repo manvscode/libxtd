@@ -191,7 +191,7 @@ char *strtrim_left( char *string )
 
 char *strtrim_right( char *string )
 {
-    int len = strlen( string );
+    size_t len = strlen( string );
     char *end;
 
     while ( *string && len)

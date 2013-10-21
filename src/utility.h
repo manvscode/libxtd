@@ -23,6 +23,7 @@
 #define _UTILITY_H_
 #include <stdlib.h>
 #include <stdio.h>
+#include <time.h>
 #if defined(__STDC_VERSION__) && (__STDC_VERSION__ >= 199901L)
 #include <stdbool.h>
 #include <stdint.h>
@@ -61,7 +62,7 @@ bool        file_is_executable ( const char* path );
 bool        file_copy          ( const char* __restrict src_path, const char* __restrict dst_path );
 bool        file_delete        ( const char* path );
 long long   file_size          ( const char* path );
-int         file_age           ( const char* path ); /* Returns -1 on error */
+long        file_age           ( const char* path ); /* Returns -1 on error */
 const char* file_basename      ( const char* filename );
 const char* file_extension     ( const char* filename );
 char*       file_load_contents ( const char* path, size_t* size );
@@ -171,6 +172,14 @@ const char* friendly_size      ( size_t size );
 bool        is_big_endian      ( void );
 void        hton               ( void* mem, size_t size );
 void        ntoh               ( void* mem, size_t size );
+
+/*
+ *  Time
+ */
+double   time_seconds      ( void );
+double   time_milliseconds ( void );
+uint64_t time_secs         ( void );
+uint64_t time_msecs        ( void );
 
 /*
  *  Encryption

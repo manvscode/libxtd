@@ -1,8 +1,6 @@
 #noinst_LIBRARIES = libutility.a
 
 # Add new files in alphabetical order. Thanks.
-#libutility_a_SOURCES = bytes.c crash.c exceptions.c fileio.c mime.c
-
 libutility_sources = \
 huffman.c \
 bytes.c \
@@ -16,7 +14,8 @@ fsm.c \
 mime.c \
 observers.c \
 strings.c \
-console.c
+console.c \
+time.c 
 
 libutility_headers = \
 exceptions.h \

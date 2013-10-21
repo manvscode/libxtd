@@ -16,9 +16,6 @@
 
 #noinst_LIBRARIES = libutility.a
 
-# Add new files in alphabetical order. Thanks.
-#libutility_a_SOURCES = bytes.c crash.c exceptions.c fileio.c mime.c
-
 
 
 am__is_gnu_make = test -n '$(MAKEFILE_LIST)' && test -n '$(MAKELEVEL)'
@@ -82,8 +79,8 @@ POST_INSTALL = :
 NORMAL_UNINSTALL = :
 PRE_UNINSTALL = :
 POST_UNINSTALL = :
-build_triplet = x86_64-apple-darwin12.5.0
-host_triplet = x86_64-apple-darwin12.5.0
+build_triplet = x86_64-apple-darwin13.1.0
+host_triplet = x86_64-apple-darwin13.1.0
 subdir = src
 DIST_COMMON = $(srcdir)/Makefile.in $(srcdir)/Makefile.am \
 	$(srcdir)/libutility-config.h.in $(top_srcdir)/depcomp \
@@ -129,7 +126,7 @@ LTLIBRARIES = $(lib_LTLIBRARIES)
 __top_builddir__lib_libutility_la_LIBADD =
 am__objects_1 = huffman.lo bytes.lo caesar.lo checksums.lo crash.lo \
 	endianess.lo exceptions.lo fileio.lo fsm.lo mime.lo \
-	observers.lo strings.lo console.lo
+	observers.lo strings.lo console.lo time.lo
 am___top_builddir__lib_libutility_la_OBJECTS = $(am__objects_1)
 __top_builddir__lib_libutility_la_OBJECTS =  \
 	$(am___top_builddir__lib_libutility_la_OBJECTS)
@@ -211,7 +208,7 @@ AUTOMAKE = automake-1.14
 AWK = awk
 CC = gcc
 CCDEPMODE = depmode=gcc3
-CFLAGS = -g -O2
+CFLAGS = -std=gnu99 -Wall -pedantic -g -ggdb -O0 -DDEBUG -I/usr/local/include/
 CPP = gcc -E
 CPPFLAGS = 
 CYGPATH_W = echo
@@ -276,10 +273,10 @@ am__quote =
 am__tar = $${TAR-tar} chof - "$$tardir"
 am__untar = $${TAR-tar} xf -
 bindir = ${exec_prefix}/bin
-build = x86_64-apple-darwin12.5.0
+build = x86_64-apple-darwin13.1.0
 build_alias = 
 build_cpu = x86_64
-build_os = darwin12.5.0
+build_os = darwin13.1.0
 build_vendor = apple
 builddir = .
 datadir = ${datarootdir}
@@ -287,10 +284,10 @@ datarootdir = ${prefix}/share
 docdir = ${datarootdir}/doc/${PACKAGE_TARNAME}
 dvidir = ${docdir}
 exec_prefix = ${prefix}
-host = x86_64-apple-darwin12.5.0
+host = x86_64-apple-darwin13.1.0
 host_alias = 
 host_cpu = x86_64
-host_os = darwin12.5.0
+host_os = darwin13.1.0
 host_vendor = apple
 htmldir = ${docdir}
 includedir = ${prefix}/include
@@ -315,6 +312,8 @@ target_alias =
 top_build_prefix = ../
 top_builddir = ..
 top_srcdir = ..
+
+# Add new files in alphabetical order. Thanks.
 libutility_sources = \
 huffman.c \
 bytes.c \
@@ -328,7 +327,8 @@ fsm.c \
 mime.c \
 observers.c \
 strings.c \
-console.c
+console.c \
+time.c 
 
 libutility_headers = \
 exceptions.h \
@@ -452,6 +452,7 @@ include ./$(DEPDIR)/huffman.Plo
 include ./$(DEPDIR)/mime.Plo
 include ./$(DEPDIR)/observers.Plo
 include ./$(DEPDIR)/strings.Plo
+include ./$(DEPDIR)/time.Plo
 
 .c.o:
 	$(AM_V_CC)$(COMPILE) -MT $@ -MD -MP -MF $(DEPDIR)/$*.Tpo -c -o $@ $<

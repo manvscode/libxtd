@@ -28,12 +28,12 @@
 
 uint32_t java_hash( const uint8_t* data, size_t len )
 {
-	size_t hash = 0;
+	uint32_t hash = 0;
 	size_t i;
 
 	for( i = 0; i < len; i++ )
 	{
-		hash = 31L * hash + data[ i ];
+		hash = 31 * hash + data[ i ];
 	}
 
 	return hash;
@@ -110,7 +110,7 @@ uint32_t fletcher32( uint16_t* data, size_t len )
 	uint32_t sum1 = 0xffff, sum2 = 0xffff;
 
 	while (len) {
-		unsigned tlen = len > 360 ? 360 : len;
+		size_t tlen = len > 360 ? 360 : len;
 		len -= tlen;
 		do {
 			sum1 += *data++;
