@@ -137,9 +137,9 @@ const char* file_basename( const char* filename )
 {
 	const char *base = filename;
 
-	while (*filename)
+	while( *filename )
 	{
-		if (*filename++ == '/')
+		if( *filename++ == '/' )
 		{
 			base = filename;
 		}
@@ -231,3 +231,31 @@ bool is_dir( const char* path )
 	return 0;
 }
 
+
+int readline( char *buf, size_t size, FILE *stream )
+{
+    if( fgets( buf, size, stream ) == NULL )
+	{
+        return EOF;
+    }
+
+    char *n = strchr( buf, '\n' );
+
+    if( n )
+	{
+        *n = '\0';
+        /* A line was read successfully without truncation. */
+    }
+	else
+	{
+        int c;
+        while( (c = getchar()) != EOF && c != '\n');
+        if( c == EOF )
+		{
+            return EOF;
+        }
+        /* A line was read successfully but was truncated. */
+    }
+
+    return 0;
+}

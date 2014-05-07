@@ -68,6 +68,7 @@ const char* file_extension     ( const char* filename );
 char*       file_load_contents ( const char* path, size_t* size );
 bool        is_file            ( const char* path );
 bool        is_dir             ( const char* path );
+int         readline           ( char *buf, size_t size, FILE *stream );
 
 typedef enum size_units {
 	unit_bytes = 0,
