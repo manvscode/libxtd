@@ -290,7 +290,7 @@ char* debug_buffer_to_string( const void* data, size_t size, size_t grouping, bo
 		strcat( s, "[" );
 
 		size_t i = 0;
-		while( i < size - 1 )
+		while( i < size )
 		{
 			char temp_buffer[ 2 + 1 ];
 
@@ -302,10 +302,11 @@ char* debug_buffer_to_string( const void* data, size_t size, size_t grouping, bo
 				strcat( s, temp_buffer );
 			}
 
-			i += grouping;
 
-			if( with_spaces && i < size - 1 ) strcat( s, " " );
+			if( with_spaces && i != size - 1 ) strcat( s, " " );
 			//if(  newline_every != 0 && i % newline_every == 0 ) strcat( s, "\n" );
+
+			i += grouping;
 		}
 
 		strcat( s, "]" );
