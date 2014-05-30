@@ -271,3 +271,47 @@ const char* appropriate_size( size_t size, bool use_base_two, int precision )
 	// otherwise display in bytes
 	return size_in_units( size, unit_bytes, 1 );
 }
+
+char* debug_buffer_to_string( const void* data, size_t size, size_t grouping, bool with_spaces )
+{
+	#if 0
+	if( (grouping < 1 || grouping > 8) || (grouping & (grouping - 1)) != 0 )
+	{
+		grouping = 1;
+	}
+	#endif
+
+	size_t estimated_size = size * (with_spaces ? 2 : 1 ) * grouping * 2 + 2 + 1;
+	char* s = (char*) malloc( estimated_size );
+
+	if( s )
+	{
+		s[ 0 ] = '\0';
+		strcat( s, "[" );
+
+		size_t i = 0;
+		while( i < size - 1 )
+		{
+			char temp_buffer[ 2 + 1 ];
+
+			for( size_t j = 0; j < grouping; j++ )
+			{
+				unsigned char* b = (unsigned char*) data + i + j;
+				snprintf( temp_buffer, sizeof(temp_buffer), "%02x", *b );
+				temp_buffer[ 2 ] = '\0';
+				strcat( s, temp_buffer );
+			}
+
+			i += grouping;
+
+			if( with_spaces && i < size - 1 ) strcat( s, " " );
+			//if(  newline_every != 0 && i % newline_every == 0 ) strcat( s, "\n" );
+		}
+
+		strcat( s, "]" );
+		s[ estimated_size - 1 ] = '\0';
+	}
+
+	return s;
+}
+

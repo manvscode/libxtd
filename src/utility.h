@@ -160,19 +160,20 @@ typedef enum random_string_type {
 	RAND_STRING_DISTINCT,
 } random_string_type_t;
 
-void        print_divider      ( FILE* fd, const char* title );
-const char* byte_to_binary     ( uint8_t x );
-void        crash              ( void );
-void        scramble_string    ( const char* __restrict key, char* __restrict string, size_t len, unsigned short pivot );
-void        unscramble_string  ( const char* __restrict key, char* __restrict string, size_t len, unsigned short pivot );
-void        random_string      ( random_string_type_t type, char* string, size_t length );
-const char* ordinal_string     ( long number );
-void        xor_bytes          ( const void* __restrict a, size_t a_size, const void* __restrict b, size_t b_size, void* __restrict result );
-void        swap               ( void* __restrict left, void* __restrict right, size_t size );
-const char* friendly_size      ( size_t size );
-bool        is_big_endian      ( void );
-void        hton               ( void* mem, size_t size );
-void        ntoh               ( void* mem, size_t size );
+void        print_divider          ( FILE* fd, const char* title );
+const char* byte_to_binary         ( uint8_t x );
+void        crash                  ( void );
+void        scramble_string        ( const char* __restrict key, char* __restrict string, size_t len, unsigned short pivot );
+void        unscramble_string      ( const char* __restrict key, char* __restrict string, size_t len, unsigned short pivot );
+void        random_string          ( random_string_type_t type, char* string, size_t length );
+const char* ordinal_string         ( long number );
+void        xor_bytes              ( const void* __restrict a, size_t a_size, const void* __restrict b, size_t b_size, void* __restrict result );
+void        swap                   ( void* __restrict left, void* __restrict right, size_t size );
+const char* friendly_size          ( size_t size );
+bool        is_big_endian          ( void );
+void        hton                   ( void* mem, size_t size );
+void        ntoh                   ( void* mem, size_t size );
+char*       debug_buffer_to_string ( const void* data, size_t size, size_t grouping, bool with_spaces );
 
 /*
  *  Time
