@@ -188,17 +188,17 @@ char* file_load_contents( const char* path, size_t *size )
 			if( result )
 			{
 				char* buffer = result;
-				long size    = file_size;
+				long sz      = file_size;
 
-				while( !feof( file ) && size > 0 )
+				while( !feof( file ) && sz > 0 )
 				{
-					size_t bytes_read = fread( buffer, sizeof(char), size, file );
+					size_t bytes_read = fread( buffer, sizeof(char), sz, file );
 					buffer += bytes_read;
-					size   -= bytes_read;
+					sz   -= bytes_read;
 				}
-			}
 
-			result[ *size - 1 ] = '\0';
+				result[ *size - 1 ] = '\0';
+			}
 		}
 
 		fclose( file );
