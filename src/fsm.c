@@ -48,11 +48,11 @@ struct fsm {
 	#endif
 };
 
-static __inline void fsm_initialize ( fsm_t* fsm, size_t max_transitions, const fsm_transition_t* transitions, fsm_state_fxn start, fsm_state_fxn end );
+static void fsm_initialize ( fsm_t* fsm, size_t max_transitions, const fsm_transition_t* transitions, fsm_state_fxn start, fsm_state_fxn end );
 static __inline fsm_state_fxn fsm_lookup_transition  ( const fsm_t* fsm, fsm_event_t e );
 static __inline int           fsm_transition_compare ( const void* left, const void* right );
 #ifdef FSM_HASH_TRANSITIONS
-static __inline size_t hash_transition( const fsm_transition_t* p_transition );
+static size_t hash_transition( const fsm_transition_t* p_transition );
 #endif
 
 /*
@@ -73,7 +73,7 @@ fsm_t* fsm_create( size_t max_transitions, const fsm_transition_t* transitions, 
 /*
  *   Initialize a finite state machine.
  */
-__inline void fsm_initialize( fsm_t* fsm, size_t max_transitions, const fsm_transition_t* transitions, fsm_state_fxn start, fsm_state_fxn end )
+void fsm_initialize( fsm_t* fsm, size_t max_transitions, const fsm_transition_t* transitions, fsm_state_fxn start, fsm_state_fxn end )
 {
 	fsm->max_transitions = max_transitions;
 	fsm->start_state     = start;
@@ -186,7 +186,7 @@ bool fsm_iterative_run( fsm_t* fsm, void* data )
 	return done;
 }
 
-__inline fsm_state_fxn fsm_lookup_transition( const fsm_t* fsm, fsm_event_t e )
+fsm_state_fxn fsm_lookup_transition( const fsm_t* fsm, fsm_event_t e )
 {
 	#ifdef FSM_HASH_TRANSITIONS
     fsm_transition_t key = { fsm->current_state, e, 0 };
@@ -203,7 +203,7 @@ __inline fsm_state_fxn fsm_lookup_transition( const fsm_t* fsm, fsm_event_t e )
 	#endif
 }
 
-__inline int fsm_transition_compare( const void* left, const void* right )
+int fsm_transition_compare( const void* left, const void* right )
 {
 	#if 0
     const fsm_transition_t* tl = left;
@@ -219,7 +219,7 @@ __inline int fsm_transition_compare( const void* left, const void* right )
 
 
 #ifdef FSM_HASH_TRANSITIONS
-__inline size_t hash_transition( const fsm_transition_t* p_transition )
+size_t hash_transition( const fsm_transition_t* p_transition )
 {
 	#if 0
 	const unsigned char *bytes = (const unsigned char*) p_transition;
@@ -234,7 +234,7 @@ __inline size_t hash_transition( const fsm_transition_t* p_transition )
 
 	return hash_code;
 	#else
-	return ((uint32_t)p_transition->src_state + p_transition->event) % UINT32_MAX;
+	return ((size_t)p_transition->src_state + p_transition->event) % SIZE_MAX;
 	#endif
 }
 #endif

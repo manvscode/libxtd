@@ -138,7 +138,7 @@ fsm_event_t app_on_encrypt_message( void* data )
 	printf( "\n" );
 	app_data.encrypted = true;
 	printf( "Encrypting...\n" );
-	caesar_cypher_encryption( app_data.buffer, sizeof(app_data.buffer), 23 );
+	caesar_cypher_encrypt_buffer( app_data.buffer, sizeof(app_data.buffer), -23 );
 	return EVT_DISPLAY_MENU;
 }
 
@@ -147,7 +147,7 @@ fsm_event_t app_on_decrypt_message( void* data )
 	printf( "\n" );
 	app_data.encrypted = false;
 	printf( "Decrypting...\n" );
-	caesar_cypher_decryption( app_data.buffer, sizeof(app_data.buffer), 23 );
+	caesar_cypher_decrypt_buffer( app_data.buffer, sizeof(app_data.buffer), -23 );
 	return EVT_DISPLAY_MENU;
 }
 

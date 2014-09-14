@@ -24,20 +24,48 @@
 
 #define ASCII_COUNT   (UCHAR_MAX + 1)
 
-void caesar_cypher_encryption( void* _text, size_t size, size_t n )
+void caesar_cypher_encrypt_buffer( void* buffer, size_t size, int n )
 {
-	unsigned char* text = _text;
-	for( size_t i = 0; i < size; i++ )
-	{
-		text[ i ] = (text[ i ] + n) % ASCII_COUNT;
-	}
+    unsigned char* text = buffer;
+    for( size_t i = 0; i < size; i++ )
+    {
+        text[ i ] = (text[ i ] + n) % ASCII_COUNT;
+    }
 }
 
-void caesar_cypher_decryption( void* _text, size_t size, size_t n )
+void caesar_cypher_decrypt_buffer( void* buffer, size_t size, int n )
 {
-	unsigned char* text = _text;
-	for( size_t i = 0; i < size; i++ )
-	{
-		text[ i ] = (text[ i ] - n) % ASCII_COUNT;
-	}
+    unsigned char* text = buffer;
+    for( size_t i = 0; i < size; i++ )
+    {
+        text[ i ] = (text[ i ] - n) % ASCII_COUNT;
+    }
+}
+
+void caesar_cypher_encrypt_text( char* text, size_t size, int n )
+{
+    int range = '~' - '!' + 1;
+
+    for( size_t i = 0; i < size; i++ )
+    {
+        if( text[ i ] >= '!'  && text[ i ] < 127 )
+        {
+            int q = (text[ i ] + n - '!') % range;
+            text[ i ] = '!' + q;
+        }
+    }
+}
+
+void caesar_cypher_decrypt_text( char* text, size_t size, int n )
+{
+    int range = '~' - '!' + 1;
+
+    for( size_t i = 0; i < size; i++ )
+    {
+        if( text[ i ] >= '!' && text[ i ] < 127 )
+        {
+            int q = (text[ i ] - n - '!') % range;
+            text[ i ] =  q >= 0 ? '!' + q : '~' + q + 1;
+        }
+    }
 }

@@ -186,8 +186,10 @@ uint64_t time_msecs        ( void );
 /*
  *  Encryption
  */
-void caesar_cypher_encryption ( void* text, size_t size, size_t n );
-void caesar_cypher_decryption ( void* text, size_t size, size_t n );
+void caesar_cypher_encrypt_buffer ( void* buffer, size_t size, int n );
+void caesar_cypher_decrypt_buffer ( void* buffer, size_t size, int n );
+void caesar_cypher_encrypt_text   ( char* text, size_t size, int n );
+void caesar_cypher_decrypt_text   ( char* text, size_t size, int n );
 
 #ifdef __cplusplus
 } /* extern "C" */
