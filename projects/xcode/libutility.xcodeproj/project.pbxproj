@@ -41,6 +41,8 @@
 		D8968F6519C40E5100A9B8B9 /* libutility-config.h in Headers */ = {isa = PBXBuildFile; fileRef = 08C284DB180DD65700E96BF5 /* libutility-config.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		D8968F6619C40E5100A9B8B9 /* mime.h in Headers */ = {isa = PBXBuildFile; fileRef = 08C284DD180DD65700E96BF5 /* mime.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		D8968F6719C40E5100A9B8B9 /* utility.h in Headers */ = {isa = PBXBuildFile; fileRef = 08C284E0180DD65700E96BF5 /* utility.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		D8C2974C19FFEE3600A35A3C /* libcollections.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 08C284F7180DD67F00E96BF5 /* libcollections.a */; };
+		D8C2974D19FFEE3F00A35A3C /* libcollections.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D8968F6E19C40E5100A9B8B9 /* libcollections.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -102,6 +104,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D8C2974C19FFEE3600A35A3C /* libcollections.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -109,6 +112,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D8C2974D19FFEE3F00A35A3C /* libcollections.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
