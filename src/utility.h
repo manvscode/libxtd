@@ -67,7 +67,9 @@ const char* file_basename      ( const char* filename );
 const char* file_extension     ( const char* filename );
 char*       file_load_contents ( const char* path, size_t* size );
 bool        is_file            ( const char* path );
-bool        is_dir             ( const char* path );
+bool        is_directory       ( const char* path );
+bool        directory_exists   ( const char* path );
+bool        directory_create   ( const char* path );
 int         readline           ( char *buf, size_t size, FILE *stream );
 
 typedef enum size_units {
@@ -204,7 +206,9 @@ namespace utility {
 	using ::file_age;
 	using ::file_load_contents;
 	using ::is_file;
-	using ::is_dir;
+	using ::is_directory;
+	using ::directory_exists;
+	using ::directory_create;
 	using ::size_units_t;
 	using ::size_in_units;
 	using ::appropriate_size;
@@ -237,8 +241,10 @@ namespace utility {
 	using ::is_big_endian;
 	using ::hton;
 	using ::ntoh;
-	using ::caesar_cypher_encryption;
-	using ::caesar_cypher_decryption;
+	using ::caesar_cypher_encrypt_buffer;
+	using ::caesar_cypher_decrypt_buffer;
+	using ::caesar_cypher_encrypt_text;
+	using ::caesar_cypher_decrypt_text;
 } /* namespace */
 #endif
 #endif /* _UTILITY_H_ */

@@ -89,7 +89,7 @@ bool file_copy( const char* restrict src_path, const char* restrict dst_path )
 
 bool file_delete( const char* path )
 {
-	if( is_dir(path) )
+	if( is_directory(path) )
 	{
 		DIR* d = opendir( path );
 		int result = 1;
@@ -219,11 +219,11 @@ bool is_file( const char* path )
 	return 0;
 }
 
-bool is_dir( const char* path )
+bool is_directory( const char* path )
 {
     struct stat s;
 
-    if( stat( path, &s) == 0 )
+    if( stat( path, &s ) == 0 )
 	{
         return S_ISDIR(s.st_mode);
     }
@@ -231,6 +231,23 @@ bool is_dir( const char* path )
 	return 0;
 }
 
+bool directory_exists( const char* path )
+{
+    struct stat s;
+    return stat( path, &s ) != -1;
+}
+
+bool directory_create( const char* path )
+{
+	bool result = false;
+
+	if( !directory_exists( path ) )
+	{
+		result = mkdir( path, 0700 ) == 0;
+	}
+
+	return result;
+}
 
 int readline( char *buf, size_t size, FILE *stream )
 {
