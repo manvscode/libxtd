@@ -11,35 +11,25 @@
 		08C284E2180DD65700E96BF5 /* caesar.c in Sources */ = {isa = PBXBuildFile; fileRef = 08C284D1180DD65700E96BF5 /* caesar.c */; };
 		08C284E3180DD65700E96BF5 /* checksums.c in Sources */ = {isa = PBXBuildFile; fileRef = 08C284D2180DD65700E96BF5 /* checksums.c */; };
 		08C284E4180DD65700E96BF5 /* console.c in Sources */ = {isa = PBXBuildFile; fileRef = 08C284D3180DD65700E96BF5 /* console.c */; };
-		08C284E5180DD65700E96BF5 /* crash.c in Sources */ = {isa = PBXBuildFile; fileRef = 08C284D4180DD65700E96BF5 /* crash.c */; };
 		08C284E6180DD65700E96BF5 /* endianess.c in Sources */ = {isa = PBXBuildFile; fileRef = 08C284D5180DD65700E96BF5 /* endianess.c */; };
 		08C284E7180DD65700E96BF5 /* exceptions.c in Sources */ = {isa = PBXBuildFile; fileRef = 08C284D6180DD65700E96BF5 /* exceptions.c */; };
 		08C284E8180DD65700E96BF5 /* exceptions.h in Headers */ = {isa = PBXBuildFile; fileRef = 08C284D7180DD65700E96BF5 /* exceptions.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		08C284E9180DD65700E96BF5 /* fileio.c in Sources */ = {isa = PBXBuildFile; fileRef = 08C284D8180DD65700E96BF5 /* fileio.c */; };
-		08C284EA180DD65700E96BF5 /* fsm.c in Sources */ = {isa = PBXBuildFile; fileRef = 08C284D9180DD65700E96BF5 /* fsm.c */; };
 		08C284EB180DD65700E96BF5 /* huffman.c in Sources */ = {isa = PBXBuildFile; fileRef = 08C284DA180DD65700E96BF5 /* huffman.c */; };
 		08C284EC180DD65700E96BF5 /* libutility-config.h in Headers */ = {isa = PBXBuildFile; fileRef = 08C284DB180DD65700E96BF5 /* libutility-config.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		08C284ED180DD65700E96BF5 /* mime.c in Sources */ = {isa = PBXBuildFile; fileRef = 08C284DC180DD65700E96BF5 /* mime.c */; };
-		08C284EE180DD65700E96BF5 /* mime.h in Headers */ = {isa = PBXBuildFile; fileRef = 08C284DD180DD65700E96BF5 /* mime.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		08C284EF180DD65700E96BF5 /* observers.c in Sources */ = {isa = PBXBuildFile; fileRef = 08C284DE180DD65700E96BF5 /* observers.c */; };
 		08C284F0180DD65700E96BF5 /* strings.c in Sources */ = {isa = PBXBuildFile; fileRef = 08C284DF180DD65700E96BF5 /* strings.c */; };
 		08C284F1180DD65700E96BF5 /* utility.h in Headers */ = {isa = PBXBuildFile; fileRef = 08C284E0180DD65700E96BF5 /* utility.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		D8968F5519C40E5100A9B8B9 /* endianess.c in Sources */ = {isa = PBXBuildFile; fileRef = 08C284D5180DD65700E96BF5 /* endianess.c */; };
 		D8968F5619C40E5100A9B8B9 /* strings.c in Sources */ = {isa = PBXBuildFile; fileRef = 08C284DF180DD65700E96BF5 /* strings.c */; };
 		D8968F5719C40E5100A9B8B9 /* fileio.c in Sources */ = {isa = PBXBuildFile; fileRef = 08C284D8180DD65700E96BF5 /* fileio.c */; };
 		D8968F5819C40E5100A9B8B9 /* checksums.c in Sources */ = {isa = PBXBuildFile; fileRef = 08C284D2180DD65700E96BF5 /* checksums.c */; };
-		D8968F5919C40E5100A9B8B9 /* observers.c in Sources */ = {isa = PBXBuildFile; fileRef = 08C284DE180DD65700E96BF5 /* observers.c */; };
-		D8968F5A19C40E5100A9B8B9 /* fsm.c in Sources */ = {isa = PBXBuildFile; fileRef = 08C284D9180DD65700E96BF5 /* fsm.c */; };
-		D8968F5B19C40E5100A9B8B9 /* mime.c in Sources */ = {isa = PBXBuildFile; fileRef = 08C284DC180DD65700E96BF5 /* mime.c */; };
 		D8968F5C19C40E5100A9B8B9 /* exceptions.c in Sources */ = {isa = PBXBuildFile; fileRef = 08C284D6180DD65700E96BF5 /* exceptions.c */; };
 		D8968F5D19C40E5100A9B8B9 /* huffman.c in Sources */ = {isa = PBXBuildFile; fileRef = 08C284DA180DD65700E96BF5 /* huffman.c */; };
 		D8968F5E19C40E5100A9B8B9 /* console.c in Sources */ = {isa = PBXBuildFile; fileRef = 08C284D3180DD65700E96BF5 /* console.c */; };
-		D8968F5F19C40E5100A9B8B9 /* crash.c in Sources */ = {isa = PBXBuildFile; fileRef = 08C284D4180DD65700E96BF5 /* crash.c */; };
 		D8968F6019C40E5100A9B8B9 /* caesar.c in Sources */ = {isa = PBXBuildFile; fileRef = 08C284D1180DD65700E96BF5 /* caesar.c */; };
 		D8968F6119C40E5100A9B8B9 /* bytes.c in Sources */ = {isa = PBXBuildFile; fileRef = 08C284D0180DD65700E96BF5 /* bytes.c */; };
 		D8968F6419C40E5100A9B8B9 /* exceptions.h in Headers */ = {isa = PBXBuildFile; fileRef = 08C284D7180DD65700E96BF5 /* exceptions.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		D8968F6519C40E5100A9B8B9 /* libutility-config.h in Headers */ = {isa = PBXBuildFile; fileRef = 08C284DB180DD65700E96BF5 /* libutility-config.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		D8968F6619C40E5100A9B8B9 /* mime.h in Headers */ = {isa = PBXBuildFile; fileRef = 08C284DD180DD65700E96BF5 /* mime.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		D8968F6719C40E5100A9B8B9 /* utility.h in Headers */ = {isa = PBXBuildFile; fileRef = 08C284E0180DD65700E96BF5 /* utility.h */; settings = {ATTRIBUTES = (Public, ); }; };
 /* End PBXBuildFile section */
 
@@ -49,17 +39,12 @@
 		08C284D1180DD65700E96BF5 /* caesar.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = caesar.c; path = ../../src/caesar.c; sourceTree = "<group>"; };
 		08C284D2180DD65700E96BF5 /* checksums.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = checksums.c; path = ../../src/checksums.c; sourceTree = "<group>"; };
 		08C284D3180DD65700E96BF5 /* console.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = console.c; path = ../../src/console.c; sourceTree = "<group>"; };
-		08C284D4180DD65700E96BF5 /* crash.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = crash.c; path = ../../src/crash.c; sourceTree = "<group>"; };
 		08C284D5180DD65700E96BF5 /* endianess.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = endianess.c; path = ../../src/endianess.c; sourceTree = "<group>"; };
 		08C284D6180DD65700E96BF5 /* exceptions.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = exceptions.c; path = ../../src/exceptions.c; sourceTree = "<group>"; };
 		08C284D7180DD65700E96BF5 /* exceptions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = exceptions.h; path = ../../src/exceptions.h; sourceTree = "<group>"; };
 		08C284D8180DD65700E96BF5 /* fileio.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = fileio.c; path = ../../src/fileio.c; sourceTree = "<group>"; };
-		08C284D9180DD65700E96BF5 /* fsm.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = fsm.c; path = ../../src/fsm.c; sourceTree = "<group>"; };
 		08C284DA180DD65700E96BF5 /* huffman.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = huffman.c; path = ../../src/huffman.c; sourceTree = "<group>"; };
 		08C284DB180DD65700E96BF5 /* libutility-config.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "libutility-config.h"; path = "../../src/libutility-config.h"; sourceTree = "<group>"; };
-		08C284DC180DD65700E96BF5 /* mime.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = mime.c; path = ../../src/mime.c; sourceTree = "<group>"; };
-		08C284DD180DD65700E96BF5 /* mime.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = mime.h; path = ../../src/mime.h; sourceTree = "<group>"; };
-		08C284DE180DD65700E96BF5 /* observers.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = observers.c; path = ../../src/observers.c; sourceTree = "<group>"; };
 		08C284DF180DD65700E96BF5 /* strings.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = strings.c; path = ../../src/strings.c; sourceTree = "<group>"; };
 		08C284E0180DD65700E96BF5 /* utility.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = utility.h; path = ../../src/utility.h; sourceTree = "<group>"; };
 		D8968F6B19C40E5100A9B8B9 /* libutility.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libutility.a; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -107,17 +92,12 @@
 				08C284D1180DD65700E96BF5 /* caesar.c */,
 				08C284D2180DD65700E96BF5 /* checksums.c */,
 				08C284D3180DD65700E96BF5 /* console.c */,
-				08C284D4180DD65700E96BF5 /* crash.c */,
 				08C284D5180DD65700E96BF5 /* endianess.c */,
 				08C284D6180DD65700E96BF5 /* exceptions.c */,
 				08C284D7180DD65700E96BF5 /* exceptions.h */,
 				08C284D8180DD65700E96BF5 /* fileio.c */,
-				08C284D9180DD65700E96BF5 /* fsm.c */,
 				08C284DA180DD65700E96BF5 /* huffman.c */,
 				08C284DB180DD65700E96BF5 /* libutility-config.h */,
-				08C284DC180DD65700E96BF5 /* mime.c */,
-				08C284DD180DD65700E96BF5 /* mime.h */,
-				08C284DE180DD65700E96BF5 /* observers.c */,
 				08C284DF180DD65700E96BF5 /* strings.c */,
 				08C284E0180DD65700E96BF5 /* utility.h */,
 			);
@@ -133,7 +113,6 @@
 			files = (
 				08C284E8180DD65700E96BF5 /* exceptions.h in Headers */,
 				08C284EC180DD65700E96BF5 /* libutility-config.h in Headers */,
-				08C284EE180DD65700E96BF5 /* mime.h in Headers */,
 				08C284F1180DD65700E96BF5 /* utility.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -144,7 +123,6 @@
 			files = (
 				D8968F6419C40E5100A9B8B9 /* exceptions.h in Headers */,
 				D8968F6519C40E5100A9B8B9 /* libutility-config.h in Headers */,
-				D8968F6619C40E5100A9B8B9 /* mime.h in Headers */,
 				D8968F6719C40E5100A9B8B9 /* utility.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -222,13 +200,9 @@
 				08C284F0180DD65700E96BF5 /* strings.c in Sources */,
 				08C284E9180DD65700E96BF5 /* fileio.c in Sources */,
 				08C284E3180DD65700E96BF5 /* checksums.c in Sources */,
-				08C284EF180DD65700E96BF5 /* observers.c in Sources */,
-				08C284EA180DD65700E96BF5 /* fsm.c in Sources */,
-				08C284ED180DD65700E96BF5 /* mime.c in Sources */,
 				08C284E7180DD65700E96BF5 /* exceptions.c in Sources */,
 				08C284EB180DD65700E96BF5 /* huffman.c in Sources */,
 				08C284E4180DD65700E96BF5 /* console.c in Sources */,
-				08C284E5180DD65700E96BF5 /* crash.c in Sources */,
 				08C284E2180DD65700E96BF5 /* caesar.c in Sources */,
 				08C284E1180DD65700E96BF5 /* bytes.c in Sources */,
 			);
@@ -242,13 +216,9 @@
 				D8968F5619C40E5100A9B8B9 /* strings.c in Sources */,
 				D8968F5719C40E5100A9B8B9 /* fileio.c in Sources */,
 				D8968F5819C40E5100A9B8B9 /* checksums.c in Sources */,
-				D8968F5919C40E5100A9B8B9 /* observers.c in Sources */,
-				D8968F5A19C40E5100A9B8B9 /* fsm.c in Sources */,
-				D8968F5B19C40E5100A9B8B9 /* mime.c in Sources */,
 				D8968F5C19C40E5100A9B8B9 /* exceptions.c in Sources */,
 				D8968F5D19C40E5100A9B8B9 /* huffman.c in Sources */,
 				D8968F5E19C40E5100A9B8B9 /* console.c in Sources */,
-				D8968F5F19C40E5100A9B8B9 /* crash.c in Sources */,
 				D8968F6019C40E5100A9B8B9 /* caesar.c in Sources */,
 				D8968F6119C40E5100A9B8B9 /* bytes.c in Sources */,
 			);
