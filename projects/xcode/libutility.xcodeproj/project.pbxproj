@@ -41,40 +41,7 @@
 		D8968F6519C40E5100A9B8B9 /* libutility-config.h in Headers */ = {isa = PBXBuildFile; fileRef = 08C284DB180DD65700E96BF5 /* libutility-config.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		D8968F6619C40E5100A9B8B9 /* mime.h in Headers */ = {isa = PBXBuildFile; fileRef = 08C284DD180DD65700E96BF5 /* mime.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		D8968F6719C40E5100A9B8B9 /* utility.h in Headers */ = {isa = PBXBuildFile; fileRef = 08C284E0180DD65700E96BF5 /* utility.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		D8C2974C19FFEE3600A35A3C /* libcollections.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 08C284F7180DD67F00E96BF5 /* libcollections.a */; };
-		D8C2974D19FFEE3F00A35A3C /* libcollections.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D8968F6E19C40E5100A9B8B9 /* libcollections.a */; };
 /* End PBXBuildFile section */
-
-/* Begin PBXContainerItemProxy section */
-		08C284F6180DD67F00E96BF5 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 08C284F2180DD67F00E96BF5 /* libcollections.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 08F9B722180DC9F300DC30C4;
-			remoteInfo = libcollections;
-		};
-		08C284F8180DD68D00E96BF5 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 08C284F2180DD67F00E96BF5 /* libcollections.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = 08F9B721180DC9F300DC30C4;
-			remoteInfo = libcollections;
-		};
-		D8968F5319C40E5100A9B8B9 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 08C284F2180DD67F00E96BF5 /* libcollections.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = 08F9B721180DC9F300DC30C4;
-			remoteInfo = libcollections;
-		};
-		D8968F6D19C40E5100A9B8B9 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 08C284F2180DD67F00E96BF5 /* libcollections.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = D89CE3531979892600710BD8;
-			remoteInfo = "libcollections-static-ios";
-		};
-/* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
 		08C284C8180DD60300E96BF5 /* libutility.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libutility.a; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -95,7 +62,6 @@
 		08C284DE180DD65700E96BF5 /* observers.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = observers.c; path = ../../src/observers.c; sourceTree = "<group>"; };
 		08C284DF180DD65700E96BF5 /* strings.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = strings.c; path = ../../src/strings.c; sourceTree = "<group>"; };
 		08C284E0180DD65700E96BF5 /* utility.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = utility.h; path = ../../src/utility.h; sourceTree = "<group>"; };
-		08C284F2180DD67F00E96BF5 /* libcollections.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = libcollections.xcodeproj; path = ../../../libcollections/projects/xcode/libcollections.xcodeproj; sourceTree = "<group>"; };
 		D8968F6B19C40E5100A9B8B9 /* libutility.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libutility.a; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -104,7 +70,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D8C2974C19FFEE3600A35A3C /* libcollections.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -112,7 +77,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D8C2974D19FFEE3F00A35A3C /* libcollections.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -122,7 +86,6 @@
 		08C284BF180DD60200E96BF5 = {
 			isa = PBXGroup;
 			children = (
-				08C284F2180DD67F00E96BF5 /* libcollections.xcodeproj */,
 				08C284CF180DD62300E96BF5 /* src */,
 				08C284C9180DD60300E96BF5 /* Products */,
 			);
@@ -159,15 +122,6 @@
 				08C284E0180DD65700E96BF5 /* utility.h */,
 			);
 			name = src;
-			sourceTree = "<group>";
-		};
-		08C284F3180DD67F00E96BF5 /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				08C284F7180DD67F00E96BF5 /* libcollections.a */,
-				D8968F6E19C40E5100A9B8B9 /* libcollections.a */,
-			);
-			name = Products;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -209,7 +163,6 @@
 			buildRules = (
 			);
 			dependencies = (
-				08C284F9180DD68D00E96BF5 /* PBXTargetDependency */,
 			);
 			name = "libutility-static";
 			productName = libutility;
@@ -227,7 +180,6 @@
 			buildRules = (
 			);
 			dependencies = (
-				D8968F5219C40E5100A9B8B9 /* PBXTargetDependency */,
 			);
 			name = "libutility-static-ios";
 			productName = libutility;
@@ -253,12 +205,6 @@
 			mainGroup = 08C284BF180DD60200E96BF5;
 			productRefGroup = 08C284C9180DD60300E96BF5 /* Products */;
 			projectDirPath = "";
-			projectReferences = (
-				{
-					ProductGroup = 08C284F3180DD67F00E96BF5 /* Products */;
-					ProjectRef = 08C284F2180DD67F00E96BF5 /* libcollections.xcodeproj */;
-				},
-			);
 			projectRoot = "";
 			targets = (
 				08C284C7180DD60300E96BF5 /* libutility-static */,
@@ -266,23 +212,6 @@
 			);
 		};
 /* End PBXProject section */
-
-/* Begin PBXReferenceProxy section */
-		08C284F7180DD67F00E96BF5 /* libcollections.a */ = {
-			isa = PBXReferenceProxy;
-			fileType = archive.ar;
-			path = libcollections.a;
-			remoteRef = 08C284F6180DD67F00E96BF5 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		D8968F6E19C40E5100A9B8B9 /* libcollections.a */ = {
-			isa = PBXReferenceProxy;
-			fileType = archive.ar;
-			path = libcollections.a;
-			remoteRef = D8968F6D19C40E5100A9B8B9 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-/* End PBXReferenceProxy section */
 
 /* Begin PBXSourcesBuildPhase section */
 		08C284C4180DD60300E96BF5 /* Sources */ = {
@@ -326,19 +255,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
-
-/* Begin PBXTargetDependency section */
-		08C284F9180DD68D00E96BF5 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = libcollections;
-			targetProxy = 08C284F8180DD68D00E96BF5 /* PBXContainerItemProxy */;
-		};
-		D8968F5219C40E5100A9B8B9 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = libcollections;
-			targetProxy = D8968F5319C40E5100A9B8B9 /* PBXContainerItemProxy */;
-		};
-/* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
 		08C284CA180DD60300E96BF5 /* Debug */ = {

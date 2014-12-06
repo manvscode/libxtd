@@ -27,27 +27,10 @@
 #if defined(__STDC_VERSION__) && (__STDC_VERSION__ >= 199901L)
 #include <stdbool.h>
 #include <stdint.h>
-#ifdef __restrict
-#undef __restrict
-#define __restrict restrict
-#endif
-#ifdef __inline
-#undef __inline
-#define __inline inline
-#endif
 #else
-#define bool int
-#define true 1
-#define false 0
-#ifdef __restrict
-#undef __restrict
-#define __restrict
+#error "Need a C99 compiler."
 #endif
-#ifdef __inline
-#undef __inline
-#define __inline
-#endif
-#endif
+
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -59,7 +42,7 @@ bool        file_exists        ( const char* path );
 bool        file_is_writeable  ( const char* path );
 bool        file_is_readable   ( const char* path );
 bool        file_is_executable ( const char* path );
-bool        file_copy          ( const char* __restrict src_path, const char* __restrict dst_path );
+bool        file_copy          ( const char* src_path, const char* dst_path );
 bool        file_delete        ( const char* path );
 long long   file_size          ( const char* path );
 long        file_age           ( const char* path ); /* Returns -1 on error */
@@ -70,9 +53,11 @@ bool        is_file            ( const char* path );
 bool        is_directory       ( const char* path );
 bool        directory_exists   ( const char* path );
 bool        directory_create   ( const char* path );
+const char* basename           ( const char* path );
+char*       path               ( const char* path ); /* allocates memory */
 int         readline           ( char *buf, size_t size, FILE *stream );
 
-typedef enum size_units {
+typedef enum size_unit {
 	unit_bytes = 0,
 
 	unit_kilobytes,
@@ -87,16 +72,10 @@ typedef enum size_units {
 	unit_gibibytes,
 	unit_tebibytes,
 	unit_exibytes
-} size_units_t;
+} size_unit_t;
 
-const char* size_in_units    ( size_t size, size_units_t unit, int precision );
-const char* appropriate_size ( size_t size, bool use_base_two, int precision );
-
-/*
- * Compression
- */
-bool huffman_encode( const void* __restrict original, size_t size, void** __restrict compressed, size_t* compressed_size );
-bool huffman_decode( const void* __restrict compressed, size_t compressed_size, void** __restrict original, size_t* size );
+const char* size_in_unit      ( size_t size, size_unit_t unit, int precision );
+const char* size_in_best_unit ( size_t size, bool use_base_two, int precision );
 
 /*
  * Checksums
@@ -109,49 +88,13 @@ void     fletcher16        ( uint8_t* checkA, uint8_t* checkB, uint8_t* data, si
 uint32_t fletcher32        ( uint16_t* data, size_t len );
 
 /*
+ * Compression
+ */
+bool huffman_encode( const void* _original, size_t original_size, void** _compressed, size_t* compressed_size );
+bool huffman_decode( const void* _compressed, size_t compressed_size, void** _original, size_t* original_size );
+
+/*
  * Strings
- */
-size_t string_left_trim  ( char* s, const char* delimeters );
-size_t string_right_trim ( char* s, const char* delimeters );
-size_t string_trim       ( char* s, const char* delimeters );
-char*  string_to_lower   ( char* s );
-char*  string_to_upper   ( char* s );
-
-/*
- * Finite State Machine
- */
-typedef short fsm_event_t;
-typedef fsm_event_t (*fsm_state_fxn)( void* data );
-
-typedef struct fsm_transition {
-    fsm_state_fxn src_state;
-    fsm_event_t event;
-    fsm_state_fxn dst_state;
-} fsm_transition_t;
-
-struct fsm;
-typedef struct fsm fsm_t;
-
-fsm_t* fsm_create        ( size_t max_transitions, const fsm_transition_t* transitions, fsm_state_fxn start, fsm_state_fxn end );
-void   fsm_destroy       ( fsm_t** fsm );
-void   fsm_run           ( fsm_t* fsm, void* data );
-bool   fsm_iterative_run ( fsm_t* fsm, void* data );
-
-/*
- * Observers
- */
-typedef void (*obs_notify_fxn)( void* observer, void* user_data );
-
-struct obs_subject;
-typedef struct obs_subject obs_subject_t;
-
-obs_subject_t* obs_subject_create   ( size_t size, size_t grow_amount );
-void           obs_subject_destroy  ( obs_subject_t** p_subject );
-bool           obs_subject_register ( obs_subject_t* p_subject, void* observer, obs_notify_fxn notify );
-void           obs_subject_notify   ( const obs_subject_t* p_subject, void* user_data );
-
-/*
- * Misscellaneous
  */
 typedef enum random_string_type {
 	RAND_STRING_ALPHA_NUMERIC = 0,
@@ -160,18 +103,26 @@ typedef enum random_string_type {
 	RAND_STRING_NUMERIC,
 	RAND_STRING_NO_ZERO,
 	RAND_STRING_DISTINCT,
-} random_string_type_t;
+} string_random_type_t;
+
+size_t      string_left_trim  ( char* s, const char* delimeters );
+size_t      string_right_trim ( char* s, const char* delimeters );
+size_t      string_trim       ( char* s, const char* delimeters );
+char*       string_to_lower   ( char* s );
+char*       string_to_upper   ( char* s );
+void        string_random     ( string_random_type_t type, char* string, size_t length );
+const char* string_ordinal    ( long number );
+
+/*
+ * Misscellaneous
+ */
 
 void        print_divider          ( FILE* fd, const char* title );
 const char* byte_to_binary         ( uint8_t x );
-void        crash                  ( void );
-void        scramble_string        ( const char* __restrict key, char* __restrict string, size_t len, unsigned short pivot );
-void        unscramble_string      ( const char* __restrict key, char* __restrict string, size_t len, unsigned short pivot );
-void        random_string          ( random_string_type_t type, char* string, size_t length );
-const char* ordinal_string         ( long number );
-void        xor_bytes              ( const void* __restrict a, size_t a_size, const void* __restrict b, size_t b_size, void* __restrict result );
-void        swap                   ( void* __restrict left, void* __restrict right, size_t size );
-const char* friendly_size          ( size_t size );
+void        buffer_scramble        ( const char* key, void* buffer, size_t size, unsigned short pivot );
+void        buffer_unscramble      ( const char* key, void* buffer, size_t size, unsigned short pivot );
+void        xor_bytes              ( const void* a, size_t a_size, const void* b, size_t b_size, void* result );
+void        swap                   ( void* left, void* right, size_t size );
 bool        is_big_endian          ( void );
 void        hton                   ( void* mem, size_t size );
 void        ntoh                   ( void* mem, size_t size );
@@ -209,35 +160,27 @@ namespace utility {
 	using ::is_directory;
 	using ::directory_exists;
 	using ::directory_create;
-	using ::size_units_t;
+	using ::basename;
+	using ::path;
+	using ::size_unit_t;
 	using ::size_in_units;
 	using ::appropriate_size;
-	using ::fsm_event_t;
-	using ::fsm_state_fxn;
-	using ::fsm_transition_t;
-	using ::fsm_t;
-	using ::fsm_create;
-	using ::fsm_destroy;
-	using ::fsm_run;
-	using ::huffman_encode;
-	using ::huffman_decode;
 	using ::java_hash;
 	using ::xor8;
 	using ::adler32;
 	using ::fletcher16_simple;
 	using ::fletcher16;
 	using ::fletcher32;
-	using ::random_string_type_t;
+	using ::string_random_type_t;
 	using ::print_divider;
 	using ::byte_to_binary;
 	using ::crash;
 	using ::scramble_string;
 	using ::unscramble_string;
-	using ::random_string;
+	using ::string_random;
 	using ::ordinal_string;
 	using ::xor_bytes;
 	using ::swap;
-	using ::friendly_size;
 	using ::is_big_endian;
 	using ::hton;
 	using ::ntoh;

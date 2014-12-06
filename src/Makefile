@@ -124,9 +124,9 @@ am__installdirs = "$(DESTDIR)$(libdir)" \
 	"$(DESTDIR)$(library_includedir)"
 LTLIBRARIES = $(lib_LTLIBRARIES)
 __top_builddir__lib_libutility_la_LIBADD =
-am__objects_1 = huffman.lo bytes.lo caesar.lo checksums.lo crash.lo \
-	endianess.lo exceptions.lo fileio.lo fsm.lo mime.lo \
-	observers.lo strings.lo console.lo time.lo
+am__objects_1 = bytes.lo caesar.lo checksums.lo endianess.lo \
+	exceptions.lo fileio.lo huffman.lo strings.lo console.lo \
+	time.lo
 am___top_builddir__lib_libutility_la_OBJECTS = $(am__objects_1)
 __top_builddir__lib_libutility_la_OBJECTS =  \
 	$(am___top_builddir__lib_libutility_la_OBJECTS)
@@ -206,10 +206,10 @@ AUTOCONF = autoconf
 AUTOHEADER = autoheader
 AUTOMAKE = automake-1.14
 AWK = awk
-CC = gcc -std=gnu99
+CC = gcc
 CCDEPMODE = depmode=gcc3
 CFLAGS = -std=gnu99 -Wall -pedantic -g -ggdb -O0 -DDEBUG -I/usr/local/include/
-CPP = gcc -std=gnu99 -E
+CPP = gcc -E
 CPPFLAGS = 
 CYGPATH_W = echo
 DEFS = -DHAVE_CONFIG_H
@@ -229,8 +229,8 @@ INSTALL_DATA = ${INSTALL} -m 644
 INSTALL_PROGRAM = ${INSTALL}
 INSTALL_SCRIPT = ${INSTALL}
 INSTALL_STRIP_PROGRAM = $(install_sh) -c -s
-LD = /usr/bin/ld
-LDFLAGS =  -lcollections -lm
+LD = /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/ld
+LDFLAGS =  -lm
 LIBOBJS = 
 LIBS = 
 LIBTOOL = $(SHELL) $(top_builddir)/libtool
@@ -315,24 +315,19 @@ top_srcdir = ..
 
 # Add new files in alphabetical order. Thanks.
 libutility_sources = \
-huffman.c \
 bytes.c \
 caesar.c \
 checksums.c \
-crash.c \
 endianess.c \
 exceptions.c \
 fileio.c \
-fsm.c \
-mime.c \
-observers.c \
+huffman.c \
 strings.c \
 console.c \
 time.c 
 
 libutility_headers = \
 exceptions.h \
-mime.h \
 utility.h
 
 library_includedir = $(includedir)/libutility/
@@ -443,14 +438,10 @@ include ./$(DEPDIR)/bytes.Plo
 include ./$(DEPDIR)/caesar.Plo
 include ./$(DEPDIR)/checksums.Plo
 include ./$(DEPDIR)/console.Plo
-include ./$(DEPDIR)/crash.Plo
 include ./$(DEPDIR)/endianess.Plo
 include ./$(DEPDIR)/exceptions.Plo
 include ./$(DEPDIR)/fileio.Plo
-include ./$(DEPDIR)/fsm.Plo
 include ./$(DEPDIR)/huffman.Plo
-include ./$(DEPDIR)/mime.Plo
-include ./$(DEPDIR)/observers.Plo
 include ./$(DEPDIR)/strings.Plo
 include ./$(DEPDIR)/time.Plo
 

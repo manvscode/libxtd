@@ -2,24 +2,19 @@
 
 # Add new files in alphabetical order. Thanks.
 libutility_sources = \
-huffman.c \
 bytes.c \
 caesar.c \
 checksums.c \
-crash.c \
 endianess.c \
 exceptions.c \
 fileio.c \
-fsm.c \
-mime.c \
-observers.c \
+huffman.c \
 strings.c \
 console.c \
 time.c 
 
 libutility_headers = \
 exceptions.h \
-mime.h \
 utility.h
 
 library_includedir = $(includedir)/libutility/

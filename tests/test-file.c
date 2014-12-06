@@ -34,10 +34,10 @@ int main( int argc, char *argv[] )
 
 	char* file = argv[ 1 ];
 	size_t size = 12425672300;
-	printf( "size = %s\n", size_in_units( size, unit_bytes, 0 ) );
-	printf( "size = %s\n", size_in_units( size, unit_megabytes, 2 ) );
-	printf( "size = %s\n", size_in_units( size, unit_mebibytes, 2 ) );
-	printf( "app size = %s\n", appropriate_size( size, false, 1 ) );
+	printf( "size = %s\n", size_in_unit( size, unit_bytes, 0 ) );
+	printf( "size = %s\n", size_in_unit( size, unit_megabytes, 2 ) );
+	printf( "size = %s\n", size_in_unit( size, unit_mebibytes, 2 ) );
+	printf( "app size = %s\n", size_in_best_unit( size, false, 1 ) );
 
 	size_t text_size = 0;
 	char* text = file_load_contents( file, &text_size );
@@ -48,6 +48,26 @@ int main( int argc, char *argv[] )
 		print_divider( stdout, NULL );
 		free( text );
 	}
+
+	const char* path1 = "/joe/apps/junk/";
+	const char* path2 = "/joe/apps/junk/omg";
+	const char* path3 = "/";
+
+	const char* basename_path1 = basename( path1 );
+	const char* basename_path2 = basename( path2 );
+	const char* basename_path3 = basename( path3 );
+
+	printf( "basename_path1 = %s --> %s\n", path1, basename_path1 );
+	printf( "basename_path2 = %s --> %s\n", path2, basename_path2 );
+	printf( "basename_path3 = %s --> %s\n", path3, basename_path3 );
+
+	char* path_path1 = path( path1 );
+	char* path_path2 = path( path2 );
+	char* path_path3 = path( path3 );
+
+	printf( "path_path1 = %s --> %s\n", path1, path_path1 );
+	printf( "path_path2 = %s --> %s\n", path2, path_path2 );
+	printf( "path_path3 = %s --> %s\n", path3, path_path3 );
 
 	return 0;
 }

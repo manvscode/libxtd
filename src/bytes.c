@@ -41,126 +41,35 @@ const char* byte_to_binary( uint8_t x )
 }
 
 
-void scramble_string( const char* restrict key, char* restrict string, size_t len, unsigned short pivot )
+void buffer_scramble( const char* key, void* buffer, size_t size, unsigned short pivot )
 {
-	long string_len = len;
 	size_t key_len  = strlen( key );
+	unsigned char* bytes = (unsigned char*) buffer;
+	ssize_t sz = size;
 
-	while( string_len >= 0 )
+	while( sz >= 0 )
 	{
-		string[ string_len ] = (string[ string_len ] + pivot) % 256;
-		string[ string_len ] = (byte_t) ( string[string_len] ^ key[string_len % key_len] );
-		string_len--;
+		bytes[ sz ] = (bytes[ sz ] + pivot) % 256;
+		bytes[ sz ] = (byte_t) ( bytes[sz] ^ key[sz % key_len] );
+		sz--;
 	}
 }
 
-void unscramble_string( const char* restrict key, char* restrict string, size_t len, unsigned short pivot )
+void buffer_unscramble( const char* key, void* buffer, size_t size, unsigned short pivot )
 {
-	long string_len = len;
 	size_t key_len  = strlen( key );
+	unsigned char* bytes = (unsigned char*) buffer;
+	ssize_t sz = size;
 
-	while( string_len >= 0 )
+	while( sz >= 0 )
 	{
-		string[ string_len ] = (byte_t) ( string[string_len] ^ key[string_len % key_len] );
-		string[ string_len ] = (string[ string_len ] - pivot) % 256;
-		string_len--;
+		bytes[ sz ] = (byte_t) ( bytes[sz] ^ key[sz % key_len] );
+		bytes[ sz ] = (bytes[ sz ] - pivot) % 256;
+		sz--;
 	}
 }
 
-
-
-void random_string( random_string_type_t type, char* string, size_t length )
-{
-	const char* pool = NULL;
-	size_t max = 0L;
-	size_t i;
-
-	switch( type )
-	{
-		case RAND_STRING_ALPHA:
-			pool = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
-			break;
-		case RAND_STRING_HEX:
-			pool = "0123456789abcdef";
-			break;
-		case RAND_STRING_NUMERIC:
-			pool = "0123456789";
-			break;
-		case RAND_STRING_NO_ZERO:
-			pool = "123456789";
-			break;
-		case RAND_STRING_DISTINCT:
-			pool = "2345679ACDEFHJKLMNPRSTUVWXYZ";
-			break;
-		case RAND_STRING_ALPHA_NUMERIC:
-		default:
-			pool = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
-			break;
-	}
-
-	// Largest pool key
-	max = strlen( pool ) + 1;
-
-
-	int contains_alpha = 0;
-	int contains_num   = 0;
-
-	for( i = 0; i < length; i++ )
-	{
-		// Select a random character from the pool and add it to the string
-		string[ i ] = pool[ rand() % max ];
-
-		if( isalpha( string[ i ] ) )
-		{
-			contains_alpha = 1;
-		}
-		else if( isdigit( string[ i ] ) )
-		{
-			contains_num = 1;
-		}
-	}
-
-	// Make sure alnum strings contain at least one letter and one digit
-	if( (type == 0 || type == 2 || type == 5) && length > 1 )
-	{
-		if( !contains_alpha )
-		{
-			// Add a random letter
-			string[ rand() % (length + 1) ] = 65 + (rand() % 26);
-		}
-
-		if( !contains_num )
-		{
-			// Add a random digit
-			string[ rand() % (length + 1) ] = 48 + (rand() % 10);
-		}
-	}
-	string[ length ] = '\0';
-}
-
-const char* ordinal_string( long number )
-{
-	if( number % 100 > 10 && number % 100 < 14 )
-	{
-		return "th";
-	}
-
-	switch( number % 10 )
-	{
-		case 1:
-			return "st";
-		case 2:
-			return "nd";
-		case 3:
-			return "rd";
-		default:
-			return "th";
-	}
-}
-
-
-
-void xor_bytes( const void* restrict a, size_t a_size, const void* restrict b, size_t b_size, void* restrict result )
+void xor_bytes( const void* a, size_t a_size, const void* b, size_t b_size, void* result )
 {
 	const byte_t* p_a = a;
 	const byte_t* p_b = b;
@@ -175,7 +84,7 @@ void xor_bytes( const void* restrict a, size_t a_size, const void* restrict b, s
 	}
 }
 
-void swap( void* restrict left, void* restrict right, size_t size )
+void swap( void* left, void* right, size_t size )
 {
 	unsigned char tmp[ size ];
 
@@ -219,7 +128,7 @@ static const char* size_units[] = {
 	"EiB"      // 12
 };
 
-const char* size_in_units( size_t size, size_units_t unit, int precision )
+const char* size_in_unit( size_t size, size_unit_t unit, int precision )
 {
 	double unit_size = ((double) size) / size_powers[ unit ];
 
@@ -239,37 +148,37 @@ const char* size_in_units( size_t size, size_units_t unit, int precision )
 	return result;
 }
 
-const char* appropriate_size( size_t size, bool use_base_two, int precision )
+const char* size_in_best_unit( size_t size, bool use_base_two, int precision )
 {
 	uint16_t t = use_base_two ? unit_kibibytes - unit_kilobytes : 0;
 
 	if( size < size_powers[ unit_kilobytes + t ] )
 	{
-		return size_in_units( size, unit_bytes, precision );
+		return size_in_unit( size, unit_bytes, precision );
 	}
 	else if( size < size_powers[ unit_megabytes + t] )
 	{
-		return size_in_units( size, unit_kilobytes + t, precision );
+		return size_in_unit( size, unit_kilobytes + t, precision );
 	}
 	else if( size < size_powers[ unit_gigabytes + t] )
 	{
-		return size_in_units( size, unit_megabytes + t, precision );
+		return size_in_unit( size, unit_megabytes + t, precision );
 	}
 	else if( size < size_powers[ unit_terabytes + t] )
 	{
-		return size_in_units( size, unit_gigabytes + t, precision );
+		return size_in_unit( size, unit_gigabytes + t, precision );
 	}
 	else if( size < size_powers[ unit_petabytes + t] )
 	{
-		return size_in_units( size, unit_terabytes + t, precision );
+		return size_in_unit( size, unit_terabytes + t, precision );
 	}
 	else if( size < size_powers[ unit_exabytes + t] )
 	{
-		return size_in_units( size, unit_petabytes + t, precision );
+		return size_in_unit( size, unit_petabytes + t, precision );
 	}
 
 	// otherwise display in bytes
-	return size_in_units( size, unit_bytes, 1 );
+	return size_in_unit( size, unit_bytes, 1 );
 }
 
 char* debug_buffer_to_string( const void* data, size_t size, size_t grouping, bool with_spaces )

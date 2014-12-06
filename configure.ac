@@ -22,7 +22,7 @@ AC_C_BIGENDIAN
 
 CFLAGS="-std=gnu99 -Wall -pedantic -g -ggdb -O0 -DDEBUG -I/usr/local/include/"
 #CFLAGS="$CFLAGS"
-LDFLAGS="$LDFLAGS -lcollections -lm"
+LDFLAGS="$LDFLAGS -lm"
 
 AM_PROG_AR
 

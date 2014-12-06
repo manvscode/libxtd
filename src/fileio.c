@@ -50,7 +50,7 @@ bool file_is_executable( const char* path )
 	return access( path, X_OK ) == 0;
 }
 
-bool file_copy( const char* restrict src_path, const char* restrict dst_path )
+bool file_copy( const char* src_path, const char* dst_path )
 {
 	FILE* src_file = NULL;
 	FILE* dst_file = NULL;
@@ -244,6 +244,43 @@ bool directory_create( const char* path )
 	if( !directory_exists( path ) )
 	{
 		result = mkdir( path, 0700 ) == 0;
+	}
+
+	return result;
+}
+
+const char* basename( const char* path )
+{
+	#if WIN32
+	const char dir_separator = '\\';
+	#else /* Unix OSs */
+	const char dir_separator = '/';
+	#endif
+	const char* basename = strrchr( path, dir_separator );
+	return basename ? basename + 1 : path;
+}
+
+char* path( const char* path )
+{
+	#if WIN32
+	const char dir_separator = '\\';
+	#else /* Unix OSs */
+	const char dir_separator = '/';
+	#endif
+	const char* last_slash = strrchr( path, dir_separator );
+	size_t size = 2;
+
+	if( last_slash && last_slash != path )
+	{
+		size = (last_slash - path) + 1;
+	}
+
+	char* result = malloc( size );
+
+	if( result )
+	{
+		memcpy( result, path, size );
+		result[ size - 1 ] = '\0';
 	}
 
 	return result;

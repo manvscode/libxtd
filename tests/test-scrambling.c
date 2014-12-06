@@ -34,7 +34,7 @@ int main( int argc, char *argv[] )
 	srand( time(NULL) );
 
 
-	random_string( 0, SEED, sizeof(SEED) - 1 );
+	string_random( 0, SEED, sizeof(SEED) - 1 );
 	SEED[ sizeof(SEED) - 1 ] = '\0';
 
 	strcpy( text, "Joseph Marrero is an awesome computer programmer." );
@@ -45,7 +45,7 @@ int main( int argc, char *argv[] )
 	unsigned short pivot = rand();
 
 
-	scramble_string( SEED, text, len, pivot );
+	buffer_scramble( SEED, text, len, pivot );
 	text[ sizeof(text) - 1 ] = '\0';
 
 	print_divider( stdout, "[ Scrambling Text Test ]" );
@@ -60,7 +60,7 @@ int main( int argc, char *argv[] )
 	}
 	printf( "]\n" );
 
-	unscramble_string( SEED, text, len, pivot );
+	buffer_unscramble( SEED, text, len, pivot );
 	text[ sizeof(text) - 1 ] = '\0';
 	printf( "Unscrambled = [%s]\n", text );
 	printf( "Unscrambled = [" );

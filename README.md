@@ -2,10 +2,6 @@ libutility
 ==========
 A collection of utility code for projects using C/C++.
 
-Dependecies
-=============
-* libcollections
-
 License
 =============
     Copyright (C) 2010-2014 Joseph A. Marrero.  http://www.manvscode.com/
