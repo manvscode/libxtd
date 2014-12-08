@@ -44,17 +44,16 @@ bool        file_is_readable   ( const char* path );
 bool        file_is_executable ( const char* path );
 bool        file_copy          ( const char* src_path, const char* dst_path );
 bool        file_delete        ( const char* path );
-long long   file_size          ( const char* path );
+int64_t     file_size          ( const char* path );
 long        file_age           ( const char* path ); /* Returns -1 on error */
-const char* file_basename      ( const char* filename );
+const char* file_basename      ( const char* path );
 const char* file_extension     ( const char* filename );
 char*       file_load_contents ( const char* path, size_t* size );
 bool        is_file            ( const char* path );
 bool        is_directory       ( const char* path );
 bool        directory_exists   ( const char* path );
 bool        directory_create   ( const char* path );
-const char* basename           ( const char* path );
-char*       path               ( const char* path ); /* allocates memory */
+char*       directory_path     ( const char* path ); /* allocates memory */
 int         readline           ( char *buf, size_t size, FILE *stream );
 
 typedef enum size_unit {
@@ -90,8 +89,8 @@ uint32_t fletcher32        ( uint16_t* data, size_t len );
 /*
  * Compression
  */
-bool huffman_encode( const void* _original, size_t original_size, void** _compressed, size_t* compressed_size );
-bool huffman_decode( const void* _compressed, size_t compressed_size, void** _original, size_t* original_size );
+bool huffman_encode ( const void* original, size_t original_size, void** compressed, size_t* compressed_size );
+bool huffman_decode ( const void* compressed, size_t compressed_size, void** original, size_t* original_size );
 
 /*
  * Strings
@@ -143,6 +142,19 @@ void caesar_cypher_encrypt_buffer ( void* buffer, size_t size, int n );
 void caesar_cypher_decrypt_buffer ( void* buffer, size_t size, int n );
 void caesar_cypher_encrypt_text   ( char* text, size_t size, int n );
 void caesar_cypher_decrypt_text   ( char* text, size_t size, int n );
+
+/*
+ * Macros
+ */
+#define Ob(x)                           ((unsigned)Ob_(0 ## x ## uL))
+#define Ob_(x)                          (x & 1 | x >> 2 & 2 | x >> 4 & 4 | x >> 6 & 8 | x >> 8 & 16 | x >> 10 & 32 | x >> 12 & 64 | x >> 14 & 128)
+#define bit_is_disabled( flag, flags )  (!bit_is_set(flag, flags))
+#define bit_is_enabled( flag, flags )   (bit_is_set(flag, flags))
+#define bit_is_set( flag, flags )       (((flags) & (flag)) != 0)
+#define bit_toggle( flag, flags )       ((flags) ^= (flag))
+#define bit_set( flag, flags )          ((flags) |= (flag))
+#define bit_unset( flag, flags )        ((flags) &= ~(flag))
+
 
 #ifdef __cplusplus
 } /* extern "C" */

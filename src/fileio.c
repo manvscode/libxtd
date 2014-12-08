@@ -21,34 +21,8 @@
  */
 #include <stdio.h>
 #include <stdbool.h>
-#include <time.h>
 #include <string.h>
-#ifndef WIN32
-#include <unistd.h>
-#endif
-#include <dirent.h>
-#include <sys/stat.h>
 #include "utility.h"
-
-bool file_exists( const char* path )
-{
-	return access( path, F_OK ) == 0;
-}
-
-bool file_is_writeable( const char* path )
-{
-	return access( path, W_OK ) == 0;
-}
-
-bool file_is_readable( const char* path )
-{
-	return access( path, R_OK ) == 0;
-}
-
-bool file_is_executable( const char* path )
-{
-	return access( path, X_OK ) == 0;
-}
 
 bool file_copy( const char* src_path, const char* dst_path )
 {
@@ -60,14 +34,14 @@ bool file_copy( const char* src_path, const char* dst_path )
 
 	if( !src_path )
 	{
-		return 0;
+		return false;
 	}
 
 	dst_file = fopen( dst_path, "wb" );
 
 	if( !dst_path )
 	{
-		return 0;
+		return false;
 	}
 
 	while( !feof( src_file ) )
@@ -84,68 +58,7 @@ bool file_copy( const char* src_path, const char* dst_path )
 	fclose( src_file );
 	fclose( dst_file );
 
-	return 1;
-}
-
-bool file_delete( const char* path )
-{
-	if( is_directory(path) )
-	{
-		DIR* d = opendir( path );
-		int result = 1;
-
-		if( d )
-		{
-			struct dirent* p_file = readdir( d );
-			result &= file_delete( p_file->d_name );
-		}
-
-		closedir( d );
-		return result;
-	}
-	else
-	{
-		return unlink( path ) == 0;
-	}
-}
-
-long long file_size( const char* path )
-{
-    struct stat s;
-
-    if( stat( path, &s ) == 0 )
-	{
-        return s.st_size;
-    }
-
-	return 0L;
-}
-
-long file_age( const char* path ) // Return age of file in seconds. -1 = doesnt exist or error
-{
-    struct stat s;
-
-    if( stat( path, &s ) == 0 )
-	{
-    	return time(NULL) - s.st_mtime;
-    }
-
-	return -1;
-}
-
-const char* file_basename( const char* filename )
-{
-	const char *base = filename;
-
-	while( *filename )
-	{
-		if( *filename++ == '/' )
-		{
-			base = filename;
-		}
-	}
-
-	return base;
+	return true;
 }
 
 const char* file_extension( const char* filename )
@@ -207,66 +120,28 @@ char* file_load_contents( const char* path, size_t *size )
 	return result;
 }
 
-bool is_file( const char* path )
+const char* basename( const char* path, char dir_separator )
 {
-	struct stat s;
+	#if
+	const char *base = filename;
 
-	if( stat( path, &s ) == 0 )
+	while( *filename )
 	{
-		return S_ISREG( s.st_mode );
+		if( *filename++ == dir_separator )
+		{
+			base = filename;
+		}
 	}
 
-	return 0;
-}
-
-bool is_directory( const char* path )
-{
-    struct stat s;
-
-    if( stat( path, &s ) == 0 )
-	{
-        return S_ISDIR(s.st_mode);
-    }
-
-	return 0;
-}
-
-bool directory_exists( const char* path )
-{
-    struct stat s;
-    return stat( path, &s ) != -1;
-}
-
-bool directory_create( const char* path )
-{
-	bool result = false;
-
-	if( !directory_exists( path ) )
-	{
-		result = mkdir( path, 0700 ) == 0;
-	}
-
-	return result;
-}
-
-const char* basename( const char* path )
-{
-	#if WIN32
-	const char dir_separator = '\\';
-	#else /* Unix OSs */
-	const char dir_separator = '/';
-	#endif
+	return base;
+	#else
 	const char* basename = strrchr( path, dir_separator );
 	return basename ? basename + 1 : path;
+	#endif
 }
 
-char* path( const char* path )
+char* path( const char* path, char dir_separator )
 {
-	#if WIN32
-	const char dir_separator = '\\';
-	#else /* Unix OSs */
-	const char dir_separator = '/';
-	#endif
 	const char* last_slash = strrchr( path, dir_separator );
 	size_t size = 2;
 

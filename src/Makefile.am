@@ -8,10 +8,12 @@ checksums.c \
 endianess.c \
 exceptions.c \
 fileio.c \
+fileio-unix.c \
 huffman.c \
 strings.c \
 console.c \
-time.c 
+time.c \
+time-unix.c 
 
 libutility_headers = \
 exceptions.h \
