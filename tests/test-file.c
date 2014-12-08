@@ -53,17 +53,17 @@ int main( int argc, char *argv[] )
 	const char* path2 = "/joe/apps/junk/omg";
 	const char* path3 = "/";
 
-	const char* basename_path1 = basename( path1 );
-	const char* basename_path2 = basename( path2 );
-	const char* basename_path3 = basename( path3 );
+	const char* basename_path1 = file_basename( path1 );
+	const char* basename_path2 = file_basename( path2 );
+	const char* basename_path3 = file_basename( path3 );
 
 	printf( "basename_path1 = %s --> %s\n", path1, basename_path1 );
 	printf( "basename_path2 = %s --> %s\n", path2, basename_path2 );
 	printf( "basename_path3 = %s --> %s\n", path3, basename_path3 );
 
-	char* path_path1 = path( path1 );
-	char* path_path2 = path( path2 );
-	char* path_path3 = path( path3 );
+	char* path_path1 = directory_path( path1 );
+	char* path_path2 = directory_path( path2 );
+	char* path_path3 = directory_path( path3 );
 
 	printf( "path_path1 = %s --> %s\n", path1, path_path1 );
 	printf( "path_path2 = %s --> %s\n", path2, path_path2 );

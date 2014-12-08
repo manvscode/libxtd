@@ -159,9 +159,9 @@ bool directory_create( const char* path )
 
 extern char* path( const char* path, char dir_separator );
 
-char* directory_path( const char* path )
+char* directory_path( const char* _path )
 {
-	assert( path );
-	return path( path, '/' );
+	assert( _path );
+	return path( _path, '/' );
 }
 

@@ -778,13 +778,12 @@ Android.mk: Makefile.am
 		src/caesar.c \
 		src/checksums.c \
 		src/console.c \
-		src/crash.c \
 		src/endianess.c \
 		src/exceptions.c \
 		src/fileio.c \
-		src/fsm.c \
 		src/huffman.c \
-		src/mime.c \
+		src/strings.c \
+		src/time.c \
 	-:CFLAGS -std=c99 -Wall -O3 -I./src/ -I/usr/local/include/ -L. \
 	-:LDFLAGS -ldl -lm -lcollections \
 	> $@

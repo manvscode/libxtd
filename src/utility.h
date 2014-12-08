@@ -45,16 +45,17 @@ bool        file_is_executable ( const char* path );
 bool        file_copy          ( const char* src_path, const char* dst_path );
 bool        file_delete        ( const char* path );
 int64_t     file_size          ( const char* path );
-long        file_age           ( const char* path ); /* Returns -1 on error */
+const char* file_size_string   ( const char* path, bool use_base_two, int precision );
+long        file_age           ( const char* path ); /* returns -1 on error */
 const char* file_basename      ( const char* path );
 const char* file_extension     ( const char* filename );
-char*       file_load_contents ( const char* path, size_t* size );
+char*       file_load_contents ( const char* path, size_t* size ); /* allocates memory */
 bool        is_file            ( const char* path );
 bool        is_directory       ( const char* path );
 bool        directory_exists   ( const char* path );
 bool        directory_create   ( const char* path );
 char*       directory_path     ( const char* path ); /* allocates memory */
-int         readline           ( char *buf, size_t size, FILE *stream );
+int         readline           ( char *buffer, size_t size, FILE *stream );
 
 typedef enum size_unit {
 	unit_bytes = 0,
@@ -77,7 +78,7 @@ const char* size_in_unit      ( size_t size, size_unit_t unit, int precision );
 const char* size_in_best_unit ( size_t size, bool use_base_two, int precision );
 
 /*
- * Checksums
+ * Checksums and Hashes
  */
 uint32_t java_hash         ( const uint8_t* data, size_t len );
 uint32_t xor8              ( const uint8_t* data, size_t len );
@@ -166,23 +167,26 @@ namespace utility {
 	using ::file_copy;
 	using ::file_delete;
 	using ::file_size;
+	using ::file_size_string;
 	using ::file_age;
+	using ::file_basename;
 	using ::file_load_contents;
 	using ::is_file;
 	using ::is_directory;
 	using ::directory_exists;
 	using ::directory_create;
-	using ::basename;
-	using ::path;
+	using ::directory_path;
 	using ::size_unit_t;
-	using ::size_in_units;
-	using ::appropriate_size;
+	using ::size_in_unit;
+	using ::size_in_best_unit;
 	using ::java_hash;
 	using ::xor8;
 	using ::adler32;
 	using ::fletcher16_simple;
 	using ::fletcher16;
 	using ::fletcher32;
+	using ::huffman_encode;
+	using ::huffman_decode;
 	using ::string_random_type_t;
 	using ::print_divider;
 	using ::byte_to_binary;

@@ -13,7 +13,7 @@ huffman.c \
 strings.c \
 console.c \
 time.c \
-time-unix.c 
+time-unix.c
 
 libutility_headers = \
 exceptions.h \

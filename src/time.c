@@ -1,4 +1,5 @@
 #include <stdint.h>
+#include "utility.h"
 
 uint64_t time_secs( void )
 {

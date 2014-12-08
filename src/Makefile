@@ -125,8 +125,8 @@ am__installdirs = "$(DESTDIR)$(libdir)" \
 LTLIBRARIES = $(lib_LTLIBRARIES)
 __top_builddir__lib_libutility_la_LIBADD =
 am__objects_1 = bytes.lo caesar.lo checksums.lo endianess.lo \
-	exceptions.lo fileio.lo huffman.lo strings.lo console.lo \
-	time.lo
+	exceptions.lo fileio.lo fileio-unix.lo huffman.lo strings.lo \
+	console.lo time.lo time-unix.lo
 am___top_builddir__lib_libutility_la_OBJECTS = $(am__objects_1)
 __top_builddir__lib_libutility_la_OBJECTS =  \
 	$(am___top_builddir__lib_libutility_la_OBJECTS)
@@ -321,10 +321,12 @@ checksums.c \
 endianess.c \
 exceptions.c \
 fileio.c \
+fileio-unix.c \
 huffman.c \
 strings.c \
 console.c \
-time.c 
+time.c \
+time-unix.c
 
 libutility_headers = \
 exceptions.h \
@@ -440,9 +442,11 @@ include ./$(DEPDIR)/checksums.Plo
 include ./$(DEPDIR)/console.Plo
 include ./$(DEPDIR)/endianess.Plo
 include ./$(DEPDIR)/exceptions.Plo
+include ./$(DEPDIR)/fileio-unix.Plo
 include ./$(DEPDIR)/fileio.Plo
 include ./$(DEPDIR)/huffman.Plo
 include ./$(DEPDIR)/strings.Plo
+include ./$(DEPDIR)/time-unix.Plo
 include ./$(DEPDIR)/time.Plo
 
 .c.o:

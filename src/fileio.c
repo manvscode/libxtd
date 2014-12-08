@@ -24,6 +24,12 @@
 #include <string.h>
 #include "utility.h"
 
+const char* file_size_string( const char* path, bool use_base_two, int precision )
+{
+	int64_t size = file_size( path );
+	return size_in_best_unit( size, use_base_two, precision );
+}
+
 bool file_copy( const char* src_path, const char* dst_path )
 {
 	FILE* src_file = NULL;
@@ -122,14 +128,14 @@ char* file_load_contents( const char* path, size_t *size )
 
 const char* basename( const char* path, char dir_separator )
 {
-	#if
-	const char *base = filename;
+	#if 1
+	const char *base = path;
 
-	while( *filename )
+	while( *path )
 	{
-		if( *filename++ == dir_separator )
+		if( *path++ == dir_separator )
 		{
-			base = filename;
+			base = path;
 		}
 	}
 
@@ -161,14 +167,14 @@ char* path( const char* path, char dir_separator )
 	return result;
 }
 
-int readline( char *buf, size_t size, FILE *stream )
+int readline( char *buffer, size_t size, FILE *stream )
 {
-    if( fgets( buf, size, stream ) == NULL )
+    if( fgets( buffer, size, stream ) == NULL )
 	{
         return EOF;
     }
 
-    char *n = strchr( buf, '\n' );
+    char *n = strchr( buffer, '\n' );
 
     if( n )
 	{
