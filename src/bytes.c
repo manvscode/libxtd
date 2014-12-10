@@ -183,12 +183,11 @@ const char* size_in_best_unit( size_t size, bool use_base_two, int precision )
 
 char* debug_buffer_to_string( const void* data, size_t size, size_t grouping, bool with_spaces )
 {
-	#if 0
-	if( (grouping < 1 || grouping > 8) || (grouping & (grouping - 1)) != 0 )
+	//if( (grouping < 1 || grouping > 8) || (grouping & (grouping - 1)) != 0 )
+	if( (grouping < 1 || grouping > 8) )
 	{
 		grouping = 1;
 	}
-	#endif
 
 	size_t estimated_size = size * (with_spaces ? 2 : 1 ) * grouping * 2 + 2 + 1;
 	char* s = (char*) malloc( estimated_size );
@@ -203,7 +202,7 @@ char* debug_buffer_to_string( const void* data, size_t size, size_t grouping, bo
 		{
 			char temp_buffer[ 2 + 1 ];
 
-			for( size_t j = 0; j < grouping; j++ )
+			for( size_t j = 0; j < grouping && (i + j) < size; j++ )
 			{
 				unsigned char* b = (unsigned char*) data + i + j;
 				snprintf( temp_buffer, sizeof(temp_buffer), "%02x", *b );
@@ -211,8 +210,7 @@ char* debug_buffer_to_string( const void* data, size_t size, size_t grouping, bo
 				strcat( s, temp_buffer );
 			}
 
-
-			if( with_spaces && i != size - 1 ) strcat( s, " " );
+			if( with_spaces && i < (size - grouping) ) strcat( s, " " );
 			//if(  newline_every != 0 && i % newline_every == 0 ) strcat( s, "\n" );
 
 			i += grouping;

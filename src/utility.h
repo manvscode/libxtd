@@ -126,7 +126,7 @@ void        swap                   ( void* left, void* right, size_t size );
 bool        is_big_endian          ( void );
 void        hton                   ( void* mem, size_t size );
 void        ntoh                   ( void* mem, size_t size );
-char*       debug_buffer_to_string ( const void* data, size_t size, size_t grouping, bool with_spaces );
+char*       debug_buffer_to_string ( const void* data, size_t size, size_t grouping, bool with_spaces ); /* allocates memory */
 
 /*
  *  Time
