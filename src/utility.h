@@ -22,9 +22,10 @@
 #ifndef _UTILITY_H_
 #define _UTILITY_H_
 #include <stdlib.h>
+#include <stdint.h>
 #include <stdio.h>
 #include <time.h>
-#if defined(__STDC_VERSION__) && (__STDC_VERSION__ >= 199901L)
+#if (defined(__STDC_VERSION__) && (__STDC_VERSION__ >= 199901L)) || (defined(_MSC_VER) && _MSC_VER >= 0)
 #include <stdbool.h>
 #include <stdint.h>
 #else

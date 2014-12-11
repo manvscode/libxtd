@@ -25,7 +25,6 @@
 #include <string.h>
 #include <assert.h>
 #include <windows.h>
-#include <dirent.h>
 #include <sys/stat.h>
 #include "utility.h"
 
@@ -68,18 +67,21 @@ bool file_is_writeable( const char* path )
 {
 	assert( path );
 	assert( false && "Not implemented!" );
+	return false;
 }
 
 bool file_is_readable( const char* path )
 {
 	assert( path );
-	assert( false && "Not implemented!" );
+	assert(false && "Not implemented!");
+	return false;
 }
 
 bool file_is_executable( const char* path )
 {
 	assert( path );
-	assert( false && "Not implemented!" );
+	assert(false && "Not implemented!");
+	return false;
 }
 
 bool file_delete( const char* path )
@@ -93,7 +95,7 @@ int64_t file_size( const char* path )
 	WIN32_FILE_ATTRIBUTE_DATA fad;
 	assert( path );
 
-    if( GetFileAttributesEx(name.c_str(), GetFileExInfoStandard, &fad) )
+    if( GetFileAttributesEx(path, GetFileExInfoStandard, &fad) )
 	{
 		LARGE_INTEGER size;
 		size.HighPart = fad.nFileSizeHigh;
@@ -107,7 +109,8 @@ int64_t file_size( const char* path )
 long file_age( const char* path ) // Return age of file in seconds. -1 = doesnt exist or error
 {
 	assert( path );
-	assert( false && "Not implemented!" );
+	assert(false && "Not implemented!");
+	return -1;
 }
 
 extern const char* basename( const char* path, char dir_separator );
@@ -149,7 +152,8 @@ bool is_directory( const char* path )
 bool directory_exists( const char* path )
 {
 	assert( path );
-	assert( false && "Not implemented!" );
+	assert(false && "Not implemented!");
+	return false;
 }
 
 bool directory_create( const char* path )
@@ -160,8 +164,8 @@ bool directory_create( const char* path )
 
 extern char* path( const char* path, char dir_separator );
 
-char* directory_path( const char* path )
+char* directory_path( const char* p )
 {
-	assert( path );
-	return path( path, '\\' );
+	assert( p );
+	return path( p, '\\' );
 }

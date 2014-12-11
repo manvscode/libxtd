@@ -11,7 +11,7 @@ double time_seconds( void )
 
 	time.QuadPart /= frequency.QuadPart;
 	//return time.QuadPart / 1000000.0;
-	return time.QuadPart;
+	return (double) time.QuadPart;
 }
 
 double time_milliseconds( void )

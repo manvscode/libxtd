@@ -20,10 +20,15 @@
  * THE SOFTWARE.
  */
 #include <stdlib.h>
+#include <stdbool.h>
 #include <ctype.h>
 #include <limits.h>
 #include <string.h>
 #include "utility.h"
+
+#ifdef _WIN32
+#define snprintf  _snprintf
+#endif
 
 typedef unsigned char byte_t;
 
@@ -45,7 +50,7 @@ void buffer_scramble( const char* key, void* buffer, size_t size, unsigned short
 {
 	size_t key_len  = strlen( key );
 	unsigned char* bytes = (unsigned char*) buffer;
-	ssize_t sz = size;
+	int64_t sz = size;
 
 	while( sz >= 0 )
 	{
@@ -59,7 +64,7 @@ void buffer_unscramble( const char* key, void* buffer, size_t size, unsigned sho
 {
 	size_t key_len  = strlen( key );
 	unsigned char* bytes = (unsigned char*) buffer;
-	ssize_t sz = size;
+	int64_t sz = size;
 
 	while( sz >= 0 )
 	{
@@ -86,11 +91,19 @@ void xor_bytes( const void* a, size_t a_size, const void* b, size_t b_size, void
 
 void swap( void* left, void* right, size_t size )
 {
+#if _WIN32
+	unsigned char* tmp = malloc( size );
+#else
 	unsigned char tmp[ size ];
+#endif
 
 	memcpy( tmp, left, size );
 	memcpy( left, right, size );
 	memcpy( right, tmp, size );
+
+#if _WIN32
+	free( tmp );
+#endif
 }
 
 

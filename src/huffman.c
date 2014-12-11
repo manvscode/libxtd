@@ -50,6 +50,15 @@ typedef struct huffman_node {
 	struct huffman_node* parent;
 } huffman_node_t;
 
+#if _WIN32
+static void            huffman_build_tree    ( huffman_node_t** root, uint8_t frequencies[] );
+static void            huffman_build_codes   ( huffman_node_t* root, huffman_code_t codes[], uint16_t code, uint16_t size );
+static int             huffman_node_compare  ( const huffman_node_t* p_data_left, const huffman_node_t* p_data_right );
+static huffman_node_t* huffman_node_create   ( uint8_t symbol, size_t frequency, huffman_node_t* left, huffman_node_t* right, huffman_node_t* parent );
+static void            huffman_node_destroy  ( huffman_node_t** node );
+static void            huffman_heap_push     ( huffman_node_t** array, size_t length );
+static void            huffman_heap_pop      ( huffman_node_t** array, size_t length );
+#else
 static inline void            huffman_build_tree    ( huffman_node_t** root, uint8_t frequencies[] );
 static inline void            huffman_build_codes   ( huffman_node_t* root, huffman_code_t codes[], uint16_t code, uint16_t size );
 static inline int             huffman_node_compare  ( const huffman_node_t* p_data_left, const huffman_node_t* p_data_right );
@@ -57,6 +66,7 @@ static inline huffman_node_t* huffman_node_create   ( uint8_t symbol, size_t fre
 static inline void            huffman_node_destroy  ( huffman_node_t** node );
 static inline void            huffman_heap_push     ( huffman_node_t** array, size_t length );
 static inline void            huffman_heap_pop      ( huffman_node_t** array, size_t length );
+#endif
 
 
 bool huffman_encode( const void* _original, size_t original_size, void** _compressed, size_t* compressed_size )
@@ -92,7 +102,7 @@ bool huffman_encode( const void* _original, size_t original_size, void** _compre
 
 	for( size_t symbol = 0; symbol < ASCII_COUNT; symbol++ )
 	{
-		uint8_t scaled_freq = UCHAR_MAX * (frequency_table[ symbol ] / ((double)max));
+		uint8_t scaled_freq = (uint8_t) (UCHAR_MAX * (frequency_table[ symbol ] / ((double)max)));
 
 		if( scaled_freq == 0 && frequency_table[ symbol ] != 0 )
 		{

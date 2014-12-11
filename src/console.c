@@ -23,6 +23,10 @@
 #include <string.h>
 #include <ctype.h>
 
+#ifdef _WIN32
+#define snprintf _snprintf
+#endif
+
 void print_divider( FILE* fd, const char* title )
 {
 	const char* empty = "";
@@ -39,7 +43,7 @@ void print_divider( FILE* fd, const char* title )
 		int half_len = len >> 1;
 		int half_buffer = sizeof(buffer) >> 1;
 
-		snprintf( buffer, sizeof(buffer), "%*s%*s", half_buffer + half_len, title, half_buffer - half_len, empty );
+		snprintf(buffer, sizeof(buffer), "%*s%*s", half_buffer + half_len, title, half_buffer - half_len, empty);
 
 		for( size_t i = 0; i < sizeof(buffer) - 1; i++ )
 		{
