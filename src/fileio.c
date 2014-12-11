@@ -27,7 +27,7 @@
 const char* file_size_string( const char* path, bool use_base_two, int precision )
 {
 	int64_t size = file_size( path );
-	return size_in_best_unit( size, use_base_two, precision );
+	return size_in_best_unit( (size_t) (size >= 0 ? size : 0), use_base_two, precision );
 }
 
 bool file_copy( const char* src_path, const char* dst_path )
@@ -148,20 +148,36 @@ const char* basename( const char* path, char dir_separator )
 
 char* path( const char* path, char dir_separator )
 {
-	const char* last_slash = strrchr( path, dir_separator );
-	size_t size = 2;
+	char* p     = (char*) path;
+	char *slash = (char*) path;
+	int length  = 0;
 
-	if( last_slash && last_slash != path )
+	while (*p)
 	{
-		size = (last_slash - path) + 1;
+		if (*p == dir_separator)
+		{
+			slash = p;
+		}
+
+		p++;
 	}
 
-	char* result = malloc( size );
-
-	if( result )
+	if (slash == '\0')
 	{
-		memcpy( result, path, size );
-		result[ size - 1 ] = '\0';
+		path   = "";
+		length = 0;
+	}
+	else
+	{
+		length = slash - path;
+	}
+
+	char* result = malloc( length + 1 );
+
+	if (result)
+	{
+		strncpy(result, path, length);
+		result[length] = '\0';
 	}
 
 	return result;

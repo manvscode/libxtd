@@ -39,24 +39,32 @@ extern "C" {
 /*
  * File IO
  */
-bool        file_exists        ( const char* path );
-bool        file_is_writeable  ( const char* path );
-bool        file_is_readable   ( const char* path );
-bool        file_is_executable ( const char* path );
-bool        file_copy          ( const char* src_path, const char* dst_path );
-bool        file_delete        ( const char* path );
-int64_t     file_size          ( const char* path );
-const char* file_size_string   ( const char* path, bool use_base_two, int precision );
-long        file_age           ( const char* path ); /* returns -1 on error */
-const char* file_basename      ( const char* path );
-const char* file_extension     ( const char* filename );
-char*       file_load_contents ( const char* path, size_t* size ); /* allocates memory */
-bool        is_file            ( const char* path );
-bool        is_directory       ( const char* path );
-bool        directory_exists   ( const char* path );
-bool        directory_create   ( const char* path );
-char*       directory_path     ( const char* path ); /* allocates memory */
-int         readline           ( char *buffer, size_t size, FILE *stream );
+typedef void (*file_enumerate_fxn_t) ( const char* filename );
+typedef enum enumerate_mode {
+	ENUMERATE_FILES,
+	ENUMERATE_DIRECTORIES,
+	ENUMERATE_ALL
+} enumerate_mode_t;
+
+bool        file_exists              ( const char* path );
+bool        file_is_writeable        ( const char* path );
+bool        file_is_readable         ( const char* path );
+bool        file_is_executable       ( const char* path );
+bool        file_copy                ( const char* src_path, const char* dst_path );
+bool        file_delete              ( const char* path );
+int64_t     file_size                ( const char* path );
+const char* file_size_string         ( const char* path, bool use_base_two, int precision );
+int64_t     file_age                 ( const char* path ); /* returns -1 on error */
+const char* file_basename            ( const char* path );
+const char* file_extension           ( const char* filename );
+char*       file_load_contents       ( const char* path, size_t* size ); /* allocates memory */
+bool        is_file                  ( const char* path );
+bool        is_directory             ( const char* path );
+bool        directory_exists         ( const char* path );
+bool        directory_create         ( const char* path );
+char*       directory_path           ( const char* path ); /* allocates memory */
+void        directory_enumerate      ( const char* path, bool recursive, enumerate_mode_t mode, file_enumerate_fxn_t process_file );
+int         readline                 ( char *buffer, size_t size, FILE *stream );
 
 typedef enum size_unit {
 	unit_bytes = 0,
@@ -177,6 +185,8 @@ namespace utility {
 	using ::directory_exists;
 	using ::directory_create;
 	using ::directory_path;
+	using ::directory_enumerate;
+	using ::file_enumerate_fxn_t;
 	using ::size_unit_t;
 	using ::size_in_unit;
 	using ::size_in_best_unit;
@@ -191,11 +201,10 @@ namespace utility {
 	using ::string_random_type_t;
 	using ::print_divider;
 	using ::byte_to_binary;
-	using ::crash;
-	using ::scramble_string;
-	using ::unscramble_string;
+	using ::buffer_scramble;
+	using ::buffer_unscramble;
 	using ::string_random;
-	using ::ordinal_string;
+	using ::string_ordinal;
 	using ::xor_bytes;
 	using ::swap;
 	using ::is_big_endian;
