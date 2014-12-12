@@ -90,7 +90,7 @@ int64_t file_size( const char* path )
 	return 0L;
 }
 
-long file_age( const char* path ) // Return age of file in seconds. -1 = doesnt exist or error
+int64_t file_age( const char* path ) // Return age of file in seconds. -1 = doesnt exist or error
 {
     struct stat s;
 	assert( path );
