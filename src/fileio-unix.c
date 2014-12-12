@@ -165,3 +165,51 @@ char* directory_path( const char* _path )
 	return path( _path, '/' );
 }
 
+#ifndef MAX_PATH
+#define MAX_PATH   256
+#endif
+
+void directory_enumerate( const char* path, bool recursive, enumerate_mode_t mode, file_enumerate_fxn_t process_file, void* args )
+{
+	DIR* dir = opendir( path );
+
+	if( dir )
+	{
+		size_t len = strlen( path );
+		bool ends_with_slash = len > 0 && path[ len - 1 ] == '/';
+
+		/* print all the files and directories within directory */
+		for( struct dirent* ent = readdir( dir ); ent != NULL; ent = readdir( dir ) )
+		{
+			if( strcmp(ent->d_name, ".") == 0 ) continue;
+			else if( strcmp(ent->d_name, "..") == 0 ) continue;
+
+			bool is_dir = ent->d_type & DT_DIR;
+
+			char absolute_path[ MAX_PATH ];
+			snprintf( absolute_path, sizeof(absolute_path), "%s%s%s", path, ends_with_slash ? "" : "/", ent->d_name );
+			absolute_path[ sizeof(absolute_path) - 1 ] = '\0';
+
+			if( mode == ENUMERATE_FILES && is_dir )
+			{
+				// Ignore this.
+			}
+			else if( mode == ENUMERATE_DIRECTORIES && !is_dir )
+			{
+				// Ignore this.
+			}
+			else
+			{
+				process_file( absolute_path, args );
+			}
+
+			if( recursive && is_dir )
+			{
+				directory_enumerate( absolute_path, recursive, mode, process_file, args );
+			}
+		}
+
+		closedir( dir );
+	}
+}
+

@@ -39,7 +39,7 @@ extern "C" {
 /*
  * File IO
  */
-typedef void (*file_enumerate_fxn_t) ( const char* filename );
+typedef void (*file_enumerate_fxn_t) ( const char* filename, void* args );
 typedef enum enumerate_mode {
 	ENUMERATE_FILES,
 	ENUMERATE_DIRECTORIES,
@@ -63,7 +63,7 @@ bool        is_directory             ( const char* path );
 bool        directory_exists         ( const char* path );
 bool        directory_create         ( const char* path );
 char*       directory_path           ( const char* path ); /* allocates memory */
-void        directory_enumerate      ( const char* path, bool recursive, enumerate_mode_t mode, file_enumerate_fxn_t process_file );
+void        directory_enumerate      ( const char* path, bool recursive, enumerate_mode_t mode, file_enumerate_fxn_t process_file, void* args );
 int         readline                 ( char *buffer, size_t size, FILE *stream );
 
 typedef enum size_unit {

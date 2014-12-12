@@ -7,6 +7,7 @@ $(top_builddir)/bin/test-bytes \
 $(top_builddir)/bin/test-exceptions \
 $(top_builddir)/bin/test-scrambling \
 $(top_builddir)/bin/test-file \
+$(top_builddir)/bin/test-dir \
 $(top_builddir)/bin/test-huffman \
 $(top_builddir)/bin/test-time
 
@@ -18,6 +19,8 @@ __top_builddir__bin_test_scrambling_SOURCES  = test-scrambling.c
 __top_builddir__bin_test_scrambling_LDFLAGS  = -lm $(top_builddir)/lib/.libs/libutility.a
 __top_builddir__bin_test_file_SOURCES        = test-file.c
 __top_builddir__bin_test_file_LDFLAGS        = -lm $(top_builddir)/lib/.libs/libutility.a
+__top_builddir__bin_test_dir_SOURCES         = test-dir.c
+__top_builddir__bin_test_dir_LDFLAGS         = -lm $(top_builddir)/lib/.libs/libutility.a
 __top_builddir__bin_test_huffman_SOURCES     = test-huffman.c
 __top_builddir__bin_test_huffman_LDFLAGS     = -lm $(top_builddir)/lib/.libs/libutility.a
 __top_builddir__bin_test_time_SOURCES        = test-time.c

@@ -39,17 +39,17 @@ bool file_exists( const char* path )
 	assert( path );
 	DWORD attributes = GetFileAttributes( path ); // from winbase.h
 
-	if (INVALID_FILE_ATTRIBUTES == attributes)
+	if( INVALID_FILE_ATTRIBUTES == attributes )
 	{
 		result = false;
 	}
-	else if(attributes & FILE_ATTRIBUTE_DIRECTORY)
+	else if( attributes & FILE_ATTRIBUTE_DIRECTORY )
 	{
 		result = false;
 	}
 	else
 	{
-		switch(GetLastError())
+		switch( GetLastError() )
 		{
 			case ERROR_FILE_NOT_FOUND:
 			case ERROR_PATH_NOT_FOUND:
@@ -121,7 +121,7 @@ int64_t file_age( const char* path ) // Return age of file in seconds. -1 = does
 	WIN32_FILE_ATTRIBUTE_DATA fad;
 	assert(path);
 
-	if (GetFileAttributesEx(path, GetFileExInfoStandard, &fad))
+	if( GetFileAttributesEx(path, GetFileExInfoStandard, &fad) )
 	{
 		int64_t timeInWindowsEpoch = ((int64_t)fad.ftCreationTime.dwHighDateTime << 32) | fad.ftCreationTime.dwLowDateTime;
 		return (timeInWindowsEpoch / WINDOWS_TICK - SEC_TO_UNIX_EPOCH);
@@ -144,7 +144,7 @@ bool is_file( const char* path )
 	assert( path );
 	DWORD attributes = GetFileAttributes( path );
 
-	if (attributes == INVALID_FILE_ATTRIBUTES)
+	if( attributes == INVALID_FILE_ATTRIBUTES )
 	{
 		result = false;
 	}
@@ -162,7 +162,7 @@ bool is_directory( const char* path )
 	assert( path );
 	DWORD attributes = GetFileAttributes( path );
 
-	if (attributes == INVALID_FILE_ATTRIBUTES)
+	if( attributes == INVALID_FILE_ATTRIBUTES )
 	{
 		result = false;
 	}
@@ -179,11 +179,11 @@ bool directory_exists( const char* path )
 	assert( path );
 	DWORD attributes = GetFileAttributes(path);
 
-	if (attributes == INVALID_FILE_ATTRIBUTES)
+	if( attributes == INVALID_FILE_ATTRIBUTES )
 	{
 		return false;
 	}
-	else if (attributes & FILE_ATTRIBUTE_DIRECTORY)
+	else if( attributes & FILE_ATTRIBUTE_DIRECTORY )
 	{
 		return true;
 	}
@@ -205,7 +205,7 @@ char* directory_path( const char* p )
 	return path( p, '\\' );
 }
 
-void directory_enumerate( const char* path, bool recursive, enumerate_mode_t mode, file_enumerate_fxn_t process_file )
+void directory_enumerate( const char* path, bool recursive, enumerate_mode_t mode, file_enumerate_fxn_t process_file, void* args )
 {
 	WIN32_FIND_DATA find_data;
 	BOOL enumerating = true;
@@ -214,34 +214,34 @@ void directory_enumerate( const char* path, bool recursive, enumerate_mode_t mod
 		 find != INVALID_HANDLE_VALUE && enumerating;
 		 enumerating = FindNextFile(find, &find_data) )
 	{
-		if (strcmp(find_data.cFileName, ".") == 0) continue;
-		else if (strcmp(find_data.cFileName, "..") == 0) continue;
+		if( strcmp(find_data.cFileName, ".") == 0 ) continue;
+		else if( strcmp(find_data.cFileName, "..") == 0 ) continue;
 
 		char* _path = directory_path(path);
 
-		char absolutePath[_MAX_PATH];
-		snprintf(absolutePath, sizeof(absolutePath), "%s\\%s", _path, find_data.cFileName);
-		absolutePath[sizeof(absolutePath) - 1] = '\0';
-		free(_path);
+		char absolute_path[ MAX_PATH ];
+		snprintf( absolute_path, sizeof(absolute_path), "%s\\%s", _path, find_data.cFileName );
+		absolute_path[ sizeof(absolute_path) - 1] = '\0';
+		free( _path );
 
-		bool is_dir = is_directory(absolutePath);
+		bool is_dir = is_directory( absolute_path);
 
-		if (mode == ENUMERATE_FILES && is_dir)
+		if( mode == ENUMERATE_FILES && is_dir )
 		{
-			continue;
+			// Ignore this.
 		}
-		else if (mode == ENUMERATE_DIRECTORIES && !is_dir)
+		else if( mode == ENUMERATE_DIRECTORIES && !is_dir )
 		{
-			continue;
-		}
-
-		if (recursive && is_dir)
-		{
-			directory_enumerate(absolutePath, recursive, mode, process_file);
+			// Ignore this.
 		}
 		else
 		{
-			process_file(absolutePath);
+			process_file( absolute_path, args );
+		}
+
+		if( recursive && is_dir )
+		{
+			directory_enumerate( absolute_path, recursive, mode, process_file, args);
 		}
 	}
 }
