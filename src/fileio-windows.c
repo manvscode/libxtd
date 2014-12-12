@@ -205,26 +205,46 @@ char* directory_path( const char* p )
 	return path( p, '\\' );
 }
 
+static void __directory_enumerate( const char* path, bool recursive, enumerate_mode_t mode, file_enumerate_fxn_t process_file, void* args );
+
 void directory_enumerate( const char* path, bool recursive, enumerate_mode_t mode, file_enumerate_fxn_t process_file, void* args )
+{
+	if( path )
+	{
+		size_t len = strlen( path );
+		bool ends_with_slash = len > 0 && path[ len - 1 ] == '\\';
+		size_t sz = ends_with_slash ? len : (len + 1);
+
+		char path_no_trailing_slash[ MAX_PATH ];
+		strncpy( path_no_trailing_slash, path, sz );
+		path_no_trailing_slash[ sz - 1 ] = '\0';
+
+		__directory_enumerate( path_no_trailing_slash, recursive, mode, process_file, args );
+	}
+}
+
+void __directory_enumerate( const char* path, bool recursive, enumerate_mode_t mode, file_enumerate_fxn_t process_file, void* args )
 {
 	WIN32_FIND_DATA find_data;
 	BOOL enumerating = true;
 
-	for (HANDLE find = FindFirstFile(path, &find_data);
+	char path_with_wildcard[MAX_PATH];
+	snprintf( path_with_wildcard, sizeof(path_with_wildcard), "%s\\*", path );
+	path_with_wildcard[ sizeof(path_with_wildcard) - 1 ] = '\0';
+
+
+	for (HANDLE find = FindFirstFile( path_with_wildcard, &find_data );
 		 find != INVALID_HANDLE_VALUE && enumerating;
-		 enumerating = FindNextFile(find, &find_data) )
+		 enumerating = FindNextFile( find, &find_data ) )
 	{
 		if( strcmp(find_data.cFileName, ".") == 0 ) continue;
 		else if( strcmp(find_data.cFileName, "..") == 0 ) continue;
 
-		char* _path = directory_path(path);
-
 		char absolute_path[ MAX_PATH ];
-		snprintf( absolute_path, sizeof(absolute_path), "%s\\%s", _path, find_data.cFileName );
+		snprintf( absolute_path, sizeof(absolute_path), "%s\\%s", path, find_data.cFileName );
 		absolute_path[ sizeof(absolute_path) - 1] = '\0';
-		free( _path );
 
-		bool is_dir = is_directory( absolute_path);
+		bool is_dir = find_data.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY;
 
 		if( mode == ENUMERATE_FILES && is_dir )
 		{
@@ -241,7 +261,7 @@ void directory_enumerate( const char* path, bool recursive, enumerate_mode_t mod
 
 		if( recursive && is_dir )
 		{
-			directory_enumerate( absolute_path, recursive, mode, process_file, args);
+			__directory_enumerate( absolute_path, recursive, mode, process_file, args);
 		}
 	}
 }

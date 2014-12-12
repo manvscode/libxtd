@@ -169,15 +169,30 @@ char* directory_path( const char* _path )
 #define MAX_PATH   256
 #endif
 
+static void __directory_enumerate( const char* path, bool recursive, enumerate_mode_t mode, file_enumerate_fxn_t process_file, void* args );
+
 void directory_enumerate( const char* path, bool recursive, enumerate_mode_t mode, file_enumerate_fxn_t process_file, void* args )
+{
+	if( path )
+	{
+		size_t len = strlen( path );
+		bool ends_with_slash = len > 0 && path[ len - 1 ] == '/';
+		size_t sz = ends_with_slash ? len : (len + 1);
+
+		char path_no_trailing_slash[ MAX_PATH ];
+		strncpy( path_no_trailing_slash, path, sz );
+		path_no_trailing_slash[ sz - 1 ] = '\0';
+
+		__directory_enumerate( path_no_trailing_slash, recursive, mode, process_file, args );
+	}
+}
+
+void __directory_enumerate( const char* path, bool recursive, enumerate_mode_t mode, file_enumerate_fxn_t process_file, void* args )
 {
 	DIR* dir = opendir( path );
 
 	if( dir )
 	{
-		size_t len = strlen( path );
-		bool ends_with_slash = len > 0 && path[ len - 1 ] == '/';
-
 		/* print all the files and directories within directory */
 		for( struct dirent* ent = readdir( dir ); ent != NULL; ent = readdir( dir ) )
 		{
@@ -187,7 +202,7 @@ void directory_enumerate( const char* path, bool recursive, enumerate_mode_t mod
 			bool is_dir = ent->d_type & DT_DIR;
 
 			char absolute_path[ MAX_PATH ];
-			snprintf( absolute_path, sizeof(absolute_path), "%s%s%s", path, ends_with_slash ? "" : "/", ent->d_name );
+			snprintf( absolute_path, sizeof(absolute_path), "%s/%s", path, ent->d_name );
 			absolute_path[ sizeof(absolute_path) - 1 ] = '\0';
 
 			if( mode == ENUMERATE_FILES && is_dir )
@@ -205,7 +220,7 @@ void directory_enumerate( const char* path, bool recursive, enumerate_mode_t mod
 
 			if( recursive && is_dir )
 			{
-				directory_enumerate( absolute_path, recursive, mode, process_file, args );
+				__directory_enumerate( absolute_path, recursive, mode, process_file, args );
 			}
 		}
 
