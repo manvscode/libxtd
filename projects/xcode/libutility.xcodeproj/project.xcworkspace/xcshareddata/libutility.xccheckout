@@ -10,26 +10,26 @@
 	<string>libutility</string>
 	<key>IDESourceControlProjectOriginsDictionary</key>
 	<dict>
+		<key>AFD2732049C4B3D3D620EDC86DF81E003E8FD672</key>
+		<string>bitbucket.org:manvscode/libutility.git</string>
 		<key>C87624FE776BE19728C526BAF174AB3F389E3E38</key>
 		<string>bitbucket.org:manvscode/libcollections.git</string>
-		<key>D1A0A99D487A4A80CA720F234877BBDCAF8DB2FC</key>
-		<string>bitbucket.org:manvscode/libutility.git</string>
 	</dict>
 	<key>IDESourceControlProjectPath</key>
 	<string>projects/xcode/libutility.xcodeproj</string>
 	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
 	<dict>
+		<key>AFD2732049C4B3D3D620EDC86DF81E003E8FD672</key>
+		<string>../../../..</string>
 		<key>C87624FE776BE19728C526BAF174AB3F389E3E38</key>
 		<string>../../../../../libcollections</string>
-		<key>D1A0A99D487A4A80CA720F234877BBDCAF8DB2FC</key>
-		<string>../../../..</string>
 	</dict>
 	<key>IDESourceControlProjectURL</key>
 	<string>bitbucket.org:manvscode/libutility.git</string>
 	<key>IDESourceControlProjectVersion</key>
 	<integer>111</integer>
 	<key>IDESourceControlProjectWCCIdentifier</key>
-	<string>D1A0A99D487A4A80CA720F234877BBDCAF8DB2FC</string>
+	<string>AFD2732049C4B3D3D620EDC86DF81E003E8FD672</string>
 	<key>IDESourceControlProjectWCConfigurations</key>
 	<array>
 		<dict>
@@ -44,7 +44,7 @@
 			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
 			<string>public.vcs.git</string>
 			<key>IDESourceControlWCCIdentifierKey</key>
-			<string>D1A0A99D487A4A80CA720F234877BBDCAF8DB2FC</string>
+			<string>AFD2732049C4B3D3D620EDC86DF81E003E8FD672</string>
 			<key>IDESourceControlWCCName</key>
 			<string>libutility</string>
 		</dict>

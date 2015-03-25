@@ -146,7 +146,11 @@ const char* basename( const char* path, char dir_separator )
 	#endif
 }
 
+#if PATH_REENTRANT
+char* path( const char* path, char dir_separator, char* buffer, size_t size )
+#else
 char* path( const char* path, char dir_separator )
+#endif
 {
 	char* p     = (char*) path;
 	char *slash = (char*) path;
@@ -172,15 +176,28 @@ char* path( const char* path, char dir_separator )
 		length = slash - path;
 	}
 
+	#if PATH_REENTRANT
+	if( size < length + 1 )
+	{
+		return NULL;
+	}
+	else
+	{
+		strncpy( buffer, path, length );
+		buffer[ length ] = '\0';
+		return buffer;
+	}
+	#else
 	char* result = malloc( length + 1 );
 
-	if (result)
+	if( result )
 	{
-		strncpy(result, path, length);
-		result[length] = '\0';
+		strncpy( result, path, length );
+		result[ length ] = '\0';
 	}
 
 	return result;
+	#endif
 }
 
 int readline( char *buffer, size_t size, FILE *stream )

@@ -126,7 +126,7 @@ LTLIBRARIES = $(lib_LTLIBRARIES)
 __top_builddir__lib_libutility_la_LIBADD =
 am__objects_1 = bytes.lo caesar.lo checksums.lo endianess.lo \
 	exceptions.lo fileio.lo fileio-unix.lo huffman.lo strings.lo \
-	console.lo time.lo time-unix.lo
+	console.lo time.lo time-unix.lo sort.lo
 am___top_builddir__lib_libutility_la_OBJECTS = $(am__objects_1)
 __top_builddir__lib_libutility_la_OBJECTS =  \
 	$(am___top_builddir__lib_libutility_la_OBJECTS)
@@ -314,23 +314,22 @@ top_builddir = ..
 top_srcdir = ..
 
 # Add new files in alphabetical order. Thanks.
-libutility_sources = \
-bytes.c \
-caesar.c \
-checksums.c \
-endianess.c \
-exceptions.c \
-fileio.c \
-fileio-unix.c \
-huffman.c \
-strings.c \
-console.c \
-time.c \
-time-unix.c
+libutility_sources = bytes.c \
+					 caesar.c \
+					 checksums.c \
+					 endianess.c \
+					 exceptions.c \
+					 fileio.c \
+					 fileio-unix.c \
+					 huffman.c \
+					 strings.c \
+					 console.c \
+					 time.c \
+					 time-unix.c \
+					 sort.c
 
-libutility_headers = \
-exceptions.h \
-utility.h
+libutility_headers = exceptions.h \
+					 utility.h
 
 library_includedir = $(includedir)/libutility/
 library_include_HEADERS = $(libutility_headers)
@@ -445,6 +444,7 @@ include ./$(DEPDIR)/exceptions.Plo
 include ./$(DEPDIR)/fileio-unix.Plo
 include ./$(DEPDIR)/fileio.Plo
 include ./$(DEPDIR)/huffman.Plo
+include ./$(DEPDIR)/sort.Plo
 include ./$(DEPDIR)/strings.Plo
 include ./$(DEPDIR)/time-unix.Plo
 include ./$(DEPDIR)/time.Plo

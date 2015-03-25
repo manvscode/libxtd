@@ -26,8 +26,12 @@
 #include <assert.h>
 #include <unistd.h>
 #include <dirent.h>
+#include <errno.h>
+//#include <libgen.h>
 #include <sys/stat.h>
 #include "utility.h"
+
+static int mkpath( const char *s, mode_t mode );
 
 bool file_exists( const char* path )
 {
@@ -151,23 +155,81 @@ bool directory_create( const char* path )
 
 	if( !directory_exists( path ) )
 	{
-		result = mkdir( path, 0700 ) == 0;
+		//result = mkdir( path, 0700 ) == 0;
+		result = mkpath( path, 0700 ) == 0;
 	}
 
 	return result;
 }
 
-extern char* path( const char* path, char dir_separator );
 
-char* directory_path( const char* _path )
+int mkpath( const char *s, mode_t mode )
 {
-	assert( _path );
-	return path( _path, '/' );
+	int result = -1;
+	char* path = NULL;
+	char* up   = NULL;
+
+	if( strcmp( s, "." ) == 0 || strcmp( s, "/" ) == 0 )
+	{
+		return 0;
+	}
+
+	path = directory_path( s );
+
+	if( !path )
+	{
+		goto done;
+	}
+
+	up = directory_path( path );
+
+	if( !up )
+	{
+		goto done;
+	}
+
+	if( mkpath( up, mode ) == -1 && errno != EEXIST )
+	{
+		goto done;
+	}
+
+	if( mkdir( path, mode ) == -1 && errno != EEXIST )
+	{
+		result = -1;
+	}
+	else
+	{
+		result = 0;
+	}
+
+done:
+	if( up ) free( up );
+	if( path ) free( path );
+	return result;
 }
+
+
 
 #ifndef MAX_PATH
 #define MAX_PATH   256
 #endif
+
+#if PATH_REENTRANT
+extern char* path( const char* path, char dir_separator, char* buffer, size_t size );
+#else
+extern char* path( const char* path, char dir_separator );
+#endif
+
+char* directory_path( const char* _path )
+{
+	assert( _path );
+	#if PATH_REENTRANT
+	static char buffer[ MAX_PATH ];
+	return path( _path, '/', buffer, MAX_PATH );
+	#else
+	return path( _path, '/' );
+	#endif
+}
 
 static void __directory_enumerate( const char* path, bool recursive, enumerate_mode_t mode, file_enumerate_fxn_t process_file, void* args );
 

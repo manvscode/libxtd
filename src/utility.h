@@ -31,6 +31,7 @@
 #else
 #error "Need a C99 compiler."
 #endif
+#define PATH_REENTRANT  1
 
 #ifdef __cplusplus
 extern "C" {
