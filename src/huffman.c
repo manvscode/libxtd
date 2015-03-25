@@ -314,8 +314,15 @@ bool huffman_decode( const void* _compressed, size_t compressed_size, void** _or
 
 int huffman_node_compare( const huffman_node_t* left, const huffman_node_t* right )
 {
-	/* smallest to largest */
-	return right->frequency - left->frequency;
+	if( right && left )
+	{
+		/* smallest to largest */
+		return right->frequency - left->frequency;
+	}
+	else
+	{
+		return 1;
+	}
 }
 
 huffman_node_t* huffman_node_create( uint8_t symbol, size_t frequency, huffman_node_t* left, huffman_node_t* right, huffman_node_t* parent )
