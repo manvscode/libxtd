@@ -38,6 +38,13 @@ extern "C" {
 #endif
 
 /*
+ * Reference Counting
+ */
+void* refobj_alloc   ( size_t size, void (*destroy) ( void* ptr ) );
+void  refobj_retain  ( void* obj );
+void  refobj_release ( void* obj );
+
+/*
  * File IO
  */
 typedef void (*file_enumerate_fxn_t) ( const char* filename, void* args );

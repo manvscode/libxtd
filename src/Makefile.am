@@ -13,7 +13,8 @@ libutility_sources = bytes.c \
 					 console.c \
 					 time.c \
 					 time-unix.c \
-					 sort.c
+					 sort.c \
+					 refobj.c
 
 libutility_headers = exceptions.h \
 					 utility.h
