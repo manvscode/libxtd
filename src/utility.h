@@ -146,12 +146,13 @@ void        ntoh                   ( void* mem, size_t size );
 char*       debug_buffer_to_string ( const void* data, size_t size, size_t grouping, bool with_spaces ); /* allocates memory */
 
 /*
- *  Time
+ *  Timer
  */
 double   time_seconds      ( void );
 double   time_milliseconds ( void );
 uint64_t time_secs         ( void );
 uint64_t time_msecs        ( void );
+void     time_msleep       ( int milliseconds );
 
 /*
  *  Encryption
@@ -218,6 +219,12 @@ namespace utility {
 	using ::is_big_endian;
 	using ::hton;
 	using ::ntoh;
+	using ::debug_buffer_to_string;
+	using ::time_seconds;
+	using ::time_milliseconds;
+	using ::time_secs;
+	using ::time_msecs;
+	using ::time_msleep;
 	using ::caesar_cypher_encrypt_buffer;
 	using ::caesar_cypher_decrypt_buffer;
 	using ::caesar_cypher_encrypt_text;

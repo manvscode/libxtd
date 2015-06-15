@@ -1,16 +1,16 @@
 /*
  * Copyright (C) 2010-2014 by Joseph A. Marrero. http://www.manvscode.com/
- * 
+ *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
  * in the Software without restriction, including without limitation the rights
  * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
  * copies of the Software, and to permit persons to whom the Software is
  * furnished to do so, subject to the following conditions:
- * 
+ *
  * The above copyright notice and this permission notice shall be included in
  * all copies or substantial portions of the Software.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -27,6 +27,7 @@
 #include <float.h>
 #include <math.h>
 #include <time.h>
+#include <utility.h>
 
 #define COLOR_BEGIN(bg,fg)                    "\e[" #bg ";" #fg "m"
 #define COLOR_END                             "\e[m"
@@ -58,16 +59,41 @@ static inline bool integer_equals( long a, long b )
 
 static inline bool float_equals( float a, float b )
 {
-	return fabsf( a - b ) < FLT_EPSILON;	
+	return fabsf( a - b ) < FLT_EPSILON;
 }
 
 static inline bool double_equals( double a, double b )
 {
-	return fabs( a - b ) < DBL_EPSILON;	
+	return fabs( a - b ) < DBL_EPSILON;
 }
+
 static inline bool long_double_equals( long double a, long double b )
 {
-	return fabsl( a - b ) < LDBL_EPSILON;	
+	return fabsl( a - b ) < LDBL_EPSILON;
+}
+
+static inline void wait_for_true(const bool* flag, int timeout)
+{
+	double start = time_milliseconds();
+	double elapsed = 0.0;
+
+	while (!*flag && elapsed < timeout)
+	{
+		test_msleep(10);
+		elapsed = time_milliseconds() - start;
+	}
+}
+
+static inline void wait_for_value(const int* n, int value, int timeout)
+{
+	double start = time_milliseconds();
+	double elapsed = 0.0;
+
+	while (*flag != value && elapsed < timeout)
+	{
+		test_msleep(10);
+		elapsed = time_milliseconds() - start;
+	}
 }
 
 static inline bool test_feature( unsigned int i, const char* feature, test_fxn test )

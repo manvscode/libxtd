@@ -1,5 +1,6 @@
 #include <stdlib.h>
 #include <sys/time.h>
+#include <unistd.h>
 
 double time_seconds( void )
 {
@@ -23,4 +24,9 @@ double time_milliseconds( void )
 	}
 
 	return 1000 * now.tv_sec + (now.tv_usec / 1000.0);
+}
+
+void time_msleep( int milliseconds )
+{
+	usleep(1000 * milliseconds);
 }

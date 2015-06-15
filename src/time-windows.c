@@ -25,3 +25,8 @@ double time_milliseconds( void )
 	time.QuadPart /= frequency.QuadPart;
 	return time.QuadPart * 1000.0;
 }
+
+void time_msleep( int milliseconds )
+{
+	Sleep( milliseconds );
+}
