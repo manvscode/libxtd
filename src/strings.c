@@ -117,7 +117,7 @@ void string_random( string_random_type_t type, char* string, size_t length )
 	}
 
 	// Largest pool key
-	max = strlen( pool ) + 1;
+	max = strlen( pool );
 
 
 	int contains_alpha = 0;
