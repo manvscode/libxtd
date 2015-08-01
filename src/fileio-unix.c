@@ -231,9 +231,9 @@ char* directory_path( const char* _path )
 	#endif
 }
 
-static void __directory_enumerate( const char* path, bool recursive, enumerate_mode_t mode, file_enumerate_fxn_t process_file, void* args );
+static void __directory_enumerate( const char* path, bool recursive, directory_enumerate_mode_t mode, file_enumerate_fxn_t process_file, void* args );
 
-void directory_enumerate( const char* path, bool recursive, enumerate_mode_t mode, file_enumerate_fxn_t process_file, void* args )
+void directory_enumerate( const char* path, bool recursive, directory_enumerate_mode_t mode, file_enumerate_fxn_t process_file, void* args )
 {
 	if( path )
 	{
@@ -249,7 +249,7 @@ void directory_enumerate( const char* path, bool recursive, enumerate_mode_t mod
 	}
 }
 
-void __directory_enumerate( const char* path, bool recursive, enumerate_mode_t mode, file_enumerate_fxn_t process_file, void* args )
+void __directory_enumerate( const char* path, bool recursive, directory_enumerate_mode_t mode, file_enumerate_fxn_t process_file, void* args )
 {
 	DIR* dir = opendir( path );
 
