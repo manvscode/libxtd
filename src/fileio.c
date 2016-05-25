@@ -200,7 +200,7 @@ char* path( const char* path, char dir_separator )
 	#endif
 }
 
-int readline( char *buffer, size_t size, FILE *stream )
+int readline( char* buffer, size_t size, FILE* stream )
 {
     if( fgets( buffer, size, stream ) == NULL )
 	{
@@ -217,7 +217,7 @@ int readline( char *buffer, size_t size, FILE *stream )
 	else
 	{
         int c;
-        while( (c = getchar()) != EOF && c != '\n');
+        while( (c = getc(stream)) != EOF && c != '\n');
         if( c == EOF )
 		{
             return EOF;
