@@ -35,7 +35,7 @@ size_t string_left_trim( char* s, const char* delimeters )
 		++s;
 	}
 
-	strcpy( start, s );
+	memmove( start, s, strlen(s) + 1 );
 	return s - start; /* # of chars removed */
 }
 
