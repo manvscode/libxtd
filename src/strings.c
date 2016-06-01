@@ -41,8 +41,8 @@ size_t string_left_trim( char* s, const char* delimeters )
 
 size_t string_right_trim( char* s, const char* delimeters )
 {
-	char *end = s + strlen(s) - 1;
-	char *new_end = end;
+	char* end = s + strlen(s) - 1;
+	char* new_end = end;
 	assert( s );
 
 	if( s != NULL )
@@ -175,3 +175,61 @@ const char* string_ordinal( long number )
 			return "th";
 	}
 }
+
+char* string_replace( const char* orig, const char* rep, const char* with )
+{
+    char* result; // the return string
+    const char* ins;    // the next insert point
+    char* tmp;    // varies
+    size_t len_rep;  // length of rep
+    size_t len_with; // length of with
+    size_t len_front; // distance between rep and end of last rep
+    size_t count;    // number of replacements
+
+    if(!orig)
+    {
+        return NULL;
+    }
+    if(!rep)
+    {
+        rep = "";
+    }
+    len_rep = strlen(rep);
+    if(!with)
+    {
+        with = "";
+    }
+
+    len_with = strlen(with);
+
+    ins = orig;
+    for (count = 0; (tmp = strstr(ins, rep)) != NULL; ++count)
+    {
+        ins = tmp + len_rep;
+    }
+
+    // first time through the loop, all the variable are set correctly
+    // from here on,
+    //    tmp points to the end of the result string
+    //    ins points to the next occurrence of rep in orig
+    //    orig points to the remainder of orig after "end of rep"
+    tmp = result = malloc(strlen(orig) + (len_with - len_rep) * count + 1);
+
+    if(!result)
+    {
+        return NULL;
+    }
+
+    while(count--)
+    {
+        ins = strstr(orig, rep);
+        len_front = ins - orig;
+        tmp = strncpy(tmp, orig, len_front) + len_front;
+        tmp = strcpy(tmp, with) + len_with;
+        orig += len_front + len_rep; // move to next "end of rep"
+    }
+
+    strcpy(tmp, orig);
+    return result;
+}
+

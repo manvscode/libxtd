@@ -129,6 +129,7 @@ char*       string_to_lower   ( char* s );
 char*       string_to_upper   ( char* s );
 void        string_random     ( string_random_type_t type, char* string, size_t length );
 const char* string_ordinal    ( long number );
+char*       string_replace    ( const char* orig, const char* rep, const char* with ); /* result must be freed */
 
 /*
  * Misscellaneous
