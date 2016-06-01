@@ -65,11 +65,15 @@ size_t string_trim( char* s, const char* delimeters )
 char* string_to_lower( char* s )
 {
 	char* p_s = s;
-	while( p_s )
-	{
-		*p_s = tolower( *p_s );
-		p_s++;
-	}
+
+    if( p_s )
+    {
+        while( *p_s != '\0' )
+        {
+            *p_s = tolower( *p_s );
+            p_s++;
+        }
+    }
 
 	return s;
 }
@@ -78,11 +82,14 @@ char* string_to_upper( char* s )
 {
 	char* p_s = s;
 
-	while( p_s )
-	{
-		*p_s = toupper( *p_s );
-		p_s++;
-	}
+    if( p_s )
+    {
+        while( *p_s != '\0' )
+        {
+            *p_s = toupper( *p_s );
+            p_s++;
+        }
+    }
 
 	return s;
 }
