@@ -240,3 +240,16 @@ char* string_replace( const char* orig, const char* rep, const char* with )
     return result;
 }
 
+char* string_substring( const char* str, size_t start, size_t end )
+{
+    size_t len = end - start;
+    char* result = malloc( len + 1 );
+
+    if( result )
+    {
+        strncpy( result, str + start, len );
+        result[ len ] = '\0';
+    }
+
+    return result;
+}

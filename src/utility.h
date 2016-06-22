@@ -130,6 +130,7 @@ char*       string_to_upper   ( char* s );
 void        string_random     ( string_random_type_t type, char* string, size_t length );
 const char* string_ordinal    ( long number );
 char*       string_replace    ( const char* orig, const char* rep, const char* with ); /* result must be freed */
+char*       string_substring  ( const char* str, size_t start, size_t end );
 
 /*
  * Misscellaneous
