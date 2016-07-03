@@ -9,7 +9,8 @@ $(top_builddir)/bin/test-scrambling \
 $(top_builddir)/bin/test-file \
 $(top_builddir)/bin/test-dir \
 $(top_builddir)/bin/test-huffman \
-$(top_builddir)/bin/test-time
+$(top_builddir)/bin/test-time \
+$(top_builddir)/bin/test-base64
 
 __top_builddir__bin_test_bytes_SOURCES       = test-bytes.c
 __top_builddir__bin_test_bytes_LDFLAGS       = -lm $(top_builddir)/lib/.libs/libutility.a
@@ -25,4 +26,6 @@ __top_builddir__bin_test_huffman_SOURCES     = test-huffman.c
 __top_builddir__bin_test_huffman_LDFLAGS     = -lm $(top_builddir)/lib/.libs/libutility.a
 __top_builddir__bin_test_time_SOURCES        = test-time.c
 __top_builddir__bin_test_time_LDFLAGS        = -lm $(top_builddir)/lib/.libs/libutility.a
+__top_builddir__bin_test_base64_SOURCES      = test-base64.c
+__top_builddir__bin_test_base64_LDFLAGS      = -lm $(top_builddir)/lib/.libs/libutility.a
 endif

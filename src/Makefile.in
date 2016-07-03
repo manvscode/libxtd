@@ -133,7 +133,7 @@ am__installdirs = "$(DESTDIR)$(libdir)" \
 	"$(DESTDIR)$(library_includedir)"
 LTLIBRARIES = $(lib_LTLIBRARIES)
 __top_builddir__lib_libutility_la_LIBADD =
-am__objects_1 = bytes.lo caesar.lo checksums.lo endianess.lo \
+am__objects_1 = bytes.lo base64.lo caesar.lo checksums.lo endianess.lo \
 	exceptions.lo fileio.lo fileio-unix.lo huffman.lo strings.lo \
 	console.lo time.lo time-unix.lo sort.lo refobj.lo
 am___top_builddir__lib_libutility_la_OBJECTS = $(am__objects_1)
@@ -327,6 +327,7 @@ top_srcdir = @top_srcdir@
 
 # Add new files in alphabetical order. Thanks.
 libutility_sources = bytes.c \
+					 base64.c \
 					 caesar.c \
 					 checksums.c \
 					 endianess.c \
@@ -447,6 +448,7 @@ mostlyclean-compile:
 distclean-compile:
 	-rm -f *.tab.c
 
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/base64.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/bytes.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/caesar.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/checksums.Plo@am__quote@

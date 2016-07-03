@@ -89,8 +89,8 @@ POST_INSTALL = :
 NORMAL_UNINSTALL = :
 PRE_UNINSTALL = :
 POST_UNINSTALL = :
-build_triplet = x86_64-apple-darwin14.4.0
-host_triplet = x86_64-apple-darwin14.4.0
+build_triplet = x86_64-apple-darwin15.5.0
+host_triplet = x86_64-apple-darwin15.5.0
 subdir = src
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
 am__aclocal_m4_deps = $(top_srcdir)/configure.ac
@@ -133,7 +133,7 @@ am__installdirs = "$(DESTDIR)$(libdir)" \
 	"$(DESTDIR)$(library_includedir)"
 LTLIBRARIES = $(lib_LTLIBRARIES)
 __top_builddir__lib_libutility_la_LIBADD =
-am__objects_1 = bytes.lo caesar.lo checksums.lo endianess.lo \
+am__objects_1 = bytes.lo base64.lo caesar.lo checksums.lo endianess.lo \
 	exceptions.lo fileio.lo fileio-unix.lo huffman.lo strings.lo \
 	console.lo time.lo time-unix.lo sort.lo refobj.lo
 am___top_builddir__lib_libutility_la_OBJECTS = $(am__objects_1)
@@ -252,7 +252,7 @@ LT_SYS_LIBRARY_PATH =
 MAKEINFO = makeinfo
 MANIFEST_TOOL = :
 MKDIR_P = .././install-sh -c -d
-NM = /usr/bin/nm
+NM = /usr/bin/nm -B
 NMEDIT = nmedit
 OBJDUMP = false
 OBJEXT = o
@@ -285,10 +285,10 @@ am__quote =
 am__tar = $${TAR-tar} chof - "$$tardir"
 am__untar = $${TAR-tar} xf -
 bindir = ${exec_prefix}/bin
-build = x86_64-apple-darwin14.4.0
+build = x86_64-apple-darwin15.5.0
 build_alias = 
 build_cpu = x86_64
-build_os = darwin14.4.0
+build_os = darwin15.5.0
 build_vendor = apple
 builddir = .
 datadir = ${datarootdir}
@@ -296,10 +296,10 @@ datarootdir = ${prefix}/share
 docdir = ${datarootdir}/doc/${PACKAGE_TARNAME}
 dvidir = ${docdir}
 exec_prefix = ${prefix}
-host = x86_64-apple-darwin14.4.0
+host = x86_64-apple-darwin15.5.0
 host_alias = 
 host_cpu = x86_64
-host_os = darwin14.4.0
+host_os = darwin15.5.0
 host_vendor = apple
 htmldir = ${docdir}
 includedir = ${prefix}/include
@@ -327,6 +327,7 @@ top_srcdir = ..
 
 # Add new files in alphabetical order. Thanks.
 libutility_sources = bytes.c \
+					 base64.c \
 					 caesar.c \
 					 checksums.c \
 					 endianess.c \
@@ -447,6 +448,7 @@ mostlyclean-compile:
 distclean-compile:
 	-rm -f *.tab.c
 
+include ./$(DEPDIR)/base64.Plo
 include ./$(DEPDIR)/bytes.Plo
 include ./$(DEPDIR)/caesar.Plo
 include ./$(DEPDIR)/checksums.Plo

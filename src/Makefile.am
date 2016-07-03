@@ -2,6 +2,7 @@
 
 # Add new files in alphabetical order. Thanks.
 libutility_sources = bytes.c \
+					 base64.c \
 					 caesar.c \
 					 checksums.c \
 					 endianess.c \

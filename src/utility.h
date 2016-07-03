@@ -105,10 +105,12 @@ void     fletcher16        ( uint8_t* checkA, uint8_t* checkB, uint8_t* data, si
 uint32_t fletcher32        ( uint16_t* data, size_t len );
 
 /*
- * Compression
+ * Compression and encodings.
  */
-bool huffman_encode ( const void* original, size_t original_size, void** compressed, size_t* compressed_size );
-bool huffman_decode ( const void* compressed, size_t compressed_size, void** original, size_t* original_size );
+bool  huffman_encode ( const void* original, size_t original_size, void** compressed, size_t* compressed_size );
+bool  huffman_decode ( const void* compressed, size_t compressed_size, void** original, size_t* original_size );
+char* base64_encode  ( const void* in, size_t in_size, size_t* out_len );
+void* base64_decode  ( const char* in, size_t in_len, size_t* out_size );
 
 /*
  * Strings
