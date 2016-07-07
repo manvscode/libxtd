@@ -1,14 +1,44 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <stdint.h>
+#include <string.h>
 #include <unistd.h>
 #include "utility.h"
 
-void progress_task( int* percent, void* data )
+static void progress_task( int* percent, void* data )
 {
 	*percent += rand() % 20;
 	usleep( 50000 );
 }
+
+
+static void console_fader( const char* text, const int* colors, size_t color_count, int millis )
+{
+    size_t len = strlen(text);
+
+    for( size_t j = 0; j < len; j++ )
+    {
+	    printf( "%s", console_move_left(1000) );
+        for( size_t i = 0; i < j; i++ )
+        {
+            if( i < j - color_count)
+            {
+                printf( "%s", console_fg_color_256( colors[ 0 ] ) );
+            }
+            else
+            {
+                printf( "%s", console_fg_color_256( colors[ 14 ] ) );
+            }
+            printf( "%c", text[ i ] );
+            fflush( stdout );
+            usleep( millis * 1000 );
+        }
+    }
+
+	printf( "%s", console_reset() );
+	fflush( stdout );
+}
+
 
 int main()
 {
@@ -24,6 +54,7 @@ int main()
 			printf( "\n" );
 		}
 	}
+    printf( "\n" );
 #endif
 
 #if 0
@@ -52,14 +83,27 @@ int main()
 			printf( "\n" );
 		}
 	}
-#endif
 	const int progress_bar_width = 40;
 
-	const int colors1[] = { 0xdf, 0xde, 0xdd, 0xdc };
-	console_progress_indicator_ex( "Loading support bundle...", progress_bar_width, colors1, 4, progress_task, NULL );
+#endif
+    //printf( "%s", console_clear_screen_all() );
 	console_progress_indicator("Loading tests...", progress_task, NULL );
-	//console_progress_indicator_ex( "Generating world peace...", progress_bar_width, 0x14, 0, 0, progress_task, NULL );
-	//console_progress_indicator_ex( "Generating world peace...", progress_bar_width, 0x1c, 0, 0 );
+	const int colors1[] = { 0x02, 0x22, 0x28, 0x9a, 0xe2, 0xdc, 0xd6, 0xd0, 0xc4 };
+	console_progress_indicator_ex( "Memory utilization", 40, '#', colors1, sizeof(colors1) / sizeof(colors1[0]), progress_task, NULL );
+	const int colors2[] = {
+        0xff, 0xfe, 0xfd, 0xfc, 0xfb,
+        0xfa, 0xf9, 0xf8, 0xf7, 0xf6,
+        0xf5, 0xf4, 0xf3, 0xf2, 0xf1
+	};
+    /*
+	const int colors2[] = {
+		0xea, 0xeb, 0xec, 0xed, 0xee, 0xef, 0xf0, 0xf1,
+		0xf2, 0xf3, 0xf4, 0xf5, 0xf6, 0xf7, 0xf8, 0xf9,
+		0xfa, 0xfb, 0xfc, 0xfd, 0xfe, 0xff
+	};
+    */
+
+    //console_fader( "ABCDEFGHIJKLMNOPQRSTUVWXYZABCDEFGHIJKLMNOPQRSTUVWXYZABCDEFGHIJKLMNOPQRSTUVWXYZ\n", colors2, 15, 10 );
 
 	return 0;
 }

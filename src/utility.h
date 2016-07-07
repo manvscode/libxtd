@@ -157,6 +157,14 @@ char*       string_substring  ( const char* str, size_t start, size_t end );
 #define console_underline()         "\033[4m"
 #define console_reversed()          "\033[7m"
 #define console_reset()             "\033[0m"
+#define console_save_position( )    "\033[s"
+#define console_restore_position( ) "\033[u"
+#define console_clear_screen_to_end()    console_clear_screen( 0 ) // clears from cursor to end of screen
+#define console_clear_screen_from_beg()  console_clear_screen( 1 ) // clears from cursor to start of screen
+#define console_clear_screen_all()       console_clear_screen( 2 ) // clears whole screen
+#define console_clear_line_to_end()      console_clear_line( 0 ) // from cursor to end of line
+#define console_clear_line_from_beg()    console_clear_line( 1 ) // from cursor to start of line
+#define console_clear_line_all()         console_clear_line( 2 ) // clears whole line
 typedef void (*console_progress_fxn_t) ( int* percent, void* data );
 
 const char* console_fg_color_256          ( int color );
@@ -165,8 +173,15 @@ const char* console_move_up               ( int n );
 const char* console_move_down             ( int n );
 const char* console_move_left             ( int n );
 const char* console_move_right            ( int n );
-void        console_progress_indicator_ex ( const char* task, int progress_bar_width, const int* colors, size_t color_count, console_progress_fxn_t fxn, void* data );
+void        console_bar_graph             ( int bar_width, char bar_symbol, const int* colors, size_t color_count, int percent );
+void        console_progress_indicator_ex ( const char* task, int progress_bar_width, char bar_symbol, const int* colors, size_t color_count, console_progress_fxn_t fxn, void* data );
 void        console_progress_indicator    ( const char* task, console_progress_fxn_t fxn, void* data );
+const char* console_next_line             ( int n );
+const char* console_prev_line             ( int n );
+const char* console_set_column            ( int x );
+const char* console_goto                  ( int x, int y );
+const char* console_clear_screen          ( int type );
+const char* console_clear_line            ( int type );
 void        print_divider                 ( FILE* fd, const char* title );
 
 

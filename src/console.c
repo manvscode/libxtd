@@ -126,41 +126,102 @@ const char* console_move_right( int n )
 	return buffer;
 }
 
-static inline void __console_progress_indicator_ex( const char* task, int progress_bar_width, const int* colors, size_t color_count, console_progress_fxn_t fxn, void* data, int percent )
+const char* console_next_line( int n )
 {
-	const char progress_bar_symbol = ' ';
-	const int blocks = (progress_bar_width * percent) / 100;
+	static char buffer[ 16 ];
+	snprintf( buffer, sizeof(buffer), "\033[%dE", n );
+	buffer[ sizeof(buffer) - 1 ] = '\0';
+	return buffer;
+}
 
-	printf( "%s[", console_move_left(1000) );
+const char* console_prev_line( int n )
+{
+	static char buffer[ 16 ];
+	snprintf( buffer, sizeof(buffer), "\033[%dF", n );
+	buffer[ sizeof(buffer) - 1 ] = '\0';
+	return buffer;
+}
 
-	for( int j = 0; j < progress_bar_width; j++ )
+const char* console_set_column( int x )
+{
+	static char buffer[ 16 ];
+	snprintf( buffer, sizeof(buffer), "\033[%dG", x );
+	buffer[ sizeof(buffer) - 1 ] = '\0';
+	return buffer;
+}
+
+const char* console_goto( int x, int y )
+{
+	static char buffer[ 20 ];
+	snprintf( buffer, sizeof(buffer), "\033[%d;%dH", y, x );
+	buffer[ sizeof(buffer) - 1 ] = '\0';
+	return buffer;
+}
+
+const char* console_clear_screen( int type )
+{
+	static char buffer[ 20 ];
+	snprintf( buffer, sizeof(buffer), "\033[%dJ", type );
+	buffer[ sizeof(buffer) - 1 ] = '\0';
+	return buffer;
+}
+
+const char* console_clear_line( int type )
+{
+	static char buffer[ 20 ];
+	snprintf( buffer, sizeof(buffer), "\033[%dK", type );
+	buffer[ sizeof(buffer) - 1 ] = '\0';
+	return buffer;
+}
+
+void console_bar_graph( int bar_width, char bar_symbol, const int* colors, size_t color_count, int percent )
+{
+	const int blocks = (bar_width * percent) / 100;
+
+	for( int j = 0; j < bar_width; j++ )
 	{
-		int color_idx = (color_count * j) / progress_bar_width;
+		int color_idx = (color_count * j) / bar_width;
 		if( j <= blocks )
 		{
-			printf( "%s%c", console_bg_color_256(colors[ color_idx ]), progress_bar_symbol );
+			printf( "%s%c", bar_symbol == ' ' ? console_bg_color_256(colors[color_idx]) : console_fg_color_256(colors[color_idx]), bar_symbol );
 		}
 		else
 		{
-			printf( "%s%c", console_bg_color_256(0), progress_bar_symbol );
+			printf( "%s%c", bar_symbol == ' ' ? console_bg_color_256(0) : console_fg_color_256(0), bar_symbol );
 		}
 	}
-	printf( "%s] %d%% - %s", console_reset(), percent, task );
+	printf( "%s", console_reset() );
 	fflush( stdout );
 }
 
-void console_progress_indicator_ex( const char* task, int progress_bar_width, const int* colors, size_t color_count, console_progress_fxn_t fxn, void* data )
+static inline void __console_progress_indicator_ex( const char* task, int progress_bar_width, char progress_bar_symbol, const int* colors, size_t color_count, int percent )
 {
+
+#if 0
+	printf( "%s[", console_move_left(1000) );
+#else
+	printf( "%s%s[", console_clear_line_all(), console_set_column(0) );
+#endif
+    console_bar_graph( progress_bar_width, progress_bar_symbol, colors, color_count, percent );
+    printf( "]" );
+	printf( " %d%% - %s", percent, task );
+	fflush( stdout );
+}
+
+void console_progress_indicator_ex( const char* task, int progress_bar_width, char bar_symbol, const int* colors, size_t color_count, console_progress_fxn_t fxn, void* data )
+{
+
 	for( int percent = 0; percent < 100; fxn( &percent, data ) )
 	{
-		__console_progress_indicator_ex( task, progress_bar_width, colors, color_count, fxn, data, percent );
+		__console_progress_indicator_ex( task, progress_bar_width, bar_symbol, colors, color_count, percent );
 	}
-	__console_progress_indicator_ex( task, progress_bar_width, colors, color_count, fxn, data, 100 );
+	__console_progress_indicator_ex( task, progress_bar_width, bar_symbol, colors, color_count, 100 );
 	printf( "\n" );
 }
 
 void console_progress_indicator( const char* task, console_progress_fxn_t fxn, void* data )
 {
+    const char progress_bar_symbol = ' ';
 	const int progress_bar_width = 24;
 	const int colors[] = {
 		0xea, 0xeb, 0xec, 0xed, 0xee, 0xef, 0xf0, 0xf1,
@@ -168,6 +229,6 @@ void console_progress_indicator( const char* task, console_progress_fxn_t fxn, v
 		0xfa, 0xfb, 0xfc, 0xfd, 0xfe, 0xff
 	};
 
-	console_progress_indicator_ex( task, progress_bar_width, colors, sizeof(colors) / sizeof(colors[0]), fxn, data );
+	console_progress_indicator_ex( task, progress_bar_width, progress_bar_symbol, colors, sizeof(colors) / sizeof(colors[0]), fxn, data );
 }
 
