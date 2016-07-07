@@ -135,10 +135,45 @@ char*       string_replace    ( const char* orig, const char* rep, const char* w
 char*       string_substring  ( const char* str, size_t start, size_t end );
 
 /*
+ * Console
+ */
+#define console_fg_normal_black()   "\033[30m"
+#define console_fg_normal_red()     "\033[31m"
+#define console_fg_normal_green()   "\033[32m"
+#define console_fg_normal_yellow()  "\033[33m"
+#define console_fg_normal_blue()    "\033[34m"
+#define console_fg_normal_magenta() "\033[35m"
+#define console_fg_normal_cyan()    "\033[36m"
+#define console_fg_normal_white()   "\033[37m"
+#define console_fg_bright_black()   "\033[30;1m"
+#define console_fg_bright_red()     "\033[31;1m"
+#define console_fg_bright_green()   "\033[32;1m"
+#define console_fg_bright_yellow()  "\033[33;1m"
+#define console_fg_bright_blue()    "\033[34;1m"
+#define console_fg_bright_magenta() "\033[35;1m"
+#define console_fg_bright_cyan()    "\033[36;1m"
+#define console_fg_bright_white()   "\033[37;1m"
+#define console_bold()              "\033[1m"
+#define console_underline()         "\033[4m"
+#define console_reversed()          "\033[7m"
+#define console_reset()             "\033[0m"
+typedef void (*console_progress_fxn_t) ( int* percent, void* data );
+
+const char* console_fg_color_256          ( int color );
+const char* console_bg_color_256          ( int color );
+const char* console_move_up               ( int n );
+const char* console_move_down             ( int n );
+const char* console_move_left             ( int n );
+const char* console_move_right            ( int n );
+void        console_progress_indicator_ex ( const char* task, int progress_bar_width, const int* colors, size_t color_count, console_progress_fxn_t fxn, void* data );
+void        console_progress_indicator    ( const char* task, console_progress_fxn_t fxn, void* data );
+void        print_divider                 ( FILE* fd, const char* title );
+
+
+/*
  * Misscellaneous
  */
 
-void        print_divider          ( FILE* fd, const char* title );
 const char* byte_to_binary         ( uint8_t x );
 void        buffer_scramble        ( const char* key, void* buffer, size_t size, unsigned short pivot );
 void        buffer_unscramble      ( const char* key, void* buffer, size_t size, unsigned short pivot );
