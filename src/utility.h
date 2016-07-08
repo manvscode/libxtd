@@ -167,22 +167,22 @@ char*       string_substring  ( const char* str, size_t start, size_t end );
 #define console_clear_line_all()         console_clear_line( 2 ) // clears whole line
 typedef void (*console_progress_fxn_t) ( int* percent, void* data );
 
-const char* console_fg_color_256          ( int color );
-const char* console_bg_color_256          ( int color );
-const char* console_move_up               ( int n );
-const char* console_move_down             ( int n );
-const char* console_move_left             ( int n );
-const char* console_move_right            ( int n );
-void        console_bar_graph             ( int bar_width, char bar_symbol, const int* colors, size_t color_count, int percent );
-void        console_progress_indicator_ex ( const char* task, int progress_bar_width, char bar_symbol, const int* colors, size_t color_count, console_progress_fxn_t fxn, void* data );
-void        console_progress_indicator    ( const char* task, console_progress_fxn_t fxn, void* data );
-const char* console_next_line             ( int n );
-const char* console_prev_line             ( int n );
-const char* console_set_column            ( int x );
-const char* console_goto                  ( int x, int y );
-const char* console_clear_screen          ( int type );
-const char* console_clear_line            ( int type );
-void        print_divider                 ( FILE* fd, const char* title );
+void console_fg_color_256          ( int color );
+void console_bg_color_256          ( int color );
+void console_move_up               ( int n );
+void console_move_down             ( int n );
+void console_move_left             ( int n );
+void console_move_right            ( int n );
+void console_bar_graph             ( int bar_width, char bar_symbol, const int* colors, size_t color_count, int percent );
+void console_progress_indicator_ex ( const char* task, int progress_bar_width, char bar_symbol, const int* colors, size_t color_count, console_progress_fxn_t fxn, void* data );
+void console_progress_indicator    ( const char* task, console_progress_fxn_t fxn, void* data );
+void console_next_line             ( int n );
+void console_prev_line             ( int n );
+void console_set_column            ( int x );
+void console_goto                  ( int x, int y );
+void console_clear_screen          ( int type );
+void console_clear_line            ( int type );
+void print_divider                 ( FILE* fd, const char* title );
 
 
 /*

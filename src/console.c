@@ -78,100 +78,64 @@ void print_divider( FILE* fd, const char* title )
 	}
 }
 
-const char* console_fg_color_256( int color )
+void console_fg_color_256( int color )
 {
-	static char buffer[ 16 ];
-	snprintf( buffer, sizeof(buffer), "\033[38;5;%dm", color );
-	buffer[ sizeof(buffer) - 1 ] = '\0';
-	return buffer;
+	printf( "\033[38;5;%dm", color );
 }
 
-const char* console_bg_color_256( int color )
+void console_bg_color_256( int color )
 {
-	static char buffer[ 16 ];
-	snprintf( buffer, sizeof(buffer), "\033[48;5;%dm", color );
-	buffer[ sizeof(buffer) - 1 ] = '\0';
-	return buffer;
+	printf( "\033[48;5;%dm", color );
 }
 
-const char* console_move_up( int n )
+void console_move_up( int n )
 {
-	static char buffer[ 16 ];
-	snprintf( buffer, sizeof(buffer), "\033[%dA", n );
-	buffer[ sizeof(buffer) - 1 ] = '\0';
-	return buffer;
+	printf( "\033[%dA", n );
 }
 
-const char* console_move_down( int n )
+void console_move_down( int n )
 {
-	static char buffer[ 16 ];
-	snprintf( buffer, sizeof(buffer), "\033[%dB", n );
-	buffer[ sizeof(buffer) - 1 ] = '\0';
-	return buffer;
+	printf( "\033[%dB", n );
 }
 
-const char* console_move_left( int n )
+void console_move_left( int n )
 {
-	static char buffer[ 16 ];
-	snprintf( buffer, sizeof(buffer), "\033[%dD", n );
-	buffer[ sizeof(buffer) - 1 ] = '\0';
-	return buffer;
+	printf( "\033[%dD", n );
 }
 
-const char* console_move_right( int n )
+void console_move_right( int n )
 {
-	static char buffer[ 16 ];
-	snprintf( buffer, sizeof(buffer), "\033[%dC", n );
-	buffer[ sizeof(buffer) - 1 ] = '\0';
-	return buffer;
+	printf( "\033[%dC", n );
 }
 
-const char* console_next_line( int n )
+void console_next_line( int n )
 {
-	static char buffer[ 16 ];
-	snprintf( buffer, sizeof(buffer), "\033[%dE", n );
-	buffer[ sizeof(buffer) - 1 ] = '\0';
-	return buffer;
+	printf( "\033[%dE", n );
 }
 
-const char* console_prev_line( int n )
+void console_prev_line( int n )
 {
-	static char buffer[ 16 ];
-	snprintf( buffer, sizeof(buffer), "\033[%dF", n );
-	buffer[ sizeof(buffer) - 1 ] = '\0';
-	return buffer;
+	printf( "\033[%dF", n );
 }
 
-const char* console_set_column( int x )
+void console_set_column( int x )
 {
-	static char buffer[ 16 ];
-	snprintf( buffer, sizeof(buffer), "\033[%dG", x );
-	buffer[ sizeof(buffer) - 1 ] = '\0';
-	return buffer;
+	printf( "\033[%dG", x );
 }
 
-const char* console_goto( int x, int y )
+void console_goto( int x, int y )
 {
-	static char buffer[ 20 ];
-	snprintf( buffer, sizeof(buffer), "\033[%d;%dH", y, x );
-	buffer[ sizeof(buffer) - 1 ] = '\0';
-	return buffer;
+	printf( "\033[%d;%dH", y, x );
 }
 
-const char* console_clear_screen( int type )
+void console_clear_screen( int type )
 {
-	static char buffer[ 20 ];
-	snprintf( buffer, sizeof(buffer), "\033[%dJ", type );
-	buffer[ sizeof(buffer) - 1 ] = '\0';
-	return buffer;
+	printf( "\033[%dJ", type );
 }
 
-const char* console_clear_line( int type )
+void console_clear_line( int type )
 {
-	static char buffer[ 20 ];
-	snprintf( buffer, sizeof(buffer), "\033[%dK", type );
-	buffer[ sizeof(buffer) - 1 ] = '\0';
-	return buffer;
+	printf( "\033[%dK", type );
 }
 
 void console_bar_graph( int bar_width, char bar_symbol, const int* colors, size_t color_count, int percent )
@@ -183,12 +147,27 @@ void console_bar_graph( int bar_width, char bar_symbol, const int* colors, size_
 		int color_idx = (color_count * j) / bar_width;
 		if( j <= blocks )
 		{
-			printf( "%s%c", bar_symbol == ' ' ? console_bg_color_256(colors[color_idx]) : console_fg_color_256(colors[color_idx]), bar_symbol );
+			if( bar_symbol == ' ' )
+            {
+                console_bg_color_256( colors[color_idx] );
+            }
+            else
+            {
+                console_fg_color_256( colors[color_idx] );
+            }
 		}
 		else
 		{
-			printf( "%s%c", bar_symbol == ' ' ? console_bg_color_256(0) : console_fg_color_256(0), bar_symbol );
+			if( bar_symbol == ' ' )
+            {
+                console_bg_color_256( 0 );
+            }
+            else
+            {
+                console_fg_color_256( 0 );
+            }
 		}
+		printf( "%c", bar_symbol );
 	}
 	printf( "%s", console_reset() );
 	fflush( stdout );
@@ -200,8 +179,11 @@ static inline void __console_progress_indicator_ex( const char* task, int progre
 #if 0
 	printf( "%s[", console_move_left(1000) );
 #else
-	printf( "%s%s[", console_clear_line_all(), console_set_column(0) );
+    console_clear_line_all();
+    console_set_column( 0 );
+	printf( "[" );
 #endif
+
     console_bar_graph( progress_bar_width, progress_bar_symbol, colors, color_count, percent );
     printf( "]" );
 	printf( " %d%% - %s", percent, task );

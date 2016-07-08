@@ -18,16 +18,16 @@ static void console_fader( const char* text, const int* colors, size_t color_cou
 
     for( size_t j = 0; j < len; j++ )
     {
-	    printf( "%s", console_move_left(1000) );
+	    console_move_left(1000);
         for( size_t i = 0; i < j; i++ )
         {
             if( i < j - color_count)
             {
-                printf( "%s", console_fg_color_256( colors[ 0 ] ) );
+                console_fg_color_256( colors[ 0 ] );
             }
             else
             {
-                printf( "%s", console_fg_color_256( colors[ 14 ] ) );
+                console_fg_color_256( colors[ 14 ] );
             }
             printf( "%c", text[ i ] );
             fflush( stdout );
@@ -45,7 +45,8 @@ int main()
 #if 1
 	for( int i = 0; i < 256; i++ )
 	{
-		printf( "%s%s", console_fg_color_256(15), console_bg_color_256( i ) );
+		console_fg_color_256(15);
+        console_bg_color_256( i );
 		printf( " %02x ", i );
 
 		if( (i+1) % 16 == 0 )
