@@ -8,7 +8,7 @@
 static void progress_task( int* percent, void* data )
 {
 	*percent += rand() % 20;
-	usleep( 50000 );
+	usleep( 500000 );
 }
 
 
@@ -88,9 +88,9 @@ int main()
 
 #endif
     //printf( "%s", console_clear_screen_all() );
-	console_progress_indicator("Loading tests...", progress_task, NULL );
-	const int colors1[] = { 0x02, 0x22, 0x28, 0x9a, 0xe2, 0xdc, 0xd6, 0xd0, 0xc4 };
-	console_progress_indicator_ex( "Memory utilization", 40, '#', colors1, sizeof(colors1) / sizeof(colors1[0]), progress_task, NULL );
+	console_progress_indicator("Loading tests...", PROGRESS_INDICATOR_STYLE_BLUE, progress_task, NULL );
+	console_progress_indicator("Installing World Peace...", PROGRESS_INDICATOR_STYLE_FADE, progress_task, NULL );
+	console_progress_indicator("Memory Utilization", PROGRESS_INDICATOR_STYLE_INTENSITY, progress_task, NULL );
 	const int colors2[] = {
         0xff, 0xfe, 0xfd, 0xfc, 0xfb,
         0xfa, 0xf9, 0xf8, 0xf7, 0xf6,

@@ -138,7 +138,7 @@ void console_clear_line( int type )
 	printf( "\033[%dK", type );
 }
 
-void console_bar_graph( int bar_width, char bar_symbol, const int* colors, size_t color_count, int percent )
+void console_bar_graph( int bar_width, char bar_symbol, const int* colors, size_t color_count, int bkg_color, int percent )
 {
 	const int blocks = (bar_width * percent) / 100;
 
@@ -160,11 +160,11 @@ void console_bar_graph( int bar_width, char bar_symbol, const int* colors, size_
 		{
 			if( bar_symbol == ' ' )
             {
-                console_bg_color_256( 0 );
+                console_bg_color_256( bkg_color );
             }
             else
             {
-                console_fg_color_256( 0 );
+                console_fg_color_256( bkg_color );
             }
 		}
 		printf( "%c", bar_symbol );
@@ -173,7 +173,7 @@ void console_bar_graph( int bar_width, char bar_symbol, const int* colors, size_
 	fflush( stdout );
 }
 
-static inline void __console_progress_indicator_ex( const char* task, int progress_bar_width, char progress_bar_symbol, const int* colors, size_t color_count, int percent )
+static inline void __console_progress_indicator_ex( const char* task, int progress_bar_width, char progress_bar_symbol, const int* colors, size_t color_count, int bkg_color, int percent )
 {
 
 #if 0
@@ -181,36 +181,71 @@ static inline void __console_progress_indicator_ex( const char* task, int progre
 #else
     console_clear_line_all();
     console_set_column( 0 );
-	printf( "[" );
+	//printf( "[" );
 #endif
 
-    console_bar_graph( progress_bar_width, progress_bar_symbol, colors, color_count, percent );
-    printf( "]" );
-	printf( " %d%% - %s", percent, task );
+    console_bar_graph( progress_bar_width, progress_bar_symbol, colors, color_count, bkg_color, percent );
+    //printf( "]" );
+	printf( " [%3d%%] %s", percent, task );
 	fflush( stdout );
 }
 
-void console_progress_indicator_ex( const char* task, int progress_bar_width, char bar_symbol, const int* colors, size_t color_count, console_progress_fxn_t fxn, void* data )
+void console_progress_indicator_ex( const char* task, int progress_bar_width, char bar_symbol, const int* colors, size_t color_count, int bkg_color, console_progress_fxn_t fxn, void* data )
 {
 
 	for( int percent = 0; percent < 100; fxn( &percent, data ) )
 	{
-		__console_progress_indicator_ex( task, progress_bar_width, bar_symbol, colors, color_count, percent );
+		__console_progress_indicator_ex( task, progress_bar_width, bar_symbol, colors, color_count, bkg_color, percent );
 	}
-	__console_progress_indicator_ex( task, progress_bar_width, bar_symbol, colors, color_count, 100 );
+	__console_progress_indicator_ex( task, progress_bar_width, bar_symbol, colors, color_count, bkg_color, 100 );
 	printf( "\n" );
 }
 
-void console_progress_indicator( const char* task, console_progress_fxn_t fxn, void* data )
+void console_progress_indicator( const char* task, progress_indictor_style_t style, console_progress_fxn_t fxn, void* data )
 {
     const char progress_bar_symbol = ' ';
 	const int progress_bar_width = 24;
-	const int colors[] = {
-		0xea, 0xeb, 0xec, 0xed, 0xee, 0xef, 0xf0, 0xf1,
-		0xf2, 0xf3, 0xf4, 0xf5, 0xf6, 0xf7, 0xf8, 0xf9,
-		0xfa, 0xfb, 0xfc, 0xfd, 0xfe, 0xff
-	};
+    size_t color_count;
+    const int* colors;
+    int bkg_color;
 
-	console_progress_indicator_ex( task, progress_bar_width, progress_bar_symbol, colors, sizeof(colors) / sizeof(colors[0]), fxn, data );
+    switch( style )
+    {
+        case PROGRESS_INDICATOR_STYLE_FADE:
+        {
+            const int FADE_COLORS[] = {
+                0xea, 0xeb, 0xec, 0xed, 0xee, 0xef, 0xf0, 0xf1,
+                0xf2, 0xf3, 0xf4, 0xf5, 0xf6, 0xf7, 0xf8, 0xf9,
+                0xfa, 0xfb, 0xfc, 0xfd, 0xfe, 0xff
+            };
+            colors      = FADE_COLORS;
+            color_count = sizeof(FADE_COLORS) / sizeof(FADE_COLORS[0]);
+            bkg_color   = 0xe9;
+            break;
+        }
+        case PROGRESS_INDICATOR_STYLE_INTENSITY:
+        {
+            const int INTENSITY_COLORS[] = {
+                0x02, 0x22, 0x28,
+                0x9a, 0xe2, 0xdc,
+                0xd6, 0xd0, 0xc4
+            };
+            colors      = INTENSITY_COLORS;
+            color_count = sizeof(INTENSITY_COLORS) / sizeof(INTENSITY_COLORS[0]);
+            bkg_color   = 0xeb;
+            break;
+        }
+        case PROGRESS_INDICATOR_STYLE_BLUE:
+        default: /* fall through */
+        {
+	        const int BLUE = 0x15;
+            colors         = &BLUE;
+            color_count    = 1;
+            bkg_color      = 0x11;
+            break;
+        }
+    }
+
+	console_progress_indicator_ex( task, progress_bar_width, progress_bar_symbol, colors, color_count, bkg_color, fxn, data );
 }
 

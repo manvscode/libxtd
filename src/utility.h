@@ -173,9 +173,14 @@ void console_move_up               ( int n );
 void console_move_down             ( int n );
 void console_move_left             ( int n );
 void console_move_right            ( int n );
-void console_bar_graph             ( int bar_width, char bar_symbol, const int* colors, size_t color_count, int percent );
-void console_progress_indicator_ex ( const char* task, int progress_bar_width, char bar_symbol, const int* colors, size_t color_count, console_progress_fxn_t fxn, void* data );
-void console_progress_indicator    ( const char* task, console_progress_fxn_t fxn, void* data );
+void console_bar_graph             ( int bar_width, char bar_symbol, const int* colors, size_t color_count, int bkg_color, int percent );
+void console_progress_indicator_ex ( const char* task, int progress_bar_width, char bar_symbol, const int* colors, size_t color_count, int bkg_color, console_progress_fxn_t fxn, void* data );
+typedef enum progress_indictor_style {
+    PROGRESS_INDICATOR_STYLE_BLUE,
+    PROGRESS_INDICATOR_STYLE_FADE,
+    PROGRESS_INDICATOR_STYLE_INTENSITY,
+} progress_indictor_style_t;
+void console_progress_indicator    ( const char* task, progress_indictor_style_t style, console_progress_fxn_t fxn, void* data );
 void console_next_line             ( int n );
 void console_prev_line             ( int n );
 void console_set_column            ( int x );
