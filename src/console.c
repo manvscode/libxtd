@@ -78,6 +78,16 @@ void print_divider( FILE* fd, const char* title )
 	}
 }
 
+void console_fg_color_8( int color )
+{
+    printf( "\033[%dm", color );
+}
+
+void console_fg_bright_color_8( int color )
+{
+    printf( "\033[%d;1m", color );
+}
+
 void console_fg_color_256( int color )
 {
 	printf( "\033[38;5;%dm", color );
@@ -86,6 +96,36 @@ void console_fg_color_256( int color )
 void console_bg_color_256( int color )
 {
 	printf( "\033[48;5;%dm", color );
+}
+
+void console_bold( void )
+{
+    printf( "\033[1m" );
+}
+
+void console_underline( void )
+{
+    printf( "\033[4m" );
+}
+
+void console_reversed( void )
+{
+    printf( "\033[7m" );
+}
+
+void console_reset( void )
+{
+    printf( "\033[0m" );
+}
+
+void console_save_position( void )
+{
+    printf( "\033[s" );
+}
+
+void console_restore_position( void )
+{
+    printf( "\033[u" );
 }
 
 void console_move_up( int n )
@@ -169,7 +209,7 @@ void console_bar_graph( int bar_width, char bar_symbol, const int* colors, size_
 		}
 		printf( "%c", bar_symbol );
 	}
-	printf( "%s", console_reset() );
+	console_reset();
 	fflush( stdout );
 }
 
@@ -249,3 +289,23 @@ void console_progress_indicator( const char* task, progress_indictor_style_t sty
 	console_progress_indicator_ex( task, progress_bar_width, progress_bar_symbol, colors, color_count, bkg_color, fxn, data );
 }
 
+void console_command_prompt( const char* prompt, int prompt_color, console_handle_command_fxn_t on_cmd, void* data )
+{
+    bool quiting = false;
+    char command[ 256 ];
+
+    while( !quiting )
+    {
+        console_fg_color_256( prompt_color );
+        printf( prompt );
+        console_reset();
+
+        fgets( command, sizeof(command), stdin );
+        string_trim( command, " \t\r\n" );
+
+        if( !on_cmd( command, data ) )
+        {
+            quiting = true;
+        }
+    }
+}

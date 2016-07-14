@@ -137,49 +137,299 @@ char*       string_substring  ( const char* str, size_t start, size_t end );
 /*
  * Console
  */
-#define console_fg_normal_black()   "\033[30m"
-#define console_fg_normal_red()     "\033[31m"
-#define console_fg_normal_green()   "\033[32m"
-#define console_fg_normal_yellow()  "\033[33m"
-#define console_fg_normal_blue()    "\033[34m"
-#define console_fg_normal_magenta() "\033[35m"
-#define console_fg_normal_cyan()    "\033[36m"
-#define console_fg_normal_white()   "\033[37m"
-#define console_fg_bright_black()   "\033[30;1m"
-#define console_fg_bright_red()     "\033[31;1m"
-#define console_fg_bright_green()   "\033[32;1m"
-#define console_fg_bright_yellow()  "\033[33;1m"
-#define console_fg_bright_blue()    "\033[34;1m"
-#define console_fg_bright_magenta() "\033[35;1m"
-#define console_fg_bright_cyan()    "\033[36;1m"
-#define console_fg_bright_white()   "\033[37;1m"
-#define console_bold()              "\033[1m"
-#define console_underline()         "\033[4m"
-#define console_reversed()          "\033[7m"
-#define console_reset()             "\033[0m"
-#define console_save_position( )    "\033[s"
-#define console_restore_position( ) "\033[u"
-#define console_clear_screen_to_end()    console_clear_screen( 0 ) // clears from cursor to end of screen
-#define console_clear_screen_from_beg()  console_clear_screen( 1 ) // clears from cursor to start of screen
-#define console_clear_screen_all()       console_clear_screen( 2 ) // clears whole screen
-#define console_clear_line_to_end()      console_clear_line( 0 ) // from cursor to end of line
-#define console_clear_line_from_beg()    console_clear_line( 1 ) // from cursor to start of line
-#define console_clear_line_all()         console_clear_line( 2 ) // clears whole line
-typedef void (*console_progress_fxn_t) ( int* percent, void* data );
+#define CONSOLE_COLOR8_BLACK   30
+#define CONSOLE_COLOR8_RED     31
+#define CONSOLE_COLOR8_GREEN   32
+#define CONSOLE_COLOR8_YELLOW  33
+#define CONSOLE_COLOR8_BLUE    34
+#define CONSOLE_COLOR8_MAGENTA 35
+#define CONSOLE_COLOR8_CYAN    36
+#define CONSOLE_COLOR8_WHITE   37
 
+#define CONSOLE_COLOR256_BLACK           0x00
+#define CONSOLE_COLOR256_RED             0x01
+#define CONSOLE_COLOR256_GREEN           0x02
+#define CONSOLE_COLOR256_YELLOW          0x03
+#define CONSOLE_COLOR256_BLUE            0x04
+#define CONSOLE_COLOR256_MAGENTA         0x05
+#define CONSOLE_COLOR256_CYAN            0x06
+#define CONSOLE_COLOR256_WHITE           0x07
+#define CONSOLE_COLOR256_BRIGHT_BLACK    0x08
+#define CONSOLE_COLOR256_BRIGHT_RED      0x09
+#define CONSOLE_COLOR256_BRIGHT_GREEN    0x0a
+#define CONSOLE_COLOR256_BRIGHT_YELLOW   0x0b
+#define CONSOLE_COLOR256_BRIGHT_BLUE     0x0c
+#define CONSOLE_COLOR256_BRIGHT_MAGENTA  0x0d
+#define CONSOLE_COLOR256_BRIGHT_CYAN     0x0e
+#define CONSOLE_COLOR256_BRIGHT_WHITE    0x0f
+#if 0
+#define CONSOLE_COLOR256_XXX   0x10
+#define CONSOLE_COLOR256_XXX   0x11
+#define CONSOLE_COLOR256_XXX   0x12
+#define CONSOLE_COLOR256_XXX   0x13
+#define CONSOLE_COLOR256_XXX   0x14
+#define CONSOLE_COLOR256_XXX   0x15
+#define CONSOLE_COLOR256_XXX   0x16
+#define CONSOLE_COLOR256_XXX   0x17
+#define CONSOLE_COLOR256_XXX   0x18
+#define CONSOLE_COLOR256_XXX   0x19
+#define CONSOLE_COLOR256_XXX   0x1a
+#define CONSOLE_COLOR256_XXX   0x1b
+#define CONSOLE_COLOR256_XXX   0x1c
+#define CONSOLE_COLOR256_XXX   0x1d
+#define CONSOLE_COLOR256_XXX   0x1e
+#define CONSOLE_COLOR256_XXX   0x1f
+#define CONSOLE_COLOR256_XXX   0x20
+#define CONSOLE_COLOR256_XXX   0x21
+#define CONSOLE_COLOR256_XXX   0x22
+#define CONSOLE_COLOR256_XXX   0x23
+#define CONSOLE_COLOR256_XXX   0x24
+#define CONSOLE_COLOR256_XXX   0x25
+#define CONSOLE_COLOR256_XXX   0x26
+#define CONSOLE_COLOR256_XXX   0x27
+#define CONSOLE_COLOR256_XXX   0x28
+#define CONSOLE_COLOR256_XXX   0x29
+#define CONSOLE_COLOR256_XXX   0x2a
+#define CONSOLE_COLOR256_XXX   0x2b
+#define CONSOLE_COLOR256_XXX   0x2c
+#define CONSOLE_COLOR256_XXX   0x2d
+#define CONSOLE_COLOR256_XXX   0x2e
+#define CONSOLE_COLOR256_XXX   0x2f
+#define CONSOLE_COLOR256_XXX   0x30
+#define CONSOLE_COLOR256_XXX   0x31
+#define CONSOLE_COLOR256_XXX   0x32
+#define CONSOLE_COLOR256_XXX   0x33
+#define CONSOLE_COLOR256_XXX   0x34
+#define CONSOLE_COLOR256_XXX   0x35
+#define CONSOLE_COLOR256_XXX   0x36
+#define CONSOLE_COLOR256_XXX   0x37
+#define CONSOLE_COLOR256_XXX   0x38
+#define CONSOLE_COLOR256_XXX   0x39
+#define CONSOLE_COLOR256_XXX   0x3a
+#define CONSOLE_COLOR256_XXX   0x3b
+#define CONSOLE_COLOR256_XXX   0x3c
+#define CONSOLE_COLOR256_XXX   0x3d
+#define CONSOLE_COLOR256_XXX   0x3e
+#define CONSOLE_COLOR256_XXX   0x3f
+#define CONSOLE_COLOR256_XXX   0x40
+#define CONSOLE_COLOR256_XXX   0x41
+#define CONSOLE_COLOR256_XXX   0x42
+#define CONSOLE_COLOR256_XXX   0x43
+#define CONSOLE_COLOR256_XXX   0x44
+#define CONSOLE_COLOR256_XXX   0x45
+#define CONSOLE_COLOR256_XXX   0x46
+#define CONSOLE_COLOR256_XXX   0x47
+#define CONSOLE_COLOR256_XXX   0x48
+#define CONSOLE_COLOR256_XXX   0x49
+#define CONSOLE_COLOR256_XXX   0x4a
+#define CONSOLE_COLOR256_XXX   0x4b
+#define CONSOLE_COLOR256_XXX   0x4c
+#define CONSOLE_COLOR256_XXX   0x4d
+#define CONSOLE_COLOR256_XXX   0x4e
+#define CONSOLE_COLOR256_XXX   0x4f
+#define CONSOLE_COLOR256_XXX   0x50
+#define CONSOLE_COLOR256_XXX   0x51
+#define CONSOLE_COLOR256_XXX   0x52
+#define CONSOLE_COLOR256_XXX   0x53
+#define CONSOLE_COLOR256_XXX   0x54
+#define CONSOLE_COLOR256_XXX   0x55
+#define CONSOLE_COLOR256_XXX   0x56
+#define CONSOLE_COLOR256_XXX   0x57
+#define CONSOLE_COLOR256_XXX   0x58
+#define CONSOLE_COLOR256_XXX   0x59
+#define CONSOLE_COLOR256_XXX   0x5a
+#define CONSOLE_COLOR256_XXX   0x5b
+#define CONSOLE_COLOR256_XXX   0x5c
+#define CONSOLE_COLOR256_XXX   0x5d
+#define CONSOLE_COLOR256_XXX   0x5e
+#define CONSOLE_COLOR256_XXX   0x5f
+#define CONSOLE_COLOR256_XXX   0x60
+#define CONSOLE_COLOR256_XXX   0x61
+#define CONSOLE_COLOR256_XXX   0x62
+#define CONSOLE_COLOR256_XXX   0x63
+#define CONSOLE_COLOR256_XXX   0x64
+#define CONSOLE_COLOR256_XXX   0x65
+#define CONSOLE_COLOR256_XXX   0x66
+#define CONSOLE_COLOR256_XXX   0x67
+#define CONSOLE_COLOR256_XXX   0x68
+#define CONSOLE_COLOR256_XXX   0x69
+#define CONSOLE_COLOR256_XXX   0x6a
+#define CONSOLE_COLOR256_XXX   0x6b
+#define CONSOLE_COLOR256_XXX   0x6c
+#define CONSOLE_COLOR256_XXX   0x6d
+#define CONSOLE_COLOR256_XXX   0x6e
+#define CONSOLE_COLOR256_XXX   0x6f
+#define CONSOLE_COLOR256_XXX   0x70
+#define CONSOLE_COLOR256_XXX   0x71
+#define CONSOLE_COLOR256_XXX   0x72
+#define CONSOLE_COLOR256_XXX   0x73
+#define CONSOLE_COLOR256_XXX   0x74
+#define CONSOLE_COLOR256_XXX   0x75
+#define CONSOLE_COLOR256_XXX   0x76
+#define CONSOLE_COLOR256_XXX   0x77
+#define CONSOLE_COLOR256_XXX   0x78
+#define CONSOLE_COLOR256_XXX   0x79
+#define CONSOLE_COLOR256_XXX   0x7a
+#define CONSOLE_COLOR256_XXX   0x7b
+#define CONSOLE_COLOR256_XXX   0x7c
+#define CONSOLE_COLOR256_XXX   0x7d
+#define CONSOLE_COLOR256_XXX   0x7e
+#define CONSOLE_COLOR256_XXX   0x7f
+#define CONSOLE_COLOR256_XXX   0x80
+#define CONSOLE_COLOR256_XXX   0x81
+#define CONSOLE_COLOR256_XXX   0x82
+#define CONSOLE_COLOR256_XXX   0x83
+#define CONSOLE_COLOR256_XXX   0x84
+#define CONSOLE_COLOR256_XXX   0x85
+#define CONSOLE_COLOR256_XXX   0x86
+#define CONSOLE_COLOR256_XXX   0x87
+#define CONSOLE_COLOR256_XXX   0x88
+#define CONSOLE_COLOR256_XXX   0x89
+#define CONSOLE_COLOR256_XXX   0x8a
+#define CONSOLE_COLOR256_XXX   0x8b
+#define CONSOLE_COLOR256_XXX   0x8c
+#define CONSOLE_COLOR256_XXX   0x8d
+#define CONSOLE_COLOR256_XXX   0x8e
+#define CONSOLE_COLOR256_XXX   0x8f
+#define CONSOLE_COLOR256_XXX   0x90
+#define CONSOLE_COLOR256_XXX   0x91
+#define CONSOLE_COLOR256_XXX   0x92
+#define CONSOLE_COLOR256_XXX   0x93
+#define CONSOLE_COLOR256_XXX   0x94
+#define CONSOLE_COLOR256_XXX   0x95
+#define CONSOLE_COLOR256_XXX   0x96
+#define CONSOLE_COLOR256_XXX   0x97
+#define CONSOLE_COLOR256_XXX   0x98
+#define CONSOLE_COLOR256_XXX   0x99
+#define CONSOLE_COLOR256_XXX   0x9a
+#define CONSOLE_COLOR256_XXX   0x9b
+#define CONSOLE_COLOR256_XXX   0x9c
+#define CONSOLE_COLOR256_XXX   0x9d
+#define CONSOLE_COLOR256_XXX   0x9e
+#define CONSOLE_COLOR256_XXX   0x9f
+#define CONSOLE_COLOR256_XXX   0xa0
+#define CONSOLE_COLOR256_XXX   0xa1
+#define CONSOLE_COLOR256_XXX   0xa2
+#define CONSOLE_COLOR256_XXX   0xa3
+#define CONSOLE_COLOR256_XXX   0xa4
+#define CONSOLE_COLOR256_XXX   0xa5
+#define CONSOLE_COLOR256_XXX   0xa6
+#define CONSOLE_COLOR256_XXX   0xa7
+#define CONSOLE_COLOR256_XXX   0xa8
+#define CONSOLE_COLOR256_XXX   0xa9
+#define CONSOLE_COLOR256_XXX   0xaa
+#define CONSOLE_COLOR256_XXX   0xab
+#define CONSOLE_COLOR256_XXX   0xac
+#define CONSOLE_COLOR256_XXX   0xad
+#define CONSOLE_COLOR256_XXX   0xae
+#define CONSOLE_COLOR256_XXX   0xaf
+#define CONSOLE_COLOR256_XXX   0xb0
+#define CONSOLE_COLOR256_XXX   0xb1
+#define CONSOLE_COLOR256_XXX   0xb2
+#define CONSOLE_COLOR256_XXX   0xb3
+#define CONSOLE_COLOR256_XXX   0xb4
+#define CONSOLE_COLOR256_XXX   0xb5
+#define CONSOLE_COLOR256_XXX   0xb6
+#define CONSOLE_COLOR256_XXX   0xb7
+#define CONSOLE_COLOR256_XXX   0xb8
+#define CONSOLE_COLOR256_XXX   0xb9
+#define CONSOLE_COLOR256_XXX   0xba
+#define CONSOLE_COLOR256_XXX   0xbb
+#define CONSOLE_COLOR256_XXX   0xbc
+#define CONSOLE_COLOR256_XXX   0xbd
+#define CONSOLE_COLOR256_XXX   0xbe
+#define CONSOLE_COLOR256_XXX   0xbf
+#define CONSOLE_COLOR256_XXX   0xc0
+#define CONSOLE_COLOR256_XXX   0xc1
+#define CONSOLE_COLOR256_XXX   0xc2
+#define CONSOLE_COLOR256_XXX   0xc3
+#define CONSOLE_COLOR256_XXX   0xc4
+#define CONSOLE_COLOR256_XXX   0xc5
+#define CONSOLE_COLOR256_XXX   0xc6
+#define CONSOLE_COLOR256_XXX   0xc7
+#define CONSOLE_COLOR256_XXX   0xc8
+#define CONSOLE_COLOR256_XXX   0xc9
+#define CONSOLE_COLOR256_XXX   0xca
+#define CONSOLE_COLOR256_XXX   0xcb
+#define CONSOLE_COLOR256_XXX   0xcc
+#define CONSOLE_COLOR256_XXX   0xcd
+#define CONSOLE_COLOR256_XXX   0xce
+#define CONSOLE_COLOR256_XXX   0xcf
+#define CONSOLE_COLOR256_XXX   0xd0
+#define CONSOLE_COLOR256_XXX   0xd1
+#define CONSOLE_COLOR256_XXX   0xd2
+#define CONSOLE_COLOR256_XXX   0xd3
+#define CONSOLE_COLOR256_XXX   0xd4
+#define CONSOLE_COLOR256_XXX   0xd5
+#define CONSOLE_COLOR256_XXX   0xd6
+#define CONSOLE_COLOR256_XXX   0xd7
+#define CONSOLE_COLOR256_XXX   0xd8
+#define CONSOLE_COLOR256_XXX   0xd9
+#define CONSOLE_COLOR256_XXX   0xda
+#define CONSOLE_COLOR256_XXX   0xdb
+#define CONSOLE_COLOR256_XXX   0xdc
+#define CONSOLE_COLOR256_XXX   0xdd
+#define CONSOLE_COLOR256_XXX   0xde
+#define CONSOLE_COLOR256_XXX   0xdf
+#define CONSOLE_COLOR256_XXX   0xe0
+#define CONSOLE_COLOR256_XXX   0xe1
+#define CONSOLE_COLOR256_XXX   0xe2
+#define CONSOLE_COLOR256_XXX   0xe3
+#define CONSOLE_COLOR256_XXX   0xe4
+#define CONSOLE_COLOR256_XXX   0xe5
+#define CONSOLE_COLOR256_XXX   0xe6
+#define CONSOLE_COLOR256_XXX   0xe7
+#endif
+
+#define CONSOLE_COLOR256_GREY_00   0xe8
+#define CONSOLE_COLOR256_GREY_01   0xe9
+#define CONSOLE_COLOR256_GREY_02   0xea
+#define CONSOLE_COLOR256_GREY_03   0xeb
+#define CONSOLE_COLOR256_GREY_04   0xec
+#define CONSOLE_COLOR256_GREY_05   0xed
+#define CONSOLE_COLOR256_GREY_06   0xee
+#define CONSOLE_COLOR256_GREY_07   0xef
+#define CONSOLE_COLOR256_GREY_08   0xf0
+#define CONSOLE_COLOR256_GREY_09   0xf1
+#define CONSOLE_COLOR256_GREY_10   0xf2
+#define CONSOLE_COLOR256_GREY_11   0xf3
+#define CONSOLE_COLOR256_GREY_12   0xf4
+#define CONSOLE_COLOR256_GREY_13   0xf5
+#define CONSOLE_COLOR256_GREY_14   0xf6
+#define CONSOLE_COLOR256_GREY_15   0xf7
+#define CONSOLE_COLOR256_GREY_16   0xf8
+#define CONSOLE_COLOR256_GREY_17   0xf9
+#define CONSOLE_COLOR256_GREY_18   0xfa
+#define CONSOLE_COLOR256_GREY_19   0xfb
+#define CONSOLE_COLOR256_GREY_20   0xfc
+#define CONSOLE_COLOR256_GREY_21   0xfd
+#define CONSOLE_COLOR256_GREY_22   0xfe
+#define CONSOLE_COLOR256_GREY_23   0xff
+
+typedef void (*console_progress_fxn_t)       ( int* percent, void* data );
+typedef bool (*console_handle_command_fxn_t) ( const char* command, void* data );
+typedef enum progress_indictor_style {
+    PROGRESS_INDICATOR_STYLE_BLUE,
+    PROGRESS_INDICATOR_STYLE_FADE,
+    PROGRESS_INDICATOR_STYLE_INTENSITY,
+} progress_indictor_style_t;
+
+void console_fg_color_8            ( int color );
+void console_fg_bright_color_8     ( int color );
 void console_fg_color_256          ( int color );
 void console_bg_color_256          ( int color );
+void console_bold                  ( void );
+void console_underline             ( void );
+void console_reversed              ( void );
+void console_reset                 ( void );
+void console_save_position         ( void );
+void console_restore_position      ( void );
 void console_move_up               ( int n );
 void console_move_down             ( int n );
 void console_move_left             ( int n );
 void console_move_right            ( int n );
 void console_bar_graph             ( int bar_width, char bar_symbol, const int* colors, size_t color_count, int bkg_color, int percent );
 void console_progress_indicator_ex ( const char* task, int progress_bar_width, char bar_symbol, const int* colors, size_t color_count, int bkg_color, console_progress_fxn_t fxn, void* data );
-typedef enum progress_indictor_style {
-    PROGRESS_INDICATOR_STYLE_BLUE,
-    PROGRESS_INDICATOR_STYLE_FADE,
-    PROGRESS_INDICATOR_STYLE_INTENSITY,
-} progress_indictor_style_t;
 void console_progress_indicator    ( const char* task, progress_indictor_style_t style, console_progress_fxn_t fxn, void* data );
 void console_next_line             ( int n );
 void console_prev_line             ( int n );
@@ -187,6 +437,13 @@ void console_set_column            ( int x );
 void console_goto                  ( int x, int y );
 void console_clear_screen          ( int type );
 void console_clear_line            ( int type );
+void console_command_prompt        ( const char* prompt, int prompt_color, console_handle_command_fxn_t on_cmd, void* data );
+#define console_clear_screen_to_end()    console_clear_screen( 0 ) // clears from cursor to end of screen
+#define console_clear_screen_from_beg()  console_clear_screen( 1 ) // clears from cursor to start of screen
+#define console_clear_screen_all()       console_clear_screen( 2 ) // clears whole screen
+#define console_clear_line_to_end()      console_clear_line( 0 ) // from cursor to end of line
+#define console_clear_line_from_beg()    console_clear_line( 1 ) // from cursor to start of line
+#define console_clear_line_all()         console_clear_line( 2 ) // clears whole line
 void print_divider                 ( FILE* fd, const char* title );
 
 
