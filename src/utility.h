@@ -408,11 +408,22 @@ char*       string_substring  ( const char* str, size_t start, size_t end );
 
 typedef void (*console_progress_fxn_t)       ( int* percent, void* data );
 typedef bool (*console_handle_command_fxn_t) ( const char* command, void* data );
-typedef enum progress_indictor_style {
+typedef enum console_progress_indictor_style {
     PROGRESS_INDICATOR_STYLE_BLUE,
     PROGRESS_INDICATOR_STYLE_FADE,
     PROGRESS_INDICATOR_STYLE_INTENSITY,
-} progress_indictor_style_t;
+} console_progress_indictor_style_t;
+
+typedef enum console_text_fader_style {
+    TEXT_FADER_TO_WHITE,
+    TEXT_FADER_TO_BLACK,
+    TEXT_FADER_TO_YELLOW,
+    TEXT_FADER_TO_ORANGE,
+    TEXT_FADER_TO_GREEN,
+    TEXT_FADER_TO_BLUE,
+    TEXT_FADER_TO_RED,
+    TEXT_FADER_BLUE_BEEP,
+} console_text_fader_style_t;
 
 void console_fg_color_8            ( int color );
 void console_fg_bright_color_8     ( int color );
@@ -421,6 +432,8 @@ void console_bg_color_256          ( int color );
 void console_bold                  ( void );
 void console_underline             ( void );
 void console_reversed              ( void );
+void console_hide_cursor           ( void );
+void console_show_cursor           ( void );
 void console_reset                 ( void );
 void console_save_position         ( void );
 void console_restore_position      ( void );
@@ -430,13 +443,15 @@ void console_move_left             ( int n );
 void console_move_right            ( int n );
 void console_bar_graph             ( int bar_width, char bar_symbol, const int* colors, size_t color_count, int bkg_color, int percent );
 void console_progress_indicator_ex ( const char* task, int progress_bar_width, char bar_symbol, const int* colors, size_t color_count, int bkg_color, console_progress_fxn_t fxn, void* data );
-void console_progress_indicator    ( const char* task, progress_indictor_style_t style, console_progress_fxn_t fxn, void* data );
+void console_progress_indicator    ( const char* task, console_progress_indictor_style_t style, console_progress_fxn_t fxn, void* data );
 void console_next_line             ( int n );
 void console_prev_line             ( int n );
 void console_set_column            ( int x );
 void console_goto                  ( int x, int y );
 void console_clear_screen          ( int type );
 void console_clear_line            ( int type );
+void console_text_fader_ex         ( const char* text, const int* colors, size_t color_count, int millis );
+void console_text_fader            ( const char* text, console_text_fader_style_t style );
 void console_command_prompt        ( const char* prompt, int prompt_color, console_handle_command_fxn_t on_cmd, void* data );
 #define console_clear_screen_to_end()    console_clear_screen( 0 ) // clears from cursor to end of screen
 #define console_clear_screen_from_beg()  console_clear_screen( 1 ) // clears from cursor to start of screen

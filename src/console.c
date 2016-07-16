@@ -113,6 +113,16 @@ void console_reversed( void )
     printf( "\033[7m" );
 }
 
+void console_hide_cursor( void )
+{
+    printf( "\033[?25l" );
+}
+
+void console_show_cursor( void )
+{
+    printf( "\033[?25h" );
+}
+
 void console_reset( void )
 {
     printf( "\033[0m" );
@@ -241,7 +251,7 @@ void console_progress_indicator_ex( const char* task, int progress_bar_width, ch
 	printf( "\n" );
 }
 
-void console_progress_indicator( const char* task, progress_indictor_style_t style, console_progress_fxn_t fxn, void* data )
+void console_progress_indicator( const char* task, console_progress_indictor_style_t style, console_progress_fxn_t fxn, void* data )
 {
     const char progress_bar_symbol = ' ';
 	const int progress_bar_width = 24;
@@ -289,6 +299,149 @@ void console_progress_indicator( const char* task, progress_indictor_style_t sty
 	console_progress_indicator_ex( task, progress_bar_width, progress_bar_symbol, colors, color_count, bkg_color, fxn, data );
 }
 
+void console_text_fader_ex( const char* text, const int* colors, size_t color_count, int millis )
+{
+    size_t len = strlen(text);
+
+    console_hide_cursor();
+    for( size_t i = 0, k = 0; i < color_count && i < len; i++, k++ )
+    {
+        console_fg_color_256(colors[k]);
+        printf( "%c", text[ i ] );
+        fflush( stdout );
+
+        time_msleep( millis );
+    }
+
+    if( len >= color_count )
+    {
+        for( size_t j = color_count; j < len; j++ )
+        {
+            console_move_left(j);
+            for( size_t i = 0; j > color_count && i < j - color_count; i++ )
+            {
+                console_fg_color_256(colors[0]);
+                printf( "%c", text[ i ] );
+                fflush( stdout );
+            }
+
+            for( size_t i = j - color_count, k = 0; j < len && i < j; i++, k++ )
+            {
+                console_fg_color_256(colors[k]);
+                printf( "%c", text[ i ] );
+                fflush( stdout );
+            }
+            time_msleep( millis );
+        }
+    }
+
+    console_move_left(color_count - 1);
+    while( color_count > 0 )
+    {
+        for( size_t i = len - color_count, k = 0; i < len; i++, k++ )
+        {
+            console_fg_color_256(colors[k]);
+            printf( "%c", text[ i ] );
+            fflush( stdout );
+            time_msleep( millis * 0.1 );
+        }
+        color_count--;
+        console_move_left(color_count);
+    }
+
+	console_reset();
+    console_show_cursor();
+	fflush( stdout );
+}
+
+void console_text_fader( const char* text, console_text_fader_style_t style )
+{
+    size_t color_count;
+    const int* colors;
+    int millis = 0;
+
+    switch( style )
+    {
+        case TEXT_FADER_BLUE_BEEP:
+        {
+            const int FADE_COLORS[] = { 0x19, 0x1a, 0x1b, 0x20, 0x21, 0x26, 0x27,
+                0x07, 0x0f };
+            colors      = FADE_COLORS;
+            color_count = sizeof(FADE_COLORS) / sizeof(FADE_COLORS[0]);
+            millis      = 20;
+            break;
+        }
+        case TEXT_FADER_TO_RED:
+        {
+            const int FADE_COLORS[] = { 0xc4, 0xc5, 0xc6, 0xc7, 0xc8, 0xc9, 0xd4, 0xd5, 0x07, 0x0f };
+            colors      = FADE_COLORS;
+            color_count = sizeof(FADE_COLORS) / sizeof(FADE_COLORS[0]);
+            millis      = 30;
+            break;
+        }
+        case TEXT_FADER_TO_BLUE:
+        {
+            const int FADE_COLORS[] = { 0x15, 0x14, 0x13, 0x12, 0x11, 0x10 };
+            colors      = FADE_COLORS;
+            color_count = sizeof(FADE_COLORS) / sizeof(FADE_COLORS[0]);
+            millis      = 30;
+            break;
+        }
+        case TEXT_FADER_TO_GREEN:
+        {
+            const int FADE_COLORS[] = { 0x52, 0x53, 0x54, 0x55, 0x56, 0x57 };
+            colors      = FADE_COLORS;
+            color_count = sizeof(FADE_COLORS) / sizeof(FADE_COLORS[0]);
+            millis      = 20;
+            break;
+        }
+        case TEXT_FADER_TO_ORANGE:
+        {
+            const int FADE_COLORS[] = { 0xd0, 0xd1, 0xd2, 0xd3, 0xd4, 0xd5, 0xd9, 0xd8, 0xd7, 0xd6, 0x07, 0x0f };
+            colors      = FADE_COLORS;
+            color_count = sizeof(FADE_COLORS) / sizeof(FADE_COLORS[0]);
+            millis      = 20;
+            break;
+        }
+        case TEXT_FADER_TO_YELLOW:
+        {
+            const int FADE_COLORS[] = { 0xe2, 0xe3, 0xe4, 0xe5, 0xe6, 0xe7 };
+            colors      = FADE_COLORS;
+            color_count = sizeof(FADE_COLORS) / sizeof(FADE_COLORS[0]);
+            millis      = 20;
+            break;
+        }
+
+        case TEXT_FADER_TO_BLACK:
+        {
+            const int FADE_COLORS[] = {
+                0x00, 0x10, 0xea, 0xeb, 0xec, 0xed, 0xee, 0xef,
+                0xf0, 0xf1, 0xf2, 0xf3, 0xf4, 0xf5, 0xf6, 0xf7,
+                0xf8, 0xf9, 0xfa, 0xfb, 0xfc, 0xfd, 0xfe, 0xff
+            };
+            colors      = FADE_COLORS;
+            color_count = sizeof(FADE_COLORS) / sizeof(FADE_COLORS[0]);
+            millis      = 12;
+            break;
+        }
+        case TEXT_FADER_TO_WHITE:
+        default: /* fall through */
+        {
+            const int FADE_COLORS[] = {
+                0xff, 0xfe, 0xfd, 0xfc, 0xfb,
+                0xfa, 0xf9, 0xf8, 0xf7, 0xf6,
+                0xf5, 0xf4, 0xf3, 0xf2, 0xf1
+            };
+            colors      = FADE_COLORS;
+            color_count = sizeof(FADE_COLORS) / sizeof(FADE_COLORS[0]);
+            millis      = 20;
+            break;
+        }
+    }
+
+    console_text_fader_ex( text, colors, color_count, millis );
+}
+
 void console_command_prompt( const char* prompt, int prompt_color, console_handle_command_fxn_t on_cmd, void* data )
 {
     bool quiting = false;
@@ -297,7 +450,7 @@ void console_command_prompt( const char* prompt, int prompt_color, console_handl
     while( !quiting )
     {
         console_fg_color_256( prompt_color );
-        printf( prompt );
+        fputs( prompt, stdout );
         console_reset();
 
         fgets( command, sizeof(command), stdin );

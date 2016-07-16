@@ -1,52 +1,38 @@
 #include <stdlib.h>
 #include <stdio.h>
-#include <stdint.h>
 #include <string.h>
-#include <unistd.h>
 #include "utility.h"
 
 
 static void progress_task( int* percent, void* data );
 static bool process_cmd( const char* command, void* data );
-
-static void console_fader( const char* text, const int* colors, size_t color_count, int millis )
-{
-    size_t len = strlen(text);
-
-    for( size_t j = 0; j < len; j++ )
-    {
-	    console_move_left(1000);
-        for( size_t i = 0, k = 0; i < color_count && j < color_count; i++, k++ )
-        {
-            console_fg_color_256(colors[k]);
-            printf( "%c", text[ i ] );
-            fflush( stdout );
-        }
-        for( size_t i = 0; j > color_count && i < j - color_count; i++ )
-        {
-            console_fg_color_256(colors[0]);
-            printf( "%c", text[ i ] );
-            fflush( stdout );
-        }
-        for( size_t i = j - color_count, k = 0; j < (len - color_count) && i < j; i++, k++ )
-        {
-            console_fg_color_256(colors[k]);
-            printf( "%c", text[ i ] );
-            fflush( stdout );
-        }
-        usleep( millis * 1000 );
-    }
-
-	console_reset();
-	fflush( stdout );
-}
-
+static const char* text[] = {
+    "Happy ye leaves. whenas those lily hands,",
+    "Which hold my life in their dead doing might,",
+    "Shall handle you, and hold in love's soft bands,",
+    "Like captives trembling at the victor's sight.",
+    "And happy lines on which, with starry light,",
+    "Those lamping eyes will deign sometimes to look,",
+    "And read the sorrows of my dying sprite,",
+    "Written with tears in heart's close bleeding book.",
+    "And happy rhymes! bathed in the sacred brook",
+    "Of Helicon, whence she derived is,",
+    "When ye behold that angel's blessed look,",
+    "My soul's long lacked food, my heaven's bliss.",
+    "Leaves, lines, and rhymes seek her to please alone,",
+    "Whom if ye please, I care for other none.",
+};
 
 int main()
 {
+#if 0
     console_fg_color_8( CONSOLE_COLOR8_YELLOW );
     printf( "Type 'help' to see commands.\n" );
-    console_command_prompt( ">> ", 0x21, process_cmd, NULL );
+#else
+    console_text_fader( "Type 'help' to see commands.", TEXT_FADER_TO_YELLOW );
+    fputs( "\n", stdout );
+#endif
+    console_command_prompt( ">> ", 0x3d, process_cmd, NULL );
 	return 0;
 }
 
@@ -66,7 +52,8 @@ bool process_cmd( const char* command, void* data )
         printf( "  %6s   %-50s\n", "colors2", "Show all 256 colors." );
         printf( "  %6s   %-50s\n", "lwp", "Demo progress bar." );
         printf( "  %6s   %-50s\n", "mu", "Demo memory utilization." );
-        printf( "  %6s   %-50s\n", "fader", "Demo fader wolf." );
+        printf( "  %6s   %-50s\n", "fader1", "Demo text fader." );
+        printf( "  %6s   %-50s\n", "fader2", "Demo text fader." );
         printf( "  %6s   %-50s\n", "clear", "Clear the screen." );
         printf( "  %6s   %-50s\n", "quit", "Quit the app." );
     }
@@ -115,41 +102,27 @@ bool process_cmd( const char* command, void* data )
         console_bar_graph( 16, ' ', INTENSITY_COLORS, sizeof(INTENSITY_COLORS) / sizeof(INTENSITY_COLORS[0]), 0xea, percent );
         printf( "\n" );
     }
-    else if( strcmp(command, "fader") == 0 )
+    else if( strcmp(command, "fader1") == 0 )
     {
-        const int colors2[] = {
-            0xff, 0xfe, 0xfd, 0xfc, 0xfb,
-            0xfa, 0xf9, 0xf8, 0xf7, 0xf6,
-            0xf5, 0xf4, 0xf3, 0xf2, 0xf1
-        };
-        /*
-        const int colors2[] = {
-            0xea, 0xeb, 0xec, 0xed, 0xee, 0xef, 0xf0, 0xf1,
-            0xf2, 0xf3, 0xf4, 0xf5, 0xf6, 0xf7, 0xf8, 0xf9,
-            0xfa, 0xfb, 0xfc, 0xfd, 0xfe, 0xff
-        };
-        */
-        const char* text1 = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor";
-        const char* text2 = "incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis";
-        const char* text3 = "nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.";
-        const char* text4 = "Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu";
-        const char* text5 = "fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in";
-        const char* text6 = "culpa qui officia deserunt mollit anim id est laborum.";
+        size_t len = sizeof(text) / sizeof(text[0]);
+        console_text_fader_style_t style = TEXT_FADER_TO_WHITE;
 
-        console_fader( text1, colors2, 15, 50 );
-        printf( "\n" );
-#if 0
-        console_fader( text2, colors2, 15, 50 );
-        printf( "\n" );
-        console_fader( text3, colors2, 15, 50 );
-        printf( "\n" );
-        console_fader( text4, colors2, 15, 50 );
-        printf( "\n" );
-        console_fader( text5, colors2, 15, 50 );
-        printf( "\n" );
-        console_fader( text6, colors2, 15, 50 );
-        printf( "\n" );
-#endif
+        for( int i = 0; i < len; i++ )
+        {
+            console_text_fader( text[i], style );
+            printf( "\n" );
+        }
+    }
+    else if( strcmp(command, "fader2") == 0 )
+    {
+        size_t len = sizeof(text) / sizeof(text[0]);
+        console_text_fader_style_t style = TEXT_FADER_BLUE_BEEP;
+
+        for( int i = 0; i < len; i++ )
+        {
+            console_text_fader( text[i], style );
+            printf( "\n" );
+        }
     }
     else if( *command == '\0' )
     {
@@ -173,8 +146,13 @@ bool process_cmd( const char* command, void* data )
 
 void progress_task( int* percent, void* data )
 {
-	*percent += rand() % 20;
-	usleep( 50000 );
+	*percent += rand() % 10;
+
+    int delays[] = {
+        250, 50, 10, 25, 100
+    };
+
+    time_msleep( delays[ rand() % 5 ] );
 }
 
 
