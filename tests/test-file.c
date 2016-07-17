@@ -23,6 +23,7 @@
 #include <string.h>
 #include <time.h>
 #include "utility.h"
+#include "console.h"
 
 
 int main( int argc, char *argv[] )
@@ -43,9 +44,11 @@ int main( int argc, char *argv[] )
 	char* text = file_load_contents( file, &text_size );
 	if( text )
 	{
-		print_divider( stdout, file );
+        console_fg_bright_color_8( stdout, CONSOLE_COLOR8_CYAN );
+		console_print_divider( stdout, file );
 		printf( "%s", text );
-		print_divider( stdout, NULL );
+		console_print_divider( stdout, NULL );
+        console_reset( stdout );
 		free( text );
 	}
 

@@ -18,6 +18,7 @@ libutility_sources = bytes.c \
 					 refobj.c
 
 libutility_headers = exceptions.h \
+					 console.h \
 					 utility.h
 
 library_includedir = $(includedir)/libutility/

@@ -26,7 +26,7 @@
 #include <limits.h>
 #include <time.h>
 #include "utility.h"
-
+#include "console.h"
 
 int main( int argc, char *argv[] )
 {
@@ -58,10 +58,12 @@ int main( int argc, char *argv[] )
 	size_t original_size      = 0;
 
 
-	print_divider( stdout, "[ Moby Dick ]" );
+    console_fg_color_8( stdout, CONSOLE_COLOR8_CYAN );
+	console_print_divider( stdout, "[ Moby Dick ]" );
 	size_t moby_dick_size = strlen(moby_dick) + 1;
 	printf( "%s\n", moby_dick );
-	print_divider( stdout, "[ Before Encoding ]" );
+    console_fg_bright_color_8( stdout, CONSOLE_COLOR8_CYAN );
+	console_print_divider( stdout, "[ Before Encoding ]" );
 
 	for( size_t i = 0; i < moby_dick_size; i++ )
 	{
@@ -71,7 +73,8 @@ int main( int argc, char *argv[] )
 
 	if( huffman_encode( moby_dick, moby_dick_size, (void**) &compressed, &compressed_size ) )
 	{
-		print_divider( stdout, "[ Huffman Encoded ]" );
+        console_fg_color_8( stdout, CONSOLE_COLOR8_MAGENTA );
+		console_print_divider( stdout, "[ Huffman Encoded ]" );
 
 		size_t header_size = sizeof(size_t) + (UCHAR_MAX + 1 );
 		for( size_t i = header_size; i < compressed_size; i++ )
@@ -83,7 +86,8 @@ int main( int argc, char *argv[] )
 
 	if( huffman_decode( compressed, compressed_size, (void**) &original, &original_size ) )
 	{
-		print_divider( stdout, "[ Huffman Decoded ]" );
+        console_fg_bright_color_8( stdout, CONSOLE_COLOR8_BLUE );
+		console_print_divider( stdout, "[ Huffman Decoded ]" );
 		printf( "%s\n", original );
 
 		for( size_t i = 0; i < original_size; i++ )
@@ -92,6 +96,7 @@ int main( int argc, char *argv[] )
 		}
 		printf( " (%ld bytes)\n", original_size );
 	}
+    console_reset(stdout);
 
 	free( compressed );
 	free( original );

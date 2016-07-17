@@ -23,6 +23,7 @@
 #include <string.h>
 #include <time.h>
 #include "utility.h"
+#include "console.h"
 
 
 int main( int argc, char *argv[] )
@@ -48,7 +49,7 @@ int main( int argc, char *argv[] )
 	buffer_scramble( SEED, text, len, pivot );
 	text[ sizeof(text) - 1 ] = '\0';
 
-	print_divider( stdout, "[ Scrambling Text Test ]" );
+	console_print_divider( stdout, "[ Scrambling Text Test ]" );
 	printf( "      Pivot = [%d]\n", pivot );
 	printf( "       SEED = [%s]\n", SEED );
 	printf( "  Scrambled = [%s]\n", text );

@@ -24,171 +24,124 @@
 #include <stdint.h>
 #include <string.h>
 #include <ctype.h>
+#include "console.h"
 #include "utility.h"
 
 #ifdef _WIN32
 #define snprintf _snprintf
 #endif
 
-void print_divider( FILE* fd, const char* title )
+void console_fg_color_8( FILE* stream, int color )
 {
-	const char* empty = "";
-
-	if( !title )
-	{
-		title = empty;
-	}
-
-	if( title )
-	{
-		char buffer[ 64 ] = { '\0' };
-		size_t len      = strlen(title);
-		int half_len = len >> 1;
-		int half_buffer = sizeof(buffer) >> 1;
-
-		snprintf(buffer, sizeof(buffer), "%*s%*s", half_buffer + half_len, title, half_buffer - half_len, empty);
-
-		for( size_t i = 0; i < sizeof(buffer) - 1; i++ )
-		{
-			if( isspace( buffer[i] ) )
-			{
-				buffer[ i ] = '-';
-			}
-			else
-			{
-				break;
-			}
-		}
-
-		for( size_t i = sizeof(buffer) - 1; ; i-- )
-		{
-			if( isspace( buffer[i] ) || buffer[i] == '\0' )
-			{
-				buffer[ i ] = '-';
-			}
-			else
-			{
-				break;
-			}
-		}
-
-		buffer[ sizeof(buffer) - 1 ] = '\0';
-
-		fprintf( fd, "--%s--\n", buffer );
-	}
+    fprintf( stream, "\033[%dm", color );
 }
 
-void console_fg_color_8( int color )
+void console_fg_bright_color_8( FILE* stream, int color )
 {
-    printf( "\033[%dm", color );
+    fprintf( stream, "\033[%d;1m", color );
 }
 
-void console_fg_bright_color_8( int color )
+void console_fg_color_256( FILE* stream, int color )
 {
-    printf( "\033[%d;1m", color );
+	fprintf( stream, "\033[38;5;%dm", color );
 }
 
-void console_fg_color_256( int color )
+void console_bg_color_256( FILE* stream, int color )
 {
-	printf( "\033[38;5;%dm", color );
+	fprintf( stream, "\033[48;5;%dm", color );
 }
 
-void console_bg_color_256( int color )
+void console_bold( FILE* stream )
 {
-	printf( "\033[48;5;%dm", color );
+    fprintf( stream, "\033[1m" );
 }
 
-void console_bold( void )
+void console_underline( FILE* stream )
 {
-    printf( "\033[1m" );
+    fprintf( stream, "\033[4m" );
 }
 
-void console_underline( void )
+void console_reversed( FILE* stream )
 {
-    printf( "\033[4m" );
+    fprintf( stream, "\033[7m" );
 }
 
-void console_reversed( void )
+void console_hide_cursor( FILE* stream )
 {
-    printf( "\033[7m" );
+    fprintf( stream, "\033[?25l" );
 }
 
-void console_hide_cursor( void )
+void console_show_cursor( FILE* stream )
 {
-    printf( "\033[?25l" );
+    fprintf( stream, "\033[?25h" );
 }
 
-void console_show_cursor( void )
+void console_reset( FILE* stream )
 {
-    printf( "\033[?25h" );
+    fprintf( stream, "\033[0m" );
 }
 
-void console_reset( void )
+void console_save_position( FILE* stream )
 {
-    printf( "\033[0m" );
+    fprintf( stream, "\033[s" );
 }
 
-void console_save_position( void )
+void console_restore_position( FILE* stream )
 {
-    printf( "\033[s" );
+    fprintf( stream, "\033[u" );
 }
 
-void console_restore_position( void )
+void console_move_up( FILE* stream, int n )
 {
-    printf( "\033[u" );
+	fprintf( stream, "\033[%dA", n );
 }
 
-void console_move_up( int n )
+void console_move_down( FILE* stream, int n )
 {
-	printf( "\033[%dA", n );
+	fprintf( stream, "\033[%dB", n );
 }
 
-void console_move_down( int n )
+void console_move_left( FILE* stream, int n )
 {
-	printf( "\033[%dB", n );
+	fprintf( stream, "\033[%dD", n );
 }
 
-void console_move_left( int n )
+void console_move_right( FILE* stream, int n )
 {
-	printf( "\033[%dD", n );
+	fprintf( stream, "\033[%dC", n );
 }
 
-void console_move_right( int n )
+void console_next_line( FILE* stream, int n )
 {
-	printf( "\033[%dC", n );
+	fprintf( stream, "\033[%dE", n );
 }
 
-void console_next_line( int n )
+void console_prev_line( FILE* stream, int n )
 {
-	printf( "\033[%dE", n );
+	fprintf( stream, "\033[%dF", n );
 }
 
-void console_prev_line( int n )
+void console_set_column( FILE* stream, int x )
 {
-	printf( "\033[%dF", n );
+	fprintf( stream, "\033[%dG", x );
 }
 
-void console_set_column( int x )
+void console_goto( FILE* stream, int x, int y )
 {
-	printf( "\033[%dG", x );
+	fprintf( stream, "\033[%d;%dH", y, x );
 }
 
-void console_goto( int x, int y )
+void console_clear_screen( FILE* stream, int type )
 {
-	printf( "\033[%d;%dH", y, x );
+	fprintf( stream, "\033[%dJ", type );
 }
 
-void console_clear_screen( int type )
+void console_clear_line( FILE* stream, int type )
 {
-	printf( "\033[%dJ", type );
+	fprintf( stream, "\033[%dK", type );
 }
 
-void console_clear_line( int type )
-{
-	printf( "\033[%dK", type );
-}
-
-void console_bar_graph( int bar_width, char bar_symbol, const int* colors, size_t color_count, int bkg_color, int percent )
+void console_bar_graph( FILE* stream, int bar_width, char bar_symbol, const int* colors, size_t color_count, int bkg_color, int percent )
 {
 	const int blocks = (bar_width * percent) / 100;
 
@@ -199,59 +152,57 @@ void console_bar_graph( int bar_width, char bar_symbol, const int* colors, size_
 		{
 			if( bar_symbol == ' ' )
             {
-                console_bg_color_256( colors[color_idx] );
+                console_bg_color_256( stream, colors[color_idx] );
             }
             else
             {
-                console_fg_color_256( colors[color_idx] );
+                console_fg_color_256( stream, colors[color_idx] );
             }
 		}
 		else
 		{
 			if( bar_symbol == ' ' )
             {
-                console_bg_color_256( bkg_color );
+                console_bg_color_256( stream, bkg_color );
             }
             else
             {
-                console_fg_color_256( bkg_color );
+                console_fg_color_256( stream, bkg_color );
             }
 		}
-		printf( "%c", bar_symbol );
+		fprintf( stream, "%c", bar_symbol );
 	}
-	console_reset();
-	fflush( stdout );
+	console_reset( stream );
+	fflush( stream );
 }
 
-static inline void __console_progress_indicator_ex( const char* task, int progress_bar_width, char progress_bar_symbol, const int* colors, size_t color_count, int bkg_color, int percent )
+static inline void __console_progress_indicator_ex( FILE* stream, const char* task, int progress_bar_width, char progress_bar_symbol, const int* colors, size_t color_count, int bkg_color, int percent )
 {
-
 #if 0
-	printf( "%s[", console_move_left(1000) );
+	fprintf( stream, "%s[", console_move_left(1000) );
 #else
-    console_clear_line_all();
-    console_set_column( 0 );
-	//printf( "[" );
+    console_clear_line_all( stream );
+    console_set_column( stream, 0 );
+	//fprintf( stream, "[" );
 #endif
 
-    console_bar_graph( progress_bar_width, progress_bar_symbol, colors, color_count, bkg_color, percent );
-    //printf( "]" );
-	printf( " [%3d%%] %s", percent, task );
-	fflush( stdout );
+    console_bar_graph( stream, progress_bar_width, progress_bar_symbol, colors, color_count, bkg_color, percent );
+    //fprintf( stream, "]" );
+	fprintf( stream, " [%3d%%] %s", percent, task );
+	fflush( stream );
 }
 
-void console_progress_indicator_ex( const char* task, int progress_bar_width, char bar_symbol, const int* colors, size_t color_count, int bkg_color, console_progress_fxn_t fxn, void* data )
+void console_progress_indicator_ex( FILE* stream, const char* task, int progress_bar_width, char bar_symbol, const int* colors, size_t color_count, int bkg_color, console_progress_fxn_t fxn, void* data )
 {
-
 	for( int percent = 0; percent < 100; fxn( &percent, data ) )
 	{
-		__console_progress_indicator_ex( task, progress_bar_width, bar_symbol, colors, color_count, bkg_color, percent );
+		__console_progress_indicator_ex( stream, task, progress_bar_width, bar_symbol, colors, color_count, bkg_color, percent );
 	}
-	__console_progress_indicator_ex( task, progress_bar_width, bar_symbol, colors, color_count, bkg_color, 100 );
-	printf( "\n" );
+	__console_progress_indicator_ex( stream, task, progress_bar_width, bar_symbol, colors, color_count, bkg_color, 100 );
+	fprintf( stream, "\n" );
 }
 
-void console_progress_indicator( const char* task, console_progress_indictor_style_t style, console_progress_fxn_t fxn, void* data )
+void console_progress_indicator( FILE* stream, const char* task, console_progress_indictor_style_t style, console_progress_fxn_t fxn, void* data )
 {
     const char progress_bar_symbol = ' ';
 	const int progress_bar_width = 24;
@@ -296,19 +247,19 @@ void console_progress_indicator( const char* task, console_progress_indictor_sty
         }
     }
 
-	console_progress_indicator_ex( task, progress_bar_width, progress_bar_symbol, colors, color_count, bkg_color, fxn, data );
+	console_progress_indicator_ex( stream, task, progress_bar_width, progress_bar_symbol, colors, color_count, bkg_color, fxn, data );
 }
 
-void console_text_fader_ex( const char* text, const int* colors, size_t color_count, int millis )
+void console_text_fader_ex( FILE* stream, const char* text, const int* colors, size_t color_count, int millis )
 {
     size_t len = strlen(text);
 
-    console_hide_cursor();
+    console_hide_cursor( stream );
     for( size_t i = 0, k = 0; i < color_count && i < len; i++, k++ )
     {
-        console_fg_color_256(colors[k]);
-        printf( "%c", text[ i ] );
-        fflush( stdout );
+        console_fg_color_256( stream, colors[k] );
+        fprintf( stream, "%c", text[ i ] );
+        fflush( stream );
 
         time_msleep( millis );
     }
@@ -317,44 +268,49 @@ void console_text_fader_ex( const char* text, const int* colors, size_t color_co
     {
         for( size_t j = color_count; j < len; j++ )
         {
-            console_move_left(j);
+            console_move_left( stream, j );
+
             for( size_t i = 0; j > color_count && i < j - color_count; i++ )
             {
-                console_fg_color_256(colors[0]);
-                printf( "%c", text[ i ] );
-                fflush( stdout );
+                console_fg_color_256( stream, colors[0] );
+                fprintf( stream, "%c", text[ i ] );
+                fflush( stream );
             }
 
             for( size_t i = j - color_count, k = 0; j < len && i < j; i++, k++ )
             {
-                console_fg_color_256(colors[k]);
-                printf( "%c", text[ i ] );
-                fflush( stdout );
+                console_fg_color_256(stream, colors[k] );
+                fprintf( stream, "%c", text[ i ] );
+                fflush( stream );
             }
+
             time_msleep( millis );
         }
     }
 
-    console_move_left(color_count - 1);
+    console_move_left( stream, color_count - 1 );
+
     while( color_count > 0 )
     {
         for( size_t i = len - color_count, k = 0; i < len; i++, k++ )
         {
-            console_fg_color_256(colors[k]);
-            printf( "%c", text[ i ] );
-            fflush( stdout );
+            console_fg_color_256( stream, colors[k] );
+            fprintf( stream, "%c", text[ i ] );
+            fflush( stream );
+
             time_msleep( millis * 0.1 );
         }
+
         color_count--;
-        console_move_left(color_count);
+        console_move_left( stream, color_count );
     }
 
-	console_reset();
-    console_show_cursor();
-	fflush( stdout );
+	console_reset( stream );
+    console_show_cursor( stream );
+	fflush( stream );
 }
 
-void console_text_fader( const char* text, console_text_fader_style_t style )
+void console_text_fader( FILE* stream, const char* text, console_text_fader_style_t style )
 {
     size_t color_count;
     const int* colors;
@@ -411,7 +367,6 @@ void console_text_fader( const char* text, console_text_fader_style_t style )
             millis      = 20;
             break;
         }
-
         case TEXT_FADER_TO_BLACK:
         {
             const int FADE_COLORS[] = {
@@ -439,7 +394,7 @@ void console_text_fader( const char* text, console_text_fader_style_t style )
         }
     }
 
-    console_text_fader_ex( text, colors, color_count, millis );
+    console_text_fader_ex( stream, text, colors, color_count, millis );
 }
 
 void console_command_prompt( const char* prompt, int prompt_color, console_handle_command_fxn_t on_cmd, void* data )
@@ -449,9 +404,9 @@ void console_command_prompt( const char* prompt, int prompt_color, console_handl
 
     while( !quiting )
     {
-        console_fg_color_256( prompt_color );
+        console_fg_color_256( stdout, prompt_color );
         fputs( prompt, stdout );
-        console_reset();
+        console_reset( stdout );
 
         fgets( command, sizeof(command), stdin );
         string_trim( command, " \t\r\n" );
@@ -461,4 +416,52 @@ void console_command_prompt( const char* prompt, int prompt_color, console_handl
             quiting = true;
         }
     }
+}
+
+void console_print_divider( FILE* stream, const char* title )
+{
+	const char* empty = "";
+
+	if( !title )
+	{
+		title = empty;
+	}
+
+	if( title )
+	{
+		char buffer[ 64 ] = { '\0' };
+		size_t len      = strlen(title);
+		int half_len = len >> 1;
+		int half_buffer = sizeof(buffer) >> 1;
+
+		snprintf(buffer, sizeof(buffer), "%*s%*s", half_buffer + half_len, title, half_buffer - half_len, empty);
+
+		for( size_t i = 0; i < sizeof(buffer) - 1; i++ )
+		{
+			if( isspace( buffer[i] ) )
+			{
+				buffer[ i ] = '-';
+			}
+			else
+			{
+				break;
+			}
+		}
+
+		for( size_t i = sizeof(buffer) - 1; ; i-- )
+		{
+			if( isspace( buffer[i] ) || buffer[i] == '\0' )
+			{
+				buffer[ i ] = '-';
+			}
+			else
+			{
+				break;
+			}
+		}
+
+		buffer[ sizeof(buffer) - 1 ] = '\0';
+
+		fprintf( stream, "--%s--\n", buffer );
+	}
 }

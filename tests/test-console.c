@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <string.h>
 #include "utility.h"
+#include "console.h"
 
 
 static void progress_task( int* percent, void* data );
@@ -26,10 +27,10 @@ static const char* text[] = {
 int main()
 {
 #if 0
-    console_fg_color_8( CONSOLE_COLOR8_YELLOW );
+    console_fg_color_8( stdout, CONSOLE_COLOR8_YELLOW );
     printf( "Type 'help' to see commands.\n" );
 #else
-    console_text_fader( "Type 'help' to see commands.", TEXT_FADER_TO_YELLOW );
+    console_text_fader( stdout, "Type 'help' to see commands.", TEXT_FADER_TO_YELLOW );
     fputs( "\n", stdout );
 #endif
     console_command_prompt( ">> ", 0x3d, process_cmd, NULL );
@@ -61,13 +62,13 @@ bool process_cmd( const char* command, void* data )
     {
         for( int i = 0; i < 256; i++ )
         {
-            console_fg_color_256(15);
-            console_bg_color_256( i );
+            console_fg_color_256( stdout, 15 );
+            console_bg_color_256( stdout, i );
             printf( " %02x ", i );
 
             if( (i+1) % 16 == 0 )
             {
-                console_reset();
+                console_reset( stdout );
                 printf( "\n" );
             }
         }
@@ -76,19 +77,19 @@ bool process_cmd( const char* command, void* data )
     {
         for( int i = 0; i < 256; i++ )
         {
-            console_fg_color_256( i );
+            console_fg_color_256( stdout, i );
             printf( " %02x ", i );
 
             if( (i+1) % 16 == 0 )
             {
-                console_reset();
+                console_reset( stdout );
                 printf( "\n" );
             }
         }
     }
     else if( strcmp(command, "lwp") == 0 )
     {
-	    console_progress_indicator("Loading world peace...", PROGRESS_INDICATOR_STYLE_BLUE, progress_task, NULL );
+	    console_progress_indicator( stdout, "Loading world peace...", PROGRESS_INDICATOR_STYLE_BLUE, progress_task, NULL );
     }
     else if( strcmp(command, "mu") == 0 )
     {
@@ -99,7 +100,7 @@ bool process_cmd( const char* command, void* data )
         };
         int percent = rand() % 101;
         printf( "%3d%% ", percent );
-        console_bar_graph( 16, ' ', INTENSITY_COLORS, sizeof(INTENSITY_COLORS) / sizeof(INTENSITY_COLORS[0]), 0xea, percent );
+        console_bar_graph( stdout, 16, ' ', INTENSITY_COLORS, sizeof(INTENSITY_COLORS) / sizeof(INTENSITY_COLORS[0]), 0xea, percent );
         printf( "\n" );
     }
     else if( strcmp(command, "fader1") == 0 )
@@ -109,7 +110,7 @@ bool process_cmd( const char* command, void* data )
 
         for( int i = 0; i < len; i++ )
         {
-            console_text_fader( text[i], style );
+            console_text_fader( stdout, text[i], style );
             printf( "\n" );
         }
     }
@@ -120,24 +121,24 @@ bool process_cmd( const char* command, void* data )
 
         for( int i = 0; i < len; i++ )
         {
-            console_text_fader( text[i], style );
+            console_text_fader( stdout, text[i], style );
             printf( "\n" );
         }
     }
     else if( *command == '\0' )
     {
         // do nothing
-	    console_move_left(1000);
+	    console_move_left( stdout, 1000);
     }
     else if( strcmp(command, "clear") == 0 )
     {
-        console_clear_screen_all();
+        console_clear_screen_all( stdout );
     }
     else
     {
-        console_fg_color_8( CONSOLE_COLOR8_RED );
+        console_fg_color_8( stdout, CONSOLE_COLOR8_RED );
         printf( "ERROR:" );
-        console_reset();
+        console_reset( stdout );
         printf( " Unrecognized command '%s'\n", command );
     }
 
@@ -154,7 +155,3 @@ void progress_task( int* percent, void* data )
 
     time_msleep( delays[ rand() % 5 ] );
 }
-
-
-
-
