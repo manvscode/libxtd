@@ -30,7 +30,7 @@ int main()
     console_fg_color_8( stdout, CONSOLE_COLOR8_YELLOW );
     printf( "Type 'help' to see commands.\n" );
 #else
-    console_text_fader( stdout, "Type 'help' to see commands.", TEXT_FADER_TO_YELLOW );
+    console_text_faderf( stdout, TEXT_FADER_TO_YELLOW, "Type '%s' to see commands.", "help" );
     fputs( "\n", stdout );
 #endif
     console_command_prompt( ">> ", 0x3d, process_cmd, NULL );
@@ -110,7 +110,7 @@ bool process_cmd( const char* command, void* data )
 
         for( int i = 0; i < len; i++ )
         {
-            console_text_fader( stdout, text[i], style );
+            console_text_fader( stdout, style, text[i] );
             printf( "\n" );
         }
     }
@@ -121,7 +121,7 @@ bool process_cmd( const char* command, void* data )
 
         for( int i = 0; i < len; i++ )
         {
-            console_text_fader( stdout, text[i], style );
+            console_text_fader( stdout, style, text[i] );
             printf( "\n" );
         }
     }

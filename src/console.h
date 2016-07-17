@@ -78,7 +78,8 @@ void console_goto                  ( FILE* stream, int x, int y );
 void console_clear_screen          ( FILE* stream, int type );
 void console_clear_line            ( FILE* stream, int type );
 void console_text_fader_ex         ( FILE* stream, const char* text, const int* colors, size_t color_count, int millis );
-void console_text_fader            ( FILE* stream, const char* text, console_text_fader_style_t style );
+void console_text_fader            ( FILE* stream, console_text_fader_style_t style, const char* text );
+void console_text_faderf           ( FILE* stream, console_text_fader_style_t style, const char* format, ... );
 void console_command_prompt        ( const char* prompt, int prompt_color, console_handle_command_fxn_t on_cmd, void* data );
 void console_print_divider         ( FILE* stream, const char* title );
 

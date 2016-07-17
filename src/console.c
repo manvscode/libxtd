@@ -22,6 +22,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <stdint.h>
+#include <stdarg.h>
 #include <string.h>
 #include <ctype.h>
 #include "console.h"
@@ -315,7 +316,7 @@ void console_text_fader_ex( FILE* stream, const char* text, const int* colors, s
 	fflush( stream );
 }
 
-void console_text_fader( FILE* stream, const char* text, console_text_fader_style_t style )
+void console_text_fader( FILE* stream, console_text_fader_style_t style, const char* text )
 {
     size_t color_count;
     const int* colors;
@@ -400,6 +401,17 @@ void console_text_fader( FILE* stream, const char* text, console_text_fader_styl
     }
 
     console_text_fader_ex( stream, text, colors, color_count, millis );
+}
+
+void console_text_faderf( FILE* stream, console_text_fader_style_t style, const char* format, ... )
+{
+    char fmtbuf[ 256 ];
+    va_list args;
+    va_start( args, format );
+    vsnprintf( fmtbuf, sizeof(fmtbuf), format, args );
+    fmtbuf[ sizeof(fmtbuf) - 1 ] = '\0';
+    va_end( args );
+    console_text_fader( stream, style, fmtbuf );
 }
 
 void console_command_prompt( const char* prompt, int prompt_color, console_handle_command_fxn_t on_cmd, void* data )
