@@ -194,11 +194,16 @@ static inline void __console_progress_indicator_ex( FILE* stream, const char* ta
 
 void console_progress_indicator_ex( FILE* stream, const char* task, int progress_bar_width, char bar_symbol, const int* colors, size_t color_count, int bkg_color, console_progress_fxn_t fxn, void* data )
 {
-	for( int percent = 0; percent < 100; fxn( &percent, data ) )
+    bool is_progressing = true;
+	for( int percent = 0; is_progressing && percent < 100; is_progressing = fxn( &percent, data ) )
 	{
 		__console_progress_indicator_ex( stream, task, progress_bar_width, bar_symbol, colors, color_count, bkg_color, percent );
 	}
-	__console_progress_indicator_ex( stream, task, progress_bar_width, bar_symbol, colors, color_count, bkg_color, 100 );
+
+    if( is_progressing )
+    {
+	    __console_progress_indicator_ex( stream, task, progress_bar_width, bar_symbol, colors, color_count, bkg_color, 100 );
+    }
 	fprintf( stream, "\n" );
 }
 

@@ -5,7 +5,7 @@
 #include "console.h"
 
 
-static void progress_task( int* percent, void* data );
+static bool progress_task( int* percent, void* data );
 static bool process_cmd( const char* command, void* data );
 static const char* text[] = {
     "Happy ye leaves. whenas those lily hands,",
@@ -145,7 +145,7 @@ bool process_cmd( const char* command, void* data )
     return true;
 }
 
-void progress_task( int* percent, void* data )
+bool progress_task( int* percent, void* data )
 {
 	*percent += rand() % 10;
 
@@ -154,4 +154,5 @@ void progress_task( int* percent, void* data )
     };
 
     time_msleep( delays[ rand() % 5 ] );
+    return true;
 }

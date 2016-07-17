@@ -33,7 +33,7 @@
  * Console
  */
 
-typedef void (*console_progress_fxn_t)       ( int* percent, void* data );
+typedef bool (*console_progress_fxn_t)       ( int* percent, void* data );
 typedef bool (*console_handle_command_fxn_t) ( const char* command, void* data );
 typedef enum console_progress_indictor_style {
     PROGRESS_INDICATOR_STYLE_BLUE,
