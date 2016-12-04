@@ -236,3 +236,20 @@ char* debug_buffer_to_string( const void* data, size_t size, size_t grouping, bo
 	return s;
 }
 
+unsigned int rotate_bits_left( unsigned int value, int shift )
+{
+	if ((shift &= sizeof(value)*CHAR_BIT - 1) == 0)
+	{
+		return value;
+	}
+	return (value << shift) | (value >> (sizeof(value)*CHAR_BIT - shift));
+}
+
+unsigned int rotate_bits_right( unsigned int value, int shift )
+{
+	if ((shift &= sizeof(value)*CHAR_BIT - 1) == 0)
+	{
+		return value;
+	}
+	return (value >> shift) | (value << (sizeof(value)*CHAR_BIT - shift));
+}

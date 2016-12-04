@@ -140,15 +140,17 @@ char*       string_substring  ( const char* str, size_t start, size_t end );
  * Misscellaneous
  */
 
-const char* byte_to_binary         ( uint8_t x );
-void        buffer_scramble        ( const char* key, void* buffer, size_t size, unsigned short pivot );
-void        buffer_unscramble      ( const char* key, void* buffer, size_t size, unsigned short pivot );
-void        xor_bytes              ( const void* a, size_t a_size, const void* b, size_t b_size, void* result );
-void        swap                   ( void* left, void* right, size_t size );
-bool        is_big_endian          ( void );
-void        hton                   ( void* mem, size_t size );
-void        ntoh                   ( void* mem, size_t size );
-char*       debug_buffer_to_string ( const void* data, size_t size, size_t grouping, bool with_spaces ); /* allocates memory */
+const char*  byte_to_binary         ( uint8_t x );
+void         buffer_scramble        ( const char* key, void* buffer, size_t size, unsigned short pivot );
+void         buffer_unscramble      ( const char* key, void* buffer, size_t size, unsigned short pivot );
+void         xor_bytes              ( const void* a, size_t a_size, const void* b, size_t b_size, void* result );
+void         swap                   ( void* left, void* right, size_t size );
+bool         is_big_endian          ( void );
+void         hton                   ( void* mem, size_t size );
+void         ntoh                   ( void* mem, size_t size );
+char*        debug_buffer_to_string ( const void* data, size_t size, size_t grouping, bool with_spaces ); /* allocates memory */
+unsigned int rotate_bits_left       ( unsigned int value, int shift );
+unsigned int rotate_bits_right      ( unsigned int value, int shift );
 
 /*
  *  Timer
