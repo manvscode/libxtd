@@ -35,5 +35,9 @@ int main( int argc, char *argv[] )
 
 	printf( "%llu - %llu = %llu\n", end, start, end - start );
 
+
+	time_t now = time(NULL);
+	printf( "time = %s\n", time_iso8601( now ) );
+	printf( "time = %s\n", time_iso8601_precision( now, 1234 ) );
 	return  0;
 }
