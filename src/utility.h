@@ -153,13 +153,15 @@ unsigned int rotate_bits_left       ( unsigned int value, int shift );
 unsigned int rotate_bits_right      ( unsigned int value, int shift );
 
 /*
- *  Timer
+ *  Time
  */
-double   time_seconds      ( void );
-double   time_milliseconds ( void );
-uint64_t time_secs         ( void );
-uint64_t time_msecs        ( void );
-void     time_msleep       ( int milliseconds );
+double      time_seconds           ( void );
+double      time_milliseconds      ( void );
+uint64_t    time_secs              ( void );
+uint64_t    time_msecs             ( void );
+void        time_msleep            ( int milliseconds );
+const char* time_iso8601           ( time_t t );
+const char* time_iso8601_precision ( time_t t, unsigned int milliseconds );
 
 /*
  *  Encryption
