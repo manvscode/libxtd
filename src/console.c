@@ -32,6 +32,56 @@
 #define snprintf _snprintf
 #endif
 
+const int COLORS_BLUE_BEEP[] = {
+	0x19, 0x1a, 0x1b, 0x20, 0x21,
+	0x26, 0x27, 0x07, 0x0f
+};
+const int COLORS_FADER_TO_RED[] = {
+	0xc4, 0xc5, 0xc6, 0xc7, 0xc8,
+	0xc9, 0xd4, 0xd5, 0x07, 0x0f
+};
+const int COLORS_FADER_TO_BLUE[] = {
+	0x15, 0x14, 0x13, 0x12, 0x11,
+	0x10
+};
+const int COLORS_FADER_TO_GREEN[] = {
+	0x52, 0x53, 0x54, 0x55, 0x56,
+	0x57
+};
+const int COLORS_FADER_TO_ORANGE[] = {
+	0xd0, 0xd1, 0xd2, 0xd3, 0xd4,
+	0xd5, 0xd9, 0xd8, 0xd7, 0xd6,
+	0x07, 0x0f
+};
+const int COLORS_FADER_TO_YELLOW[] = {
+	0xe2, 0xe3, 0xe4, 0xe5, 0xe6,
+	0xe7
+};
+const int COLORS_FADER_TO_BLACK[] = {
+	0x00, 0x10, 0xea, 0xeb, 0xec,
+	0xed, 0xee, 0xef, 0xf0, 0xf1,
+	0xf2, 0xf3, 0xf4, 0xf5, 0xf6,
+	0xf7, 0xf8, 0xf9, 0xfa, 0xfb,
+	0xfc, 0xfd, 0xfe, 0xff
+};
+const int COLORS_FADER_TO_WHITE[] = {
+	0xff, 0xfe, 0xfd, 0xfc, 0xfb,
+	0xfa, 0xf9, 0xf8, 0xf7, 0xf6,
+	0xf5, 0xf4, 0xf3, 0xf2, 0xf1
+};
+const int COLORS_PROGRESS_FADE[] = {
+	0xea, 0xeb, 0xec, 0xed, 0xee,
+	0xef, 0xf0, 0xf1, 0xf2, 0xf3,
+	0xf4, 0xf5, 0xf6, 0xf7, 0xf8,
+	0xf9, 0xfa, 0xfb, 0xfc, 0xfd,
+	0xfe, 0xff
+};
+const int COLORS_PROGRESS_INTENSITY[] = {
+	0x02, 0x22, 0x28, 0x9a, 0xe2,
+	0xdc, 0xd6, 0xd0, 0xc4
+};
+const int COLORS_PROGRESS_BLUE[] = { 0x15 };
+
 void console_fg_color_8( FILE* stream, int color )
 {
     fprintf( stream, "\033[%dm", color );
@@ -220,35 +270,24 @@ void console_progress_indicator( FILE* stream, const char* task, console_progres
     {
         case PROGRESS_INDICATOR_STYLE_FADE:
         {
-            const int FADE_COLORS[] = {
-                0xea, 0xeb, 0xec, 0xed, 0xee, 0xef, 0xf0, 0xf1,
-                0xf2, 0xf3, 0xf4, 0xf5, 0xf6, 0xf7, 0xf8, 0xf9,
-                0xfa, 0xfb, 0xfc, 0xfd, 0xfe, 0xff
-            };
-            colors      = FADE_COLORS;
-            color_count = sizeof(FADE_COLORS) / sizeof(FADE_COLORS[0]);
+            colors      = COLORS_PROGRESS_FADE;
+            color_count = sizeof(COLORS_PROGRESS_FADE) / sizeof(COLORS_PROGRESS_FADE[0]);
             bkg_color   = 0xe9;
             break;
         }
         case PROGRESS_INDICATOR_STYLE_INTENSITY:
         {
-            const int INTENSITY_COLORS[] = {
-                0x02, 0x22, 0x28,
-                0x9a, 0xe2, 0xdc,
-                0xd6, 0xd0, 0xc4
-            };
-            colors      = INTENSITY_COLORS;
-            color_count = sizeof(INTENSITY_COLORS) / sizeof(INTENSITY_COLORS[0]);
+            colors      = COLORS_PROGRESS_INTENSITY;
+            color_count = sizeof(COLORS_PROGRESS_INTENSITY) / sizeof(COLORS_PROGRESS_INTENSITY[0]);
             bkg_color   = 0xeb;
             break;
         }
         case PROGRESS_INDICATOR_STYLE_BLUE:
         default: /* fall through */
         {
-	        const int BLUE = 0x15;
-            colors         = &BLUE;
-            color_count    = 1;
-            bkg_color      = 0x11;
+            colors      = COLORS_PROGRESS_BLUE;
+            color_count = sizeof(COLORS_PROGRESS_BLUE) / sizeof(COLORS_PROGRESS_BLUE[0]);
+            bkg_color   = 0x11;
             break;
         }
     }
@@ -326,75 +365,58 @@ void console_text_fader( FILE* stream, console_text_fader_style_t style, const c
     {
         case TEXT_FADER_BLUE_BEEP:
         {
-            const int FADE_COLORS[] = { 0x19, 0x1a, 0x1b, 0x20, 0x21, 0x26, 0x27,
-                0x07, 0x0f };
-            colors      = FADE_COLORS;
-            color_count = sizeof(FADE_COLORS) / sizeof(FADE_COLORS[0]);
+            colors      = COLORS_BLUE_BEEP;
+            color_count = sizeof(COLORS_BLUE_BEEP) / sizeof(COLORS_BLUE_BEEP[0]);
             millis      = 20;
             break;
         }
         case TEXT_FADER_TO_RED:
         {
-            const int FADE_COLORS[] = { 0xc4, 0xc5, 0xc6, 0xc7, 0xc8, 0xc9, 0xd4, 0xd5, 0x07, 0x0f };
-            colors      = FADE_COLORS;
-            color_count = sizeof(FADE_COLORS) / sizeof(FADE_COLORS[0]);
+            colors      = COLORS_FADER_TO_RED;
+            color_count = sizeof(COLORS_FADER_TO_RED) / sizeof(COLORS_FADER_TO_RED[0]);
             millis      = 30;
             break;
         }
         case TEXT_FADER_TO_BLUE:
         {
-            const int FADE_COLORS[] = { 0x15, 0x14, 0x13, 0x12, 0x11, 0x10 };
-            colors      = FADE_COLORS;
-            color_count = sizeof(FADE_COLORS) / sizeof(FADE_COLORS[0]);
+            colors      = COLORS_FADER_TO_BLUE;
+            color_count = sizeof(COLORS_FADER_TO_BLUE) / sizeof(COLORS_FADER_TO_BLUE[0]);
             millis      = 30;
             break;
         }
         case TEXT_FADER_TO_GREEN:
         {
-            const int FADE_COLORS[] = { 0x52, 0x53, 0x54, 0x55, 0x56, 0x57 };
-            colors      = FADE_COLORS;
-            color_count = sizeof(FADE_COLORS) / sizeof(FADE_COLORS[0]);
+            colors      = COLORS_FADER_TO_GREEN;
+            color_count = sizeof(COLORS_FADER_TO_GREEN) / sizeof(COLORS_FADER_TO_GREEN[0]);
             millis      = 20;
             break;
         }
         case TEXT_FADER_TO_ORANGE:
         {
-            const int FADE_COLORS[] = { 0xd0, 0xd1, 0xd2, 0xd3, 0xd4, 0xd5, 0xd9, 0xd8, 0xd7, 0xd6, 0x07, 0x0f };
-            colors      = FADE_COLORS;
-            color_count = sizeof(FADE_COLORS) / sizeof(FADE_COLORS[0]);
+            colors      = COLORS_FADER_TO_ORANGE;
+            color_count = sizeof(COLORS_FADER_TO_ORANGE) / sizeof(COLORS_FADER_TO_ORANGE[0]);
             millis      = 20;
             break;
         }
         case TEXT_FADER_TO_YELLOW:
         {
-            const int FADE_COLORS[] = { 0xe2, 0xe3, 0xe4, 0xe5, 0xe6, 0xe7 };
-            colors      = FADE_COLORS;
-            color_count = sizeof(FADE_COLORS) / sizeof(FADE_COLORS[0]);
+            colors      = COLORS_FADER_TO_YELLOW;
+            color_count = sizeof(COLORS_FADER_TO_YELLOW) / sizeof(COLORS_FADER_TO_YELLOW[0]);
             millis      = 20;
             break;
         }
         case TEXT_FADER_TO_BLACK:
         {
-            const int FADE_COLORS[] = {
-                0x00, 0x10, 0xea, 0xeb, 0xec, 0xed, 0xee, 0xef,
-                0xf0, 0xf1, 0xf2, 0xf3, 0xf4, 0xf5, 0xf6, 0xf7,
-                0xf8, 0xf9, 0xfa, 0xfb, 0xfc, 0xfd, 0xfe, 0xff
-            };
-            colors      = FADE_COLORS;
-            color_count = sizeof(FADE_COLORS) / sizeof(FADE_COLORS[0]);
+            colors      = COLORS_FADER_TO_BLACK;
+            color_count = sizeof(COLORS_FADER_TO_BLACK) / sizeof(COLORS_FADER_TO_BLACK[0]);
             millis      = 12;
             break;
         }
         case TEXT_FADER_TO_WHITE:
         default: /* fall through */
         {
-            const int FADE_COLORS[] = {
-                0xff, 0xfe, 0xfd, 0xfc, 0xfb,
-                0xfa, 0xf9, 0xf8, 0xf7, 0xf6,
-                0xf5, 0xf4, 0xf3, 0xf2, 0xf1
-            };
-            colors      = FADE_COLORS;
-            color_count = sizeof(FADE_COLORS) / sizeof(FADE_COLORS[0]);
+            colors      = COLORS_FADER_TO_WHITE;
+            color_count = sizeof(COLORS_FADER_TO_WHITE) / sizeof(COLORS_FADER_TO_WHITE[0]);
             millis      = 20;
             break;
         }

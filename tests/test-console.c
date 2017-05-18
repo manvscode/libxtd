@@ -52,6 +52,7 @@ bool process_cmd( const char* command, void* data )
         printf( "  %6s   %-50s\n", "colors1", "Show all 256 colors." );
         printf( "  %6s   %-50s\n", "colors2", "Show all 256 colors." );
         printf( "  %6s   %-50s\n", "lwp", "Demo progress bar." );
+        printf( "  %6s   %-50s\n", "lm", "Demo progress bar fade." );
         printf( "  %6s   %-50s\n", "mu", "Demo memory utilization." );
         printf( "  %6s   %-50s\n", "fader1", "Demo text fader." );
         printf( "  %6s   %-50s\n", "fader2", "Demo text fader." );
@@ -90,6 +91,10 @@ bool process_cmd( const char* command, void* data )
     else if( strcmp(command, "lwp") == 0 )
     {
 	    console_progress_indicator( stdout, "Loading world peace...", PROGRESS_INDICATOR_STYLE_BLUE, progress_task, NULL );
+    }
+    else if( strcmp(command, "lm") == 0 )
+    {
+	    console_progress_indicator( stdout, "Loading magic...", PROGRESS_INDICATOR_STYLE_FADE, progress_task, NULL );
     }
     else if( strcmp(command, "mu") == 0 )
     {
