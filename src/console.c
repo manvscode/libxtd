@@ -367,7 +367,7 @@ void console_text_fader( FILE* stream, console_text_fader_style_t style, const c
         {
             colors      = COLORS_BLUE_BEEP;
             color_count = sizeof(COLORS_BLUE_BEEP) / sizeof(COLORS_BLUE_BEEP[0]);
-            millis      = 20;
+            millis      = 10;
             break;
         }
         case TEXT_FADER_TO_RED:
@@ -381,28 +381,28 @@ void console_text_fader( FILE* stream, console_text_fader_style_t style, const c
         {
             colors      = COLORS_FADER_TO_BLUE;
             color_count = sizeof(COLORS_FADER_TO_BLUE) / sizeof(COLORS_FADER_TO_BLUE[0]);
-            millis      = 30;
+            millis      = 15;
             break;
         }
         case TEXT_FADER_TO_GREEN:
         {
             colors      = COLORS_FADER_TO_GREEN;
             color_count = sizeof(COLORS_FADER_TO_GREEN) / sizeof(COLORS_FADER_TO_GREEN[0]);
-            millis      = 20;
+            millis      = 15;
             break;
         }
         case TEXT_FADER_TO_ORANGE:
         {
             colors      = COLORS_FADER_TO_ORANGE;
             color_count = sizeof(COLORS_FADER_TO_ORANGE) / sizeof(COLORS_FADER_TO_ORANGE[0]);
-            millis      = 20;
+            millis      = 15;
             break;
         }
         case TEXT_FADER_TO_YELLOW:
         {
             colors      = COLORS_FADER_TO_YELLOW;
             color_count = sizeof(COLORS_FADER_TO_YELLOW) / sizeof(COLORS_FADER_TO_YELLOW[0]);
-            millis      = 20;
+            millis      = 15;
             break;
         }
         case TEXT_FADER_TO_BLACK:
@@ -417,7 +417,7 @@ void console_text_fader( FILE* stream, console_text_fader_style_t style, const c
         {
             colors      = COLORS_FADER_TO_WHITE;
             color_count = sizeof(COLORS_FADER_TO_WHITE) / sizeof(COLORS_FADER_TO_WHITE[0]);
-            millis      = 20;
+            millis      = 10;
             break;
         }
     }
