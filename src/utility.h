@@ -124,6 +124,7 @@ typedef enum random_string_type {
 	RAND_STRING_DISTINCT,
 } string_random_type_t;
 
+char*       string_dup        ( const char* s );
 size_t      string_left_trim  ( char* s, const char* delimeters );
 size_t      string_right_trim ( char* s, const char* delimeters );
 size_t      string_trim       ( char* s, const char* delimeters );

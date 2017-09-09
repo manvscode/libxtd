@@ -25,6 +25,18 @@
 #include <string.h>
 #include "utility.h"
 
+char* string_dup( const char* s )
+{
+	size_t len = strlen( s );
+	char* result = malloc( len + 1 );
+	if( result )
+	{
+		strncpy( result, s, len + 1 );
+	}
+
+	return result;
+}
+
 size_t string_left_trim( char* s, const char* delimeters )
 {
 	char* start = s;
