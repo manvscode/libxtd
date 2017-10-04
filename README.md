@@ -1,13 +1,16 @@
-Donations
-==========
-If you found this library useful, please donate some BTC to 1NBfudTasBRBdEAwUvsLmxg1poyDnqHnMf.
+## libutility
 
-libutility
-==========
 A collection of utility code for projects using C/C++.
 
-License
-=============
+----------
+
+## Donate, if you found this software useful
+
+The development of this software took numerous hours of development and testing.  If you found this useful to you, then please consider making a [donation of bitcoin.](https://bitpay.com/cart/add?itemId=UKnz9hqb1Cso8ZKS4BrDbt)
+
+All donations help cover maintenance costs.
+
+## License
     Copyright (C) 2010-2014 Joseph A. Marrero.  http://www.manvscode.com/
     
     Permission is hereby granted, free of charge, to any person obtaining a copy
