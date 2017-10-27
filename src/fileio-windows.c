@@ -197,12 +197,18 @@ bool directory_create( const char* path )
 	return CreateDirectory(path, NULL);
 }
 
-extern char* path( const char* path, char dir_separator );
+extern char* __path_r( const char* path, char dir_separator, char* buffer, size_t size ); /* returns NULL on error  */
+extern char* __path( const char* path, char dir_separator ); /* allocates memory */
 
-char* directory_path( const char* p )
+char* directory_path_r( const char* _path, char* buffer, size_t size )
+{
+	return __path_r( p, '\\', buffer, size );
+}
+
+char* directory_path( const char* p ) /* allocates memory */
 {
 	assert( p );
-	return path( p, '\\' );
+	return __path( p, '\\' );
 }
 
 static void __directory_enumerate( const char* path, bool recursive, directory_enumerate_mode_t mode, file_enumerate_fxn_t process_file, void* args );
@@ -215,7 +221,7 @@ void directory_enumerate( const char* path, bool recursive, directory_enumerate_
 		bool ends_with_slash = len > 0 && path[ len - 1 ] == '\\';
 		size_t sz = ends_with_slash ? len : (len + 1);
 
-		char path_no_trailing_slash[ MAX_PATH ];
+		char path_no_trailing_slash[ MAX_PATH + 1 ];
 		strncpy( path_no_trailing_slash, path, sz );
 		path_no_trailing_slash[ sz - 1 ] = '\0';
 
@@ -228,7 +234,7 @@ void __directory_enumerate( const char* path, bool recursive, directory_enumerat
 	WIN32_FIND_DATA find_data;
 	BOOL enumerating = true;
 
-	char path_with_wildcard[MAX_PATH];
+	char path_with_wildcard[ MAX_PATH + 1 ];
 	snprintf( path_with_wildcard, sizeof(path_with_wildcard), "%s\\*", path );
 	path_with_wildcard[ sizeof(path_with_wildcard) - 1 ] = '\0';
 
@@ -240,7 +246,7 @@ void __directory_enumerate( const char* path, bool recursive, directory_enumerat
 		if( strcmp(find_data.cFileName, ".") == 0 ) continue;
 		else if( strcmp(find_data.cFileName, "..") == 0 ) continue;
 
-		char absolute_path[ MAX_PATH ];
+		char absolute_path[ MAX_PATH + 1 ];
 		snprintf( absolute_path, sizeof(absolute_path), "%s\\%s", path, find_data.cFileName );
 		absolute_path[ sizeof(absolute_path) - 1] = '\0';
 

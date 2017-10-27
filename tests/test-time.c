@@ -21,19 +21,26 @@
  */
 #include <stdio.h>
 #include <string.h>
+#ifndef __STDC_FORMAT_MACROS
+# define __STDC_FORMAT_MACROS
+#endif
+#include <inttypes.h>
 #include <time.h>
 #include <unistd.h>
-#include "utility.h"
 
+#include "utility.h"
 
 int main( int argc, char *argv[] )
 {
 	uint64_t start = time_milliseconds( );
+#ifdef usleep
 	usleep( 2500000 );
+#else
+	sleep( 2 );
+#endif
 	uint64_t end = time_milliseconds( );
 
-
-	printf( "%llu - %llu = %llu\n", end, start, end - start );
+	printf( "%" PRIu64 " - %" PRIu64 " = %" PRIu64 "\n", end, start, end - start );
 
 
 	time_t now = time(NULL);

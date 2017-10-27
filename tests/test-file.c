@@ -57,20 +57,45 @@ int main( int argc, char *argv[] )
 	const char* path3 = "/";
 
 	const char* basename_path1 = file_basename( path1 );
-	const char* basename_path2 = file_basename( path2 );
-	const char* basename_path3 = file_basename( path3 );
-
 	printf( "basename_path1 = %s --> %s\n", path1, basename_path1 );
+
+	const char* basename_path2 = file_basename( path2 );
 	printf( "basename_path2 = %s --> %s\n", path2, basename_path2 );
+
+	const char* basename_path3 = file_basename( path3 );
 	printf( "basename_path3 = %s --> %s\n", path3, basename_path3 );
 
 	char* path_path1 = directory_path( path1 );
-	char* path_path2 = directory_path( path2 );
-	char* path_path3 = directory_path( path3 );
-
 	printf( "path_path1 = %s --> %s\n", path1, path_path1 );
-	printf( "path_path2 = %s --> %s\n", path2, path_path2 );
+	free( path_path1 );
+
+	char buffer[ 256 ];
+	directory_path_r( path2, buffer, sizeof(buffer) );
+	printf( "path_path2 = %s --> %s\n", path2, buffer );
+
+	char* path_path3 = directory_path( path3 );
 	printf( "path_path3 = %s --> %s\n", path3, path_path3 );
+	free( path_path3 );
+
+
+
+	const char* dir = "/tmp/foobar";
+
+	if( directory_exists( dir ) )
+	{
+		file_delete( dir );
+	}
+
+	if( directory_create( dir ) )
+	{
+		printf( "Created %s successfully.\n", dir );
+	}
+	else
+	{
+		printf( "Failed to create %s.\n", dir );
+	}
+	/*
+	*/
 
 	return 0;
 }

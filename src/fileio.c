@@ -146,19 +146,15 @@ const char* basename( const char* path, char dir_separator )
 	#endif
 }
 
-#if PATH_REENTRANT
-char* path( const char* path, char dir_separator, char* buffer, size_t size )
-#else
-char* path( const char* path, char dir_separator )
-#endif
+char* __path_r( const char* path, char dir_separator, char* buffer, size_t size ) /* returns NULL on error  */
 {
 	char* p     = (char*) path;
 	char *slash = (char*) path;
-	int length  = 0;
+	ssize_t length  = 0;
 
-	while (*p)
+	while( *p )
 	{
-		if (*p == dir_separator)
+		if( *p == dir_separator )
 		{
 			slash = p;
 		}
@@ -166,7 +162,7 @@ char* path( const char* path, char dir_separator )
 		p++;
 	}
 
-	if (slash == '\0')
+	if( *slash == '\0' )
 	{
 		path   = "";
 		length = 0;
@@ -176,18 +172,44 @@ char* path( const char* path, char dir_separator )
 		length = slash - path;
 	}
 
-	#if PATH_REENTRANT
-	if( size < length + 1 )
-	{
-		return NULL;
-	}
-	else
+	char* result = NULL;
+
+	if( size >= (length + 1) )
 	{
 		strncpy( buffer, path, length );
 		buffer[ length ] = '\0';
-		return buffer;
+		result = buffer;
 	}
-	#else
+
+	return result;
+}
+
+char* __path( const char* path, char dir_separator ) /* allocates memory */
+{
+	char* p     = (char*) path;
+	char *slash = (char*) path;
+	ssize_t length  = 0;
+
+	while( *p )
+	{
+		if( *p == dir_separator )
+		{
+			slash = p;
+		}
+
+		p++;
+	}
+
+	if( *slash == '\0' )
+	{
+		path   = "";
+		length = 0;
+	}
+	else
+	{
+		length = slash - path;
+	}
+
 	char* result = malloc( length + 1 );
 
 	if( result )
@@ -197,7 +219,6 @@ char* path( const char* path, char dir_separator )
 	}
 
 	return result;
-	#endif
 }
 
 int readline( char* buffer, size_t size, FILE* stream )

@@ -447,13 +447,15 @@ void console_command_prompt( const char* prompt, int prompt_color, console_handl
         fputs( prompt, stdout );
         console_reset( stdout );
 
-        fgets( command, sizeof(command), stdin );
-        string_trim( command, " \t\r\n" );
+        if( fgets( command, sizeof(command), stdin ) )
+		{
+			string_trim( command, " \t\r\n" );
 
-        if( !on_cmd( command, data ) )
-        {
-            quiting = true;
-        }
+			if( !on_cmd( command, data ) )
+			{
+				quiting = true;
+			}
+		}
     }
 }
 

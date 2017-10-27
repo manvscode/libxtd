@@ -208,27 +208,23 @@ done:
 	return result;
 }
 
-
-
 #ifndef MAX_PATH
-#define MAX_PATH   256
+# define MAX_PATH   256
 #endif
 
-#if PATH_REENTRANT
-extern char* path( const char* path, char dir_separator, char* buffer, size_t size );
-#else
-extern char* path( const char* path, char dir_separator );
-#endif
+extern char* __path_r( const char* path, char dir_separator, char* buffer, size_t size ); /* returns NULL on error  */
+extern char* __path( const char* path, char dir_separator ); /* allocates memory */
 
-char* directory_path( const char* _path )
+char* directory_path_r( const char* _path, char* buffer, size_t size )
 {
 	assert( _path );
-	#if PATH_REENTRANT
-	static char buffer[ MAX_PATH ];
-	return path( _path, '/', buffer, MAX_PATH );
-	#else
-	return path( _path, '/' );
-	#endif
+	return __path_r( _path, '/', buffer, size );
+}
+
+char* directory_path( const char* _path ) /* allocates memory */
+{
+	assert( _path );
+	return __path( _path, '/' );
 }
 
 static void __directory_enumerate( const char* path, bool recursive, directory_enumerate_mode_t mode, file_enumerate_fxn_t process_file, void* args );
@@ -241,7 +237,7 @@ void directory_enumerate( const char* path, bool recursive, directory_enumerate_
 		bool ends_with_slash = len > 0 && path[ len - 1 ] == '/';
 		size_t sz = ends_with_slash ? len : (len + 1);
 
-		char path_no_trailing_slash[ MAX_PATH ];
+		char path_no_trailing_slash[ MAX_PATH + 1];
 		strncpy( path_no_trailing_slash, path, sz );
 		path_no_trailing_slash[ sz - 1 ] = '\0';
 
@@ -263,7 +259,7 @@ void __directory_enumerate( const char* path, bool recursive, directory_enumerat
 
 			bool is_dir = ent->d_type & DT_DIR;
 
-			char absolute_path[ MAX_PATH ];
+			char absolute_path[ MAX_PATH + 1 ];
 			snprintf( absolute_path, sizeof(absolute_path), "%s/%s", path, ent->d_name );
 			absolute_path[ sizeof(absolute_path) - 1 ] = '\0';
 
