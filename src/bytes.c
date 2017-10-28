@@ -81,7 +81,6 @@ void xor_bytes( const void* a, size_t a_size, const void* b, size_t b_size, void
 	byte_t* p_r       = result;
 	long i            = b_size;
 
-
 	while( i >= 0 )
 	{
 		p_r[ i ] = (byte_t) ( p_b[i] ^ p_a[i % (a_size + 1)] );

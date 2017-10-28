@@ -30,3 +30,15 @@ void time_msleep( int milliseconds )
 {
 	Sleep( milliseconds );
 }
+
+double time_utc_offset( const char* windows_zone_id )
+{
+	// TODO: Implement this.
+	return 0.0;
+}
+
+struct tm* time_local( time_t t, const char* iana_tz /* i.e. America/New_York */ ) /* not thread safe */
+{
+	// TODO: Implement this.
+	return NULL;
+}

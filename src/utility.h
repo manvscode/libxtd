@@ -168,6 +168,8 @@ const char* time_iso8601             ( time_t t ); /* not thread safe */
 bool        time_iso8601_r           ( time_t t, char* iso_8601, size_t len );
 const char* time_iso8601_precision   ( time_t t, unsigned int milliseconds ); /* not thread safe */
 bool        time_iso8601_precision_r ( time_t t, unsigned int milliseconds, char* iso_8601, size_t size );
+double      time_utc_offset          ( const char* tz ); /* Expects IANA or Windows zone id. */
+struct tm*  time_local               ( time_t t, const char* tz ); /* Expects IANA or Windows zone id. */
 
 /*
  *  Encryption

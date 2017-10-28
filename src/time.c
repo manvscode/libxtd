@@ -61,6 +61,5 @@ bool time_iso8601_precision_r( time_t t, unsigned int milliseconds, char* iso_86
 	char buf[ sizeof("YYYY-MM-DDTHH:MM:SS") ];
 	strftime( buf, sizeof(buf), "%FT%T", time_tm );
 
-
 	return snprintf(iso_8601, size, "%s.%3uZ", buf, milliseconds ) > 0;
 }
