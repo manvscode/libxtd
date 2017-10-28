@@ -70,6 +70,7 @@ bool        is_file                  ( const char* path );
 bool        is_directory             ( const char* path );
 bool        directory_exists         ( const char* path );
 bool        directory_create         ( const char* path );
+bool        directory_delete         ( const char* path, bool recursive );
 char*       directory_path_r         ( const char* _path, char* buffer, size_t size ); /* returns NULL on error */
 char*       directory_path           ( const char* path ); /* allocates memory */
 void        directory_enumerate      ( const char* path, bool recursive, directory_enumerate_mode_t mode, file_enumerate_fxn_t process_file, void* args );
@@ -125,7 +126,8 @@ typedef enum random_string_type {
 	RAND_STRING_DISTINCT,
 } string_random_type_t;
 
-char*       string_dup        ( const char* s );
+char*       string_ndup       ( const char* s, size_t len ); /* allocates memory */
+char*       string_dup        ( const char* s ); /* allocates memory */
 size_t      string_left_trim  ( char* s, const char* delimeters );
 size_t      string_right_trim ( char* s, const char* delimeters );
 size_t      string_trim       ( char* s, const char* delimeters );
@@ -204,6 +206,8 @@ namespace utility {
 	using ::is_directory;
 	using ::directory_exists;
 	using ::directory_create;
+	using ::directory_delete;
+	using ::directory_path_r;
 	using ::directory_path;
 	using ::directory_enumerate;
 	using ::file_enumerate_fxn_t;
@@ -222,6 +226,13 @@ namespace utility {
 	using ::byte_to_binary;
 	using ::buffer_scramble;
 	using ::buffer_unscramble;
+	using ::string_ndup;
+	using ::string_dup;
+	using ::string_left_trim;
+	using ::string_right_trim;
+	using ::string_trim;
+	using ::string_to_lower;
+	using ::string_to_upper;
 	using ::string_random;
 	using ::string_ordinal;
 	using ::xor_bytes;

@@ -149,7 +149,7 @@ const char* basename( const char* path, char dir_separator )
 char* __path_r( const char* path, char dir_separator, char* buffer, size_t size ) /* returns NULL on error  */
 {
 	char* p     = (char*) path;
-	char *slash = (char*) path;
+	char *slash = NULL;
 	ssize_t length  = 0;
 
 	while( *p )
@@ -162,14 +162,20 @@ char* __path_r( const char* path, char dir_separator, char* buffer, size_t size 
 		p++;
 	}
 
-	if( *slash == '\0' )
+	if( slash )
 	{
-		path   = "";
-		length = 0;
+		if( path == slash )
+		{
+			length = 1;
+		}
+		else
+		{
+			length = slash - path;
+		}
 	}
 	else
 	{
-		length = slash - path;
+		length = p - path;
 	}
 
 	char* result = NULL;
@@ -187,10 +193,10 @@ char* __path_r( const char* path, char dir_separator, char* buffer, size_t size 
 char* __path( const char* path, char dir_separator ) /* allocates memory */
 {
 	char* p     = (char*) path;
-	char *slash = (char*) path;
+	char *slash = NULL;
 	ssize_t length  = 0;
 
-	while( *p )
+	while( *p ) // find the last dir_separator
 	{
 		if( *p == dir_separator )
 		{
@@ -200,14 +206,20 @@ char* __path( const char* path, char dir_separator ) /* allocates memory */
 		p++;
 	}
 
-	if( *slash == '\0' )
+	if( slash )
 	{
-		path   = "";
-		length = 0;
+		if( path == slash )
+		{
+			length = 1;
+		}
+		else
+		{
+			length = slash - path;
+		}
 	}
 	else
 	{
-		length = slash - path;
+		length = p - path;
 	}
 
 	char* result = malloc( length + 1 );

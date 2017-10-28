@@ -31,6 +31,10 @@
 #include <sys/stat.h>
 #include "utility.h"
 
+#ifndef MAX_PATH
+# define MAX_PATH   256
+#endif
+
 static int mkpath( const char *s, mode_t mode );
 
 bool file_exists( const char* path )
@@ -60,25 +64,14 @@ bool file_is_executable( const char* path )
 bool file_delete( const char* path )
 {
 	assert( path );
+	bool result = false;
 
-	if( is_directory(path) )
+	if( is_file(path) )
 	{
-		DIR* d = opendir( path );
-		int result = 1;
-
-		if( d )
-		{
-			struct dirent* p_file = readdir( d );
-			result &= file_delete( p_file->d_name );
-		}
-
-		closedir( d );
-		return result;
+		result = (unlink( path ) == 0);
 	}
-	else
-	{
-		return unlink( path ) == 0;
-	}
+
+	return result;
 }
 
 int64_t file_size( const char* path )
@@ -155,23 +148,65 @@ bool directory_create( const char* path )
 
 	if( !directory_exists( path ) )
 	{
-		//result = mkdir( path, 0700 ) == 0;
 		result = mkpath( path, 0700 ) == 0;
 	}
 
 	return result;
 }
 
+bool directory_delete( const char* path, bool recursive )
+{
+	bool result = true;
+
+	if( is_directory(path) )
+	{
+		if( recursive )
+		{
+			DIR* d = opendir( path );
+			int result = 1;
+
+			for( struct dirent* entry = readdir( d );
+			     entry && result;
+			     entry = readdir( d ) )
+			{
+				if( strcmp(entry->d_name, ".") == 0 ) continue;
+				else if( strcmp(entry->d_name, "..") == 0 ) continue;
+
+				bool is_dir = entry->d_type & DT_DIR;
+
+				char absolute_path[ MAX_PATH + 1 ];
+				snprintf( absolute_path, sizeof(absolute_path), "%s/%s", path, entry->d_name );
+				absolute_path[ sizeof(absolute_path) - 1 ] = '\0';
+
+				if( is_dir )
+				{
+					result = directory_delete( absolute_path, recursive );
+				}
+				else
+				{
+					result = (unlink( absolute_path ) == 0);
+				}
+			} // for
+
+			closedir( d );
+		} // if recursive
+
+		result = result && (rmdir( path ) == 0);
+	} // if
+
+	return result;
+}
 
 int mkpath( const char *s, mode_t mode )
 {
 	int result = -1;
 	char* path = NULL;
-	char* up   = NULL;
 
-	if( strcmp( s, "." ) == 0 || strcmp( s, "/" ) == 0 )
+	if( strcmp( s, "/" ) == 0 ||
+	    strcmp( s, "." ) == 0 )
 	{
-		return 0;
+		result = 0;
+		goto done;
 	}
 
 	path = directory_path( s );
@@ -181,19 +216,12 @@ int mkpath( const char *s, mode_t mode )
 		goto done;
 	}
 
-	up = directory_path( path );
-
-	if( !up )
+	if( mkpath( path, mode ) < 0 )
 	{
 		goto done;
 	}
 
-	if( mkpath( up, mode ) == -1 && errno != EEXIST )
-	{
-		goto done;
-	}
-
-	if( mkdir( path, mode ) == -1 && errno != EEXIST )
+	if( mkdir( s, mode ) == -1 && errno != EEXIST )
 	{
 		result = -1;
 	}
@@ -203,14 +231,9 @@ int mkpath( const char *s, mode_t mode )
 	}
 
 done:
-	if( up ) free( up );
-	if( path ) free( path );
+	free( path );
 	return result;
 }
-
-#ifndef MAX_PATH
-# define MAX_PATH   256
-#endif
 
 extern char* __path_r( const char* path, char dir_separator, char* buffer, size_t size ); /* returns NULL on error  */
 extern char* __path( const char* path, char dir_separator ); /* allocates memory */

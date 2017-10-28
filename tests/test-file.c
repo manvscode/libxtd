@@ -53,33 +53,35 @@ int main( int argc, char *argv[] )
 	}
 
 	const char* path1 = "/joe/apps/junk/";
-	const char* path2 = "/joe/apps/junk/omg";
-	const char* path3 = "/";
+	const char* path2 = "/joe/tests/omg";
+	const char* path3 = "/ok.txt";
+	const char* path4 = "/";
 
 	const char* basename_path1 = file_basename( path1 );
-	printf( "basename_path1 = %s --> %s\n", path1, basename_path1 );
+	printf( "basename_path1 = \"%s\" --> \"%s\"\n", path1, basename_path1 );
 
 	const char* basename_path2 = file_basename( path2 );
-	printf( "basename_path2 = %s --> %s\n", path2, basename_path2 );
+	printf( "basename_path2 = \"%s\" --> \"%s\"\n", path2, basename_path2 );
 
 	const char* basename_path3 = file_basename( path3 );
-	printf( "basename_path3 = %s --> %s\n", path3, basename_path3 );
+	printf( "basename_path3 = \"%s\" --> \"%s\"\n", path3, basename_path3 );
 
 	char* path_path1 = directory_path( path1 );
-	printf( "path_path1 = %s --> %s\n", path1, path_path1 );
+	printf( "path_path1 = \"%s\" --> \"%s\"\n", path1, path_path1 );
 	free( path_path1 );
 
 	char buffer[ 256 ];
 	directory_path_r( path2, buffer, sizeof(buffer) );
-	printf( "path_path2 = %s --> %s\n", path2, buffer );
+	printf( "path_path2 = \"%s\" --> \"%s\"\n", path2, buffer );
 
 	char* path_path3 = directory_path( path3 );
-	printf( "path_path3 = %s --> %s\n", path3, path_path3 );
+	printf( "path_path3 = \"%s\" --> \"%s\"\n", path3, path_path3 );
 	free( path_path3 );
 
+	directory_path_r( path4, buffer, sizeof(buffer) );
+	printf( "path_path4 = \"%s\" --> \"%s\"\n", path4, buffer );
 
-
-	const char* dir = "/tmp/foobar";
+	const char* dir = "/tmp/foobar/0/a/b/c";
 
 	if( directory_exists( dir ) )
 	{
@@ -94,8 +96,15 @@ int main( int argc, char *argv[] )
 	{
 		printf( "Failed to create %s.\n", dir );
 	}
-	/*
-	*/
+
+	if( directory_delete( "/tmp/foobar", true ) )
+	{
+		printf( "Deleted %s successfully.\n", dir );
+	}
+	else
+	{
+		printf( "Failed to delete %s.\n", dir );
+	}
 
 	return 0;
 }

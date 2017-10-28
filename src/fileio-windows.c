@@ -197,6 +197,12 @@ bool directory_create( const char* path )
 	return CreateDirectory(path, NULL);
 }
 
+bool directory_delete( const char* path, bool recursive )
+{
+	// TODO: Need to implement this.
+	return false;
+}
+
 extern char* __path_r( const char* path, char dir_separator, char* buffer, size_t size ); /* returns NULL on error  */
 extern char* __path( const char* path, char dir_separator ); /* allocates memory */
 
