@@ -137,6 +137,8 @@ void        string_random     ( string_random_type_t type, char* string, size_t 
 const char* string_ordinal    ( long number );
 char*       string_replace    ( const char* orig, const char* rep, const char* with ); /* result must be freed */
 char*       string_substring  ( const char* str, size_t start, size_t end );
+char*       string_tokenize_r ( char* str, const char* delims, char** saveptr );
+char*       string_tokenize   ( char* str, const char* delims );
 
 
 
@@ -239,6 +241,10 @@ namespace utility {
 	using ::string_to_upper;
 	using ::string_random;
 	using ::string_ordinal;
+	using ::string_replace;
+	using ::string_substring;
+	using ::string_tokenize_r;
+	using ::string_tokenize;
 	using ::xor_bytes;
 	using ::swap;
 	using ::is_big_endian;

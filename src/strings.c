@@ -270,3 +270,43 @@ char* string_substring( const char* str, size_t start, size_t end )
 
     return result;
 }
+
+
+// like strtok() but can handle repeated delimeters
+char* string_tokenize_r( char* str, const char* delims, char** saveptr )
+{
+	char* p = NULL;
+	char* ret = NULL;
+
+	if( str != NULL )
+	{
+		*saveptr = str;
+	}
+
+	if( *saveptr == NULL )
+	{
+		return NULL;
+	}
+
+	if( (p = strpbrk(*saveptr, delims)) != NULL )
+	{
+		*p  = 0;
+		ret = *saveptr;
+		*saveptr = ++p;
+
+	}
+	else if( **saveptr )
+	{
+		ret = *saveptr;
+		*saveptr = NULL;
+	}
+
+	return ret;
+}
+
+char* string_tokenize( char* str, const char* delims )
+{
+	static char* src = NULL;
+	return string_tokenize_r( str, delims, &src );
+}
+
