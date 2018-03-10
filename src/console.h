@@ -83,6 +83,19 @@ void console_text_faderf           ( FILE* stream, console_text_fader_style_t st
 void console_command_prompt        ( const char* prompt, int prompt_color, console_handle_command_fxn_t on_cmd, void* data );
 void console_print_divider         ( FILE* stream, const char* title );
 
+
+void wconsole_fg_color_8        ( FILE* stream, int color );
+void wconsole_fg_bright_color_8 ( FILE* stream, int color );
+void wconsole_fg_color_256      ( FILE* stream, int color );
+void wconsole_bg_color_256      ( FILE* stream, int color );
+void wconsole_bold              ( FILE* stream );
+void wconsole_underline         ( FILE* stream );
+void wconsole_reversed          ( FILE* stream );
+void wconsole_hide_cursor       ( FILE* stream );
+void wconsole_show_cursor       ( FILE* stream );
+void wconsole_reset             ( FILE* stream );
+
+
 #define console_clear_screen_to_end(stream)    console_clear_screen( stream, 0 ) // clears from cursor to end of screen
 #define console_clear_screen_from_beg(stream)  console_clear_screen( stream, 1 ) // clears from cursor to start of screen
 #define console_clear_screen_all(stream)       console_clear_screen( stream, 2 ) // clears whole screen

@@ -24,7 +24,9 @@
 #include <stdint.h>
 #include <stdarg.h>
 #include <string.h>
+#include <wchar.h>
 #include <ctype.h>
+#include <wctype.h>
 #include "console.h"
 #include "utility.h"
 
@@ -87,9 +89,19 @@ void console_fg_color_8( FILE* stream, int color )
     fprintf( stream, "\033[%dm", color );
 }
 
+void wconsole_fg_color_8( FILE* stream, int color )
+{
+    fwprintf( stream, L"\033[%dm", color );
+}
+
 void console_fg_bright_color_8( FILE* stream, int color )
 {
     fprintf( stream, "\033[%d;1m", color );
+}
+
+void wconsole_fg_bright_color_8( FILE* stream, int color )
+{
+    fwprintf( stream, L"\033[%d;1m", color );
 }
 
 void console_fg_color_256( FILE* stream, int color )
@@ -97,9 +109,19 @@ void console_fg_color_256( FILE* stream, int color )
 	fprintf( stream, "\033[38;5;%dm", color );
 }
 
+void wconsole_fg_color_256( FILE* stream, int color )
+{
+	fwprintf( stream, L"\033[38;5;%dm", color );
+}
+
 void console_bg_color_256( FILE* stream, int color )
 {
 	fprintf( stream, "\033[48;5;%dm", color );
+}
+
+void wconsole_bg_color_256( FILE* stream, int color )
+{
+	fwprintf( stream, L"\033[48;5;%dm", color );
 }
 
 void console_bold( FILE* stream )
@@ -107,9 +129,19 @@ void console_bold( FILE* stream )
     fprintf( stream, "\033[1m" );
 }
 
+void wconsole_bold( FILE* stream )
+{
+    fwprintf( stream, L"\033[1m" );
+}
+
 void console_underline( FILE* stream )
 {
     fprintf( stream, "\033[4m" );
+}
+
+void wconsole_underline( FILE* stream )
+{
+    fwprintf( stream, L"\033[4m" );
 }
 
 void console_reversed( FILE* stream )
@@ -117,9 +149,19 @@ void console_reversed( FILE* stream )
     fprintf( stream, "\033[7m" );
 }
 
+void wconsole_reversed( FILE* stream )
+{
+    fwprintf( stream, L"\033[7m" );
+}
+
 void console_hide_cursor( FILE* stream )
 {
     fprintf( stream, "\033[?25l" );
+}
+
+void wconsole_hide_cursor( FILE* stream )
+{
+    fwprintf( stream, L"\033[?25l" );
 }
 
 void console_show_cursor( FILE* stream )
@@ -127,9 +169,19 @@ void console_show_cursor( FILE* stream )
     fprintf( stream, "\033[?25h" );
 }
 
+void wconsole_show_cursor( FILE* stream )
+{
+    fwprintf( stream, L"\033[?25h" );
+}
+
 void console_reset( FILE* stream )
 {
     fprintf( stream, "\033[0m" );
+}
+
+void wconsole_reset( FILE* stream )
+{
+    fwprintf( stream, L"\033[0m" );
 }
 
 void console_save_position( FILE* stream )
