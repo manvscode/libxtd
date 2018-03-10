@@ -141,6 +141,12 @@ char*       string_tokenize_r ( char* str, const char* delims, char** saveptr );
 char*       string_tokenize   ( char* str, const char* delims );
 
 /*
+ * Multi-byte Strings (UTF-8)
+ */
+size_t mb_strlen       ( const char* utf8 );
+size_t mb_size_at_char ( const char* utf8, int character );
+
+/*
  * Wide Strings
  */
 wchar_t* wstring_ndup       ( const wchar_t* s, size_t len ); /* allocates memory */

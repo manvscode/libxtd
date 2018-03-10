@@ -310,3 +310,48 @@ char* string_tokenize( char* str, const char* delims )
 	return string_tokenize_r( str, delims, &src );
 }
 
+size_t mb_strlen( const char* utf8 )
+{
+	size_t len = 0;
+
+	while( *utf8 )
+	{
+		int i = mblen( utf8, 2 );
+		if( i > 0 )
+		{
+			len += 1;
+			utf8 += i;
+		}
+		else
+		{
+			break;
+		}
+	}
+
+	return len;
+}
+
+size_t mb_size_at_char( const char* utf8, int character )
+{
+	size_t size = 0;
+	int i = 0;
+
+	while( *utf8 && i < character )
+	{
+		int cnt = mblen( utf8, 2 );
+
+		if( cnt > 0 )
+		{
+			size += cnt;
+			utf8 += cnt;
+			i += 1;
+		}
+		else
+		{
+			break;
+		}
+	}
+
+	return size;
+}
+
