@@ -140,6 +140,18 @@ char*       string_substring  ( const char* str, size_t start, size_t end );
 char*       string_tokenize_r ( char* str, const char* delims, char** saveptr );
 char*       string_tokenize   ( char* str, const char* delims );
 
+/*
+ * Wide Strings
+ */
+wchar_t* wstring_ndup       ( const wchar_t* s, size_t len ); /* allocates memory */
+wchar_t* wstring_dup        ( const wchar_t* s ); /* allocates memory */
+size_t   wstring_left_trim  ( wchar_t* s, const wchar_t* delimeters );
+size_t   wstring_right_trim ( wchar_t* s, const wchar_t* delimeters );
+size_t   wstring_trim       ( wchar_t* s, const wchar_t* delimeters );
+wchar_t* wstring_to_lower   ( wchar_t* s );
+wchar_t* wstring_to_upper   ( wchar_t* s );
+wchar_t* wstring_replace    ( const wchar_t* orig, const wchar_t* rep, const wchar_t* with );
+wchar_t* wstring_substring  ( const wchar_t* str, size_t start, size_t end );
 
 
 /*

@@ -135,7 +135,7 @@ LTLIBRARIES = $(lib_LTLIBRARIES)
 __top_builddir__lib_libutility_la_LIBADD =
 am__objects_1 = bytes.lo base64.lo caesar.lo checksums.lo endianess.lo \
 	exceptions.lo fileio.lo fileio-unix.lo huffman.lo strings.lo \
-	console.lo time.lo time-unix.lo sort.lo refobj.lo
+	wstrings.lo console.lo time.lo time-unix.lo sort.lo refobj.lo
 am___top_builddir__lib_libutility_la_OBJECTS = $(am__objects_1)
 __top_builddir__lib_libutility_la_OBJECTS =  \
 	$(am___top_builddir__lib_libutility_la_OBJECTS)
@@ -216,7 +216,7 @@ AR = ar
 AUTOCONF = autoconf
 AUTOHEADER = autoheader
 AUTOMAKE = automake-1.15
-AWK = mawk
+AWK = gawk
 CC = gcc
 CCDEPMODE = depmode=gcc3
 CFLAGS = -g -O2
@@ -337,6 +337,7 @@ libutility_sources = bytes.c \
 					 fileio-unix.c \
 					 huffman.c \
 					 strings.c \
+					 wstrings.c \
 					 console.c \
 					 time.c \
 					 time-unix.c \
@@ -465,6 +466,7 @@ include ./$(DEPDIR)/sort.Plo
 include ./$(DEPDIR)/strings.Plo
 include ./$(DEPDIR)/time-unix.Plo
 include ./$(DEPDIR)/time.Plo
+include ./$(DEPDIR)/wstrings.Plo
 
 .c.o:
 	$(AM_V_CC)$(COMPILE) -MT $@ -MD -MP -MF $(DEPDIR)/$*.Tpo -c -o $@ $<

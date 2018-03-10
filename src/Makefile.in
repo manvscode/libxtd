@@ -135,7 +135,7 @@ LTLIBRARIES = $(lib_LTLIBRARIES)
 __top_builddir__lib_libutility_la_LIBADD =
 am__objects_1 = bytes.lo base64.lo caesar.lo checksums.lo endianess.lo \
 	exceptions.lo fileio.lo fileio-unix.lo huffman.lo strings.lo \
-	console.lo time.lo time-unix.lo sort.lo refobj.lo
+	wstrings.lo console.lo time.lo time-unix.lo sort.lo refobj.lo
 am___top_builddir__lib_libutility_la_OBJECTS = $(am__objects_1)
 __top_builddir__lib_libutility_la_OBJECTS =  \
 	$(am___top_builddir__lib_libutility_la_OBJECTS)
@@ -337,6 +337,7 @@ libutility_sources = bytes.c \
 					 fileio-unix.c \
 					 huffman.c \
 					 strings.c \
+					 wstrings.c \
 					 console.c \
 					 time.c \
 					 time-unix.c \
@@ -465,6 +466,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/strings.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/time-unix.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/time.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/wstrings.Plo@am__quote@
 
 .c.o:
 @am__fastdepCC_TRUE@	$(AM_V_CC)$(COMPILE) -MT $@ -MD -MP -MF $(DEPDIR)/$*.Tpo -c -o $@ $<

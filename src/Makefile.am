@@ -11,6 +11,7 @@ libutility_sources = bytes.c \
 					 fileio-unix.c \
 					 huffman.c \
 					 strings.c \
+					 wstrings.c \
 					 console.c \
 					 time.c \
 					 time-unix.c \
