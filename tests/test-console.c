@@ -33,7 +33,7 @@ int main()
     console_text_faderf( stdout, TEXT_FADER_TO_YELLOW, "Type '%s' to see commands.", "help" );
     fputs( "\n", stdout );
 #endif
-    console_command_prompt( ">> ", 0x3d, process_cmd, NULL );
+    console_command_prompt_loop( ">> ", 0x3d, process_cmd, NULL );
 	return 0;
 }
 

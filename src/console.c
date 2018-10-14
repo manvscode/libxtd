@@ -488,29 +488,6 @@ void console_text_faderf( FILE* stream, console_text_fader_style_t style, const 
     console_text_fader( stream, style, fmtbuf );
 }
 
-void console_command_prompt( const char* prompt, int prompt_color, console_handle_command_fxn_t on_cmd, void* data )
-{
-    bool quiting = false;
-    char command[ 256 ];
-
-    while( !quiting )
-    {
-        console_fg_color_256( stdout, prompt_color );
-        fputs( prompt, stdout );
-        console_reset( stdout );
-
-        if( fgets( command, sizeof(command), stdin ) )
-		{
-			string_trim( command, " \t\r\n" );
-
-			if( !on_cmd( command, data ) )
-			{
-				quiting = true;
-			}
-		}
-    }
-}
-
 void console_print_divider( FILE* stream, const char* title )
 {
 	const char* empty = "";
@@ -557,4 +534,35 @@ void console_print_divider( FILE* stream, const char* title )
 
 		fprintf( stream, "--%s--\n", buffer );
 	}
+}
+
+bool console_command_prompt( char* command_buf, size_t command_buf_size, const char* prompt, int prompt_color, console_handle_command_fxn_t on_cmd, void* data )
+{
+    bool not_quiting = true;
+
+	console_fg_color_256( stdout, prompt_color );
+	fputs( prompt, stdout );
+	console_reset( stdout );
+
+	if( fgets( command_buf, command_buf_size, stdin ) )
+	{
+		string_trim( command_buf, " \t\r\n" );
+		not_quiting = on_cmd( command_buf, data );
+	}
+
+	return not_quiting;
+}
+
+noreturn void console_command_prompt_loop( const char* prompt, int prompt_color, console_handle_command_fxn_t on_cmd, void* data )
+{
+    bool quiting = false;
+    char command[ 256 ];
+
+    while( !quiting )
+    {
+		if( !console_command_prompt( command, sizeof(command), prompt, prompt_color, on_cmd, data ) )
+		{
+			quiting = true;
+		}
+    }
 }

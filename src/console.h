@@ -29,6 +29,16 @@
 # error "Need a C99 compiler."
 #endif
 
+#if (defined(__STDC_VERSION__) && (__STDC_VERSION__ >= 201121L)) // C11
+# include <stdnoreturn.h>
+#else
+# ifndef noreturn
+#  define noreturn
+# endif
+#endif
+
+
+
 /*
  * Console
  */
@@ -80,8 +90,10 @@ void console_clear_line            ( FILE* stream, int type );
 void console_text_fader_ex         ( FILE* stream, const char* text, const int* colors, size_t color_count, int millis );
 void console_text_fader            ( FILE* stream, console_text_fader_style_t style, const char* text );
 void console_text_faderf           ( FILE* stream, console_text_fader_style_t style, const char* format, ... );
-void console_command_prompt        ( const char* prompt, int prompt_color, console_handle_command_fxn_t on_cmd, void* data );
 void console_print_divider         ( FILE* stream, const char* title );
+
+bool console_command_prompt               ( char* command_buf, size_t command_buf_size, const char* prompt, int prompt_color, console_handle_command_fxn_t on_cmd, void* data );
+noreturn void console_command_prompt_loop ( const char* prompt, int prompt_color, console_handle_command_fxn_t on_cmd, void* data );
 
 
 void wconsole_fg_color_8        ( FILE* stream, int color );
@@ -186,8 +198,9 @@ namespace utility {
     using ::console_clear_line;
     using ::console_text_fader_ex;
     using ::console_text_fader;
-    using ::console_command_prompt;
 	using ::console_print_divider;
+    using ::console_command_prompt;
+    using ::console_command_prompt_loop;
 } /* namespace */
 #endif
 #endif /* _CONSOLE_H_ */
