@@ -62,6 +62,10 @@ typedef enum console_text_fader_style {
     TEXT_FADER_BLUE_BEEP,
 } console_text_fader_style_t;
 
+#define CONSOLE_CLEAR_CURSOR_TO_END     0
+#define CONSOLE_CLEAR_CURSOR_TO_START   1
+#define CONSOLE_CLEAR_ALL               2
+
 void console_fg_color_8            ( FILE* stream, int color );
 void console_fg_bright_color_8     ( FILE* stream, int color );
 void console_fg_color_256          ( FILE* stream, int color );
@@ -108,12 +112,12 @@ void wconsole_show_cursor       ( FILE* stream );
 void wconsole_reset             ( FILE* stream );
 
 
-#define console_clear_screen_to_end(stream)    console_clear_screen( stream, 0 ) // clears from cursor to end of screen
-#define console_clear_screen_from_beg(stream)  console_clear_screen( stream, 1 ) // clears from cursor to start of screen
-#define console_clear_screen_all(stream)       console_clear_screen( stream, 2 ) // clears whole screen
-#define console_clear_line_to_end(stream)      console_clear_line( stream, 0 ) // from cursor to end of line
-#define console_clear_line_from_beg(stream)    console_clear_line( stream, 1 ) // from cursor to start of line
-#define console_clear_line_all(stream)         console_clear_line( stream, 2 ) // clears whole line
+#define console_clear_screen_to_end(stream)    console_clear_screen( stream, CONSOLE_CLEAR_CURSOR_TO_END ) // clears from cursor to end of screen
+#define console_clear_screen_from_beg(stream)  console_clear_screen( stream, CONSOLE_CLEAR_CURSOR_TO_START ) // clears from cursor to start of screen
+#define console_clear_screen_all(stream)       console_clear_screen( stream, CONSOLE_CLEAR_ALL ) // clears whole screen
+#define console_clear_line_to_end(stream)      console_clear_line( stream, CONSOLE_CLEAR_CURSOR_TO_END ) // from cursor to end of line
+#define console_clear_line_from_beg(stream)    console_clear_line( stream, CONSOLE_CLEAR_CURSOR_TO_START ) // from cursor to start of line
+#define console_clear_line_all(stream)         console_clear_line( stream, CONSOLE_CLEAR_ALL ) // clears whole line
 
 
 #define CONSOLE_COLOR8_BLACK             30
