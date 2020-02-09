@@ -1,22 +1,23 @@
 #noinst_LIBRARIES = libutility.a
 
 # Add new files in alphabetical order. Thanks.
-libutility_sources = bytes.c \
-					 base64.c \
+libutility_sources = base64.c \
+					 bytes.c \
 					 caesar.c \
 					 checksums.c \
+					 console.c \
 					 endianess.c \
 					 exceptions.c \
-					 fileio.c \
 					 fileio-unix.c \
+					 fileio.c \
+					 floating-point.c \
 					 huffman.c \
-					 strings.c \
-					 wstrings.c \
-					 console.c \
-					 time.c \
-					 time-unix.c \
+					 refobj.c \
 					 sort.c \
-					 refobj.c
+					 strings.c \
+					 time-unix.c \
+					 time.c \
+					 wstrings.c
 
 libutility_headers = exceptions.h \
 					 console.h \

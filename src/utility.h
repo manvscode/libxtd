@@ -175,6 +175,9 @@ void         ntoh                   ( void* mem, size_t size );
 char*        debug_buffer_to_string ( const void* data, size_t size, size_t grouping, bool with_spaces ); /* allocates memory */
 unsigned int rotate_bits_left       ( unsigned int value, int shift );
 unsigned int rotate_bits_right      ( unsigned int value, int shift );
+bool         float_is_equal         ( float a, float b );
+bool         double_is_equal        ( double a, double b );
+bool         long_double_is_equal   ( long double a, long double b );
 
 /*
  *  Time
