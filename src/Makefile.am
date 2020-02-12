@@ -8,16 +8,21 @@ libutility_sources = base64.c \
 					 console.c \
 					 endianess.c \
 					 exceptions.c \
-					 fileio-unix.c \
 					 fileio.c \
 					 floating-point.c \
 					 huffman.c \
 					 refobj.c \
 					 sort.c \
 					 strings.c \
-					 time-unix.c \
 					 time.c \
 					 wstrings.c
+
+if WINDOWS
+    libutility_sources += fileio-windows.c time-windows.c
+else # Linux and MacOS X
+    libutility_sources += fileio-unix.c time-unix.c
+endif
+
 
 libutility_headers = exceptions.h \
 					 console.h \
@@ -29,5 +34,5 @@ library_include_HEADERS = $(libutility_headers)
 # Library
 lib_LTLIBRARIES                           = $(top_builddir)/lib/libutility.la
 __top_builddir__lib_libutility_la_SOURCES = $(libutility_sources)
-#__top_builddir__lib_libutility_la_LIBADD  = -lcollections
+__top_builddir__lib_libutility_la_LIBADD  = -lm
 

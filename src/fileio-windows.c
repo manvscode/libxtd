@@ -206,9 +206,9 @@ bool directory_delete( const char* path, bool recursive )
 extern char* __path_r( const char* path, char dir_separator, char* buffer, size_t size ); /* returns NULL on error  */
 extern char* __path( const char* path, char dir_separator ); /* allocates memory */
 
-char* directory_path_r( const char* _path, char* buffer, size_t size )
+char* directory_path_r( const char* path, char* buffer, size_t size )
 {
-	return __path_r( p, '\\', buffer, size );
+	return __path_r( path, '\\', buffer, size );
 }
 
 char* directory_path( const char* p ) /* allocates memory */
