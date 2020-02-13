@@ -1,23 +1,44 @@
 # libutility
-> A collection of utility code for projects using C/C++.
-----------
+A collection of utility code for projects using C/C++.
 
 ## Building
 
 ### Linux
 1. `autoreconf -i`
-1. `./configure`
-1. `make`
-1. `make install`
+2. `./configure`
+3. `make`
+4. `make install`
 
 ### Cross-compiling for Windows with MinGW
 
 1. `autoreconf -i`
-1. Run the configure script for the host architecture:
-** For x86: `./configure --host=i686-w64-mingw32`
-** For x86_64: `./configure --host=x86_64-w64-mingw32`
-1. `make`
-1. `make install`
+2. Run the configure script for the host architecture:
+* For x86: `./configure --host=i686-w64-mingw32`
+* For x86_64: `./configure --host=x86_64-w64-mingw32`
+3. `make`
+4. `make install`
+
+## Features
+* Reference Counted Pointers
+* Cross-platform file IO.
+* Memory size string formatting.
+* Checksums and hashes (Java Hash, 8-bit XOR, Adler32, Fletcher16, and Fletcher32).
+* Compression and encoding (Huffman, and base64).
+* String manipulation, duplication, tokenizing, multi-byte strings.
+* Buffer manipulations (bit rotations, big-encoding, swapping, xor, byte to binary, scrambling)
+* IEEE-754 floating point equality tests.
+* Cross-platform timing functions.
+* Timezone conversion.
+* ISO-8601 formating.
+* Bit testing and manipulation.
+* Caesar-cypher.
+* Console colors and formating.
+* Unit-test framework (see test.h)
+
+## Header Files
+* utility.h -- this is where most of the utility functions reside.
+* console.h -- this is the console formatting and colorization.
+* test.h -- this is the unit-testing framework.
 
 ## License
     Copyright (C) 2010-2014 Joseph A. Marrero.  http://www.manvscode.com/
