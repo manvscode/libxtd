@@ -57,22 +57,22 @@ static inline bool integer_equals( long a, long b )
 	return a == b;
 }
 
-static inline bool float_equals( float a, float b )
+static inline bool test_float_equals( float a, float b )
 {
 	return fabsf( a - b ) < FLT_EPSILON;
 }
 
-static inline bool double_equals( double a, double b )
+static inline bool test_double_equals( double a, double b )
 {
 	return fabs( a - b ) < DBL_EPSILON;
 }
 
-static inline bool long_double_equals( long double a, long double b )
+static inline bool test_long_double_equals( long double a, long double b )
 {
 	return fabsl( a - b ) < LDBL_EPSILON;
 }
 
-static inline void wait_for_true(const bool* flag, int timeout)
+static inline void test_wait_for_true(const bool* flag, int timeout)
 {
 	double start = time_milliseconds();
 	double elapsed = 0.0;
@@ -84,7 +84,7 @@ static inline void wait_for_true(const bool* flag, int timeout)
 	}
 }
 
-static inline void wait_for_value(const int* n, int value, int timeout)
+static inline void test_wait_for_value(const int* n, int value, int timeout)
 {
 	double start = time_milliseconds();
 	double elapsed = 0.0;
