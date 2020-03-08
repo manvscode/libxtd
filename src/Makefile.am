@@ -28,7 +28,7 @@ libutility_headers = exceptions.h \
 					 console.h \
 					 utility.h
 
-library_includedir = $(includedir)/libutility/
+library_includedir = $(includedir)/@PACKAGE_NAME@-@PACKAGE_VERSION@/
 library_include_HEADERS = $(libutility_headers)
 
 # Library

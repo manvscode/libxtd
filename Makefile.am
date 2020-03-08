@@ -1,6 +1,8 @@
 ACLOCAL_AMFLAGS = -I m4
 SUBDIRS = src tests
 
+pkgconfigdir = $(libdir)/pkgconfig
+pkgconfig_DATA = utility.pc
 
 Android.mk: Makefile.am
 	@androgenizer -:PROJECT libutility \

@@ -86,6 +86,9 @@
 #undef inline
 #endif
 
+/* Define to `unsigned int' if <sys/types.h> does not define. */
+#undef size_t
+
 
 #endif /* _LIBUTILITY_CONFIG_H_ */
 

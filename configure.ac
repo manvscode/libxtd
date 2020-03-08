@@ -1,6 +1,6 @@
 AC_PREREQ(2.67)
-AC_INIT([libutility], [1.0], [manvscode@gmail.com], [libutility], [http://www.manvscode.com/])
-AM_INIT_AUTOMAKE([1.13 foreign silent-rules -Wall -Werror])
+AC_INIT([utility], [1.0.0], [manvscode@gmail.com], [utility], [http://www.manvscode.com/])
+AM_INIT_AUTOMAKE([1.13 foreign silent-rules dist-zip -Wall -Werror])
 
 AC_CONFIG_MACRO_DIR([m4])
 
@@ -9,8 +9,10 @@ AC_CONFIG_HEADERS([src/libutility-config.h])
 
 AC_PROG_CC
 AC_PROG_CC_STDC
+AC_PROG_CC_C99
 AC_C_INLINE
 AC_HEADER_STDC
+AC_TYPE_SIZE_T
 
 AH_TOP([
 #ifndef _LIBUTILITY_CONFIG_H_
@@ -76,12 +78,6 @@ AM_PROG_LIBTOOL
 
 AC_PROG_INSTALL
 
-echo " ------------------------------ "
-echo ""
-echo "  CFLAGS = $CFLAGS"
-echo " LDFLAGS = $LDFLAGS"
-echo ""
-echo " ------------------------------ "
 
 AC_ARG_ENABLE([tests],
 	[AS_HELP_STRING([--disable-tests], [Enable test programs.])],
@@ -91,10 +87,24 @@ AC_ARG_ENABLE([tests],
 AM_CONDITIONAL([ENABLE_TESTS], [test "$enable_tests" = "yes"])
 
 
+echo "------------------------------------------------------------------------------"
+if [test -z "$CFLAGS"]; then
+	echo "  CFLAGS: Not set"
+else
+	echo "  CFLAGS: $CFLAGS"
+fi
+if [test -z "$LDFLAGS"]; then
+	echo " LDFLAGS: Not set"
+else
+	echo " LDFLAGS: $LDFLAGS"
+fi
+echo "------------------------------------------------------------------------------"
+
 AC_CONFIG_FILES([
 	Makefile
 	src/Makefile
 	tests/Makefile
+	utility.pc
 ])
 
 AC_OUTPUT

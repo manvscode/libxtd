@@ -1,5 +1,7 @@
 # Automake and Autoconf
 Makefile
+Makefile.in
+aclocal.m4
 ar-lib
 autom4te.cache/
 bin/
@@ -9,18 +11,21 @@ config.log
 config.status
 config.sub
 configure
+depcomp
+install-sh
 lib/
 libtool
 ltmain.sh
+m4/
+missing
 src/.deps/
-src/libutility-config.h.in~
+src/Makefile
+src/Makefile.in
+src/libutility-config.h
 tests/.deps/
 tests/Makefile
 tests/Makefile.in
-Makefile.in
-aclocal.m4
-src/Makefile
-src/Makefile.in
+utility.pc
 
 
 # Compiled Object files
