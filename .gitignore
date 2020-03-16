@@ -26,7 +26,7 @@ tests/.deps/
 tests/Makefile
 tests/Makefile.in
 utility.pc
-
+utility-static.pc
 
 # Compiled Object files
 *.slo

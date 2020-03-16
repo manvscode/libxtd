@@ -34,5 +34,6 @@ library_include_HEADERS = $(libutility_headers)
 # Library
 lib_LTLIBRARIES                           = $(top_builddir)/lib/libutility.la
 __top_builddir__lib_libutility_la_SOURCES = $(libutility_sources)
+__top_builddir__lib_libutility_la_CFLAGS  = -fPIC
 __top_builddir__lib_libutility_la_LIBADD  = -lm
 

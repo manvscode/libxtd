@@ -105,6 +105,7 @@ AC_CONFIG_FILES([
 	src/Makefile
 	tests/Makefile
 	utility.pc
+	utility-static.pc
 ])
 
 AC_OUTPUT
