@@ -281,17 +281,18 @@ void console_bar_graph( FILE* stream, int bar_width, char bar_symbol, const int*
 
 static inline void __console_progress_indicator_ex( FILE* stream, const char* task, int progress_bar_width, char progress_bar_symbol, const int* colors, size_t color_count, int bkg_color, int percent )
 {
+
 #if 0
 	fprintf( stream, "%s[", console_move_left(1000) );
 #else
-	console_clear_line_all( stream );
-	console_set_column( stream, 0 );
-	//fprintf( stream, "[" );
+	//console_clear_line_all( stream );
+	//console_set_column( stream, 0 );
+	console_save_position(stream);
 #endif
 
 	console_bar_graph( stream, progress_bar_width, progress_bar_symbol, colors, color_count, bkg_color, percent );
-	//fprintf( stream, "]" );
 	fprintf( stream, " [%3d%%] %s", percent, task );
+	console_restore_position(stream);
 	fflush( stream );
 }
 

@@ -95,6 +95,9 @@ bool process_cmd( const char* command, void* data )
 	}
 	else if( strcmp(command, "lm") == 0 )
 	{
+		console_fg_color_256( stdout, CONSOLE_COLOR8_YELLOW );
+		printf(" TEST -|>  ");
+		console_reset(stdout);
 		console_progress_indicator( stdout, "Loading magic...", PROGRESS_INDICATOR_STYLE_FADE, progress_task, NULL );
 	}
 	else if( strcmp(command, "mu") == 0 )
