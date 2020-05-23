@@ -139,6 +139,8 @@ char*       string_replace    ( const char* orig, const char* rep, const char* w
 char*       string_substring  ( const char* str, size_t start, size_t end );
 char*       string_tokenize_r ( char* str, const char* delims, char** saveptr );
 char*       string_tokenize   ( char* str, const char* delims );
+size_t      string_hash       ( const char* s );
+size_t      string_nhash      ( const char* s, size_t len );
 
 /*
  * Multi-byte Strings (UTF-8)
@@ -268,6 +270,8 @@ namespace utility {
 	using ::string_substring;
 	using ::string_tokenize_r;
 	using ::string_tokenize;
+	using ::string_hash;
+	using ::string_nhash;
 	using ::xor_bytes;
 	using ::swap;
 	using ::is_big_endian;

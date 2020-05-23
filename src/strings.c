@@ -310,6 +310,33 @@ char* string_tokenize( char* str, const char* delims )
 	return string_tokenize_r( str, delims, &src );
 }
 
+size_t string_hash( const char* s )
+{
+	size_t hash = 0;
+	const unsigned char* us = (const unsigned char*) s;
+
+	while( *us != '\0')
+	{
+		hash = 31 * hash + *us;
+		us++;
+	}
+
+	return hash;
+}
+
+size_t string_nhash( const char* s, size_t len )
+{
+	size_t hash = 0;
+	const unsigned char* us = (const unsigned char*) s;
+
+	for( size_t i = 0; i < len; i++ )
+	{
+		hash = 31 * hash + us[ i ];
+	}
+
+	return hash;
+}
+
 size_t mb_strlen( const char* utf8 )
 {
 	size_t len = 0;
