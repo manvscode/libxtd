@@ -1,6 +1,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
+#include <unistd.h>
 #include "utility.h"
 #include "console.h"
 
@@ -49,17 +50,37 @@ bool process_cmd( const char* command, void* data )
 	{
 		printf( "Possible Commands\n" );
 		printf( "--------------------\n" );
-		printf( "  %6s   %-50s\n", "colors1", "Show all 256 colors." );
-		printf( "  %6s   %-50s\n", "colors2", "Show all 256 colors." );
-		printf( "  %6s   %-50s\n", "lwp", "Demo progress bar." );
-		printf( "  %6s   %-50s\n", "lm", "Demo progress bar fade." );
-		printf( "  %6s   %-50s\n", "mu", "Demo memory utilization." );
-		printf( "  %6s   %-50s\n", "fader1", "Demo text fader." );
-		printf( "  %6s   %-50s\n", "fader2", "Demo text fader." );
-		printf( "  %6s   %-50s\n", "fader3", "Demo text fader." );
-		printf( "  %6s   %-50s\n", "clear", "Clear the screen." );
-		printf( "  %6s   %-50s\n", "quit", "Quit the app." );
+		printf( "  %10s   %-50s\n", "reset", "Reset the console." );
+		printf( "  %10s   %-50s\n", "document", "Set the document." );
+		printf( "  %10s   %-50s\n", "cwd", "Set the current working directory." );
+		printf( "  %10s   %-50s\n", "colors2", "Show all 256 colors." );
+		printf( "  %10s   %-50s\n", "lwp", "Demo progress bar." );
+		printf( "  %10s   %-50s\n", "lm", "Demo progress bar fade." );
+		printf( "  %10s   %-50s\n", "mu", "Demo memory utilization." );
+		printf( "  %10s   %-50s\n", "fader1", "Demo text fader." );
+		printf( "  %10s   %-50s\n", "fader2", "Demo text fader." );
+		printf( "  %10s   %-50s\n", "fader3", "Demo text fader." );
+		printf( "  %10s   %-50s\n", "clear", "Clear the screen." );
+		printf( "  %10s   %-50s\n", "quit", "Quit the app." );
 	}
+	else if( strcmp(command, "reset") == 0 )
+    {
+        console_reset( stdout );
+
+    }
+	else if( strcmp(command, "document") == 0 )
+    {
+        console_set_document( stdout, "file:some_file_here");
+    }
+	else if( strcmp(command, "cwd") == 0 )
+    {
+        char path[ 512 ];
+        getcwd(path, sizeof(path));
+
+        char cwd[512];
+        snprintf(cwd, sizeof(cwd), "file:%s", cwd);
+        console_set_working_directory( stdout, path );
+    }
 	else if( strcmp(command, "colors1") == 0 )
 	{
 		for( int i = 0; i < 256; i++ )

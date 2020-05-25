@@ -84,6 +84,16 @@ const int COLORS_PROGRESS_INTENSITY[] = {
 };
 const int COLORS_PROGRESS_BLUE[] = { 0x15 };
 
+void console_set_document( FILE* stream, const char* document )
+{
+    fprintf( stream, "\033]6;%s\007", document );
+}
+
+void console_set_working_directory( FILE* stream, const char* path )
+{
+    fprintf( stream, "\033]7;%s\007", path );
+}
+
 void console_fg_color_8( FILE* stream, int color )
 {
 	fprintf( stream, "\033[%dm", color );
@@ -286,13 +296,22 @@ static inline void __console_progress_indicator_ex( FILE* stream, const char* ta
 	fprintf( stream, "%s[", console_move_left(1000) );
 #else
 	//console_clear_line_all( stream );
-	//console_set_column( stream, 0 );
+#endif
+
+#if __apple__
+    /* Mac OS X does not support save/restore */
+	console_set_column( stream, 0 );
+#else
 	console_save_position(stream);
 #endif
 
 	console_bar_graph( stream, progress_bar_width, progress_bar_symbol, colors, color_count, bkg_color, percent );
 	fprintf( stream, " [%3d%%] %s", percent, task );
+#if __apple__
+    /* Mac OS X does not support save/restore */
+#else
 	console_restore_position(stream);
+#endif
 	fflush( stream );
 }
 
@@ -353,7 +372,11 @@ void console_text_fader_ex( FILE* stream, const char* text, const int* colors, s
 	size_t len = strlen(text);
 
 	console_hide_cursor( stream );
+#if __apple__
+    /* Mac OS X does not support save/restore */
+#else
 	console_save_position(stream);
+#endif
 
 	/*
 	 * Start printing each character starting with the initial fade
@@ -380,7 +403,11 @@ void console_text_fader_ex( FILE* stream, const char* text, const int* colors, s
 		for( size_t j = color_count; j < len; j++ )
 		{
 			console_move_left( stream, j );
+#if __apple__
+    /* Mac OS X does not support save/restore */
+#else
 			console_restore_position(stream);
+#endif
 
 			/*
 			 * Now we print all characters up the the jth character
@@ -439,7 +466,11 @@ void console_text_fader_ex( FILE* stream, const char* text, const int* colors, s
 		for( size_t j = 0; j < len; j++)
 		{
 			console_move_left( stream, len - j );
+#if __apple__
+    /* Mac OS X does not support save/restore */
+#else
 			//console_restore_position(stream);
+#endif
 
 			for( size_t i = j, k = 0; i < len && k < color_count; i++, k++ )
 			{

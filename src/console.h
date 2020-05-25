@@ -66,6 +66,8 @@ typedef enum console_text_fader_style {
 #define CONSOLE_CLEAR_CURSOR_TO_START   1
 #define CONSOLE_CLEAR_ALL               2
 
+void console_set_document          ( FILE* stream, const char* document );
+void console_set_working_directory ( FILE* stream, const char* path );
 void console_fg_color_8            ( FILE* stream, int color );
 void console_fg_bright_color_8     ( FILE* stream, int color );
 void console_fg_color_256          ( FILE* stream, int color );
