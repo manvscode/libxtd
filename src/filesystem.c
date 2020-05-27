@@ -22,7 +22,8 @@
 #include <stdio.h>
 #include <stdbool.h>
 #include <string.h>
-#include "utility.h"
+#include "xtd/memory.h"
+#include "xtd/filesystem.h"
 
 const char* file_size_string( const char* path, bool use_base_two, int precision )
 {
@@ -88,7 +89,7 @@ const char* file_extension( const char* filename )
 	return extension;
 }
 
-char* file_load_contents( const char* path, size_t *size )
+char* file_slurp( const char* path, size_t *size )
 {
 	FILE* file = fopen( path, "r" );
 	char* result = NULL;
@@ -124,6 +125,34 @@ char* file_load_contents( const char* path, size_t *size )
 	}
 
 	return result;
+}
+
+int file_readline( FILE* stream, char* buffer, size_t size )
+{
+    if( fgets( buffer, size, stream ) == NULL )
+	{
+        return EOF;
+    }
+
+    char *n = strchr( buffer, '\n' );
+
+    if( n )
+	{
+        *n = '\0';
+        /* A line was read successfully without truncation. */
+    }
+	else
+	{
+        int c;
+        while( (c = getc(stream)) != EOF && c != '\n');
+        if( c == EOF )
+		{
+            return EOF;
+        }
+        /* A line was read successfully but was truncated. */
+    }
+
+    return 0;
 }
 
 const char* basename( const char* path, char dir_separator )
@@ -231,32 +260,4 @@ char* __path( const char* path, char dir_separator ) /* allocates memory */
 	}
 
 	return result;
-}
-
-int readline( char* buffer, size_t size, FILE* stream )
-{
-    if( fgets( buffer, size, stream ) == NULL )
-	{
-        return EOF;
-    }
-
-    char *n = strchr( buffer, '\n' );
-
-    if( n )
-	{
-        *n = '\0';
-        /* A line was read successfully without truncation. */
-    }
-	else
-	{
-        int c;
-        while( (c = getc(stream)) != EOF && c != '\n');
-        if( c == EOF )
-		{
-            return EOF;
-        }
-        /* A line was read successfully but was truncated. */
-    }
-
-    return 0;
 }

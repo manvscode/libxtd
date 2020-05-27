@@ -33,12 +33,37 @@ void time_msleep( int milliseconds )
 
 double time_utc_offset( const char* windows_zone_id )
 {
-	// TODO: Implement this.
-	return 0.0;
+	assert( iana_tz );
+	const char* existing_tz = getenv( "TZ" );
+
+	SetEnvironmentVariable( "TZ", iana_tz );
+	_tzset(); // Initializes global timezone variable
+
+	double utc_offset = -(timezone / 3600.0);
+
+	if( existing_tz )
+	{
+		SetEnvironmentVariable( "TZ", existing_tz );
+		_tzset(); // Not sure if this is needed but it's safer.
+	}
+
+	return utc_offset;
 }
 
 struct tm* time_local( time_t t, const char* iana_tz /* i.e. America/New_York */ ) /* not thread safe */
 {
-	// TODO: Implement this.
-	return NULL;
+	const char* existing_tz = getenv( "TZ" );
+
+	SetEnvironmentVariable( "TZ", iana_tz );
+	_tzset(); // Initializes global timezone variable
+
+	struct tm* tm = localtime( &t );
+
+	if( existing_tz )
+	{
+		SetEnvironmentVariable( "TZ", existing_tz );
+		_tzset(); // Not sure if this is needed but it's safer.
+	}
+
+	return tm;
 }

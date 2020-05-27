@@ -24,10 +24,10 @@
 
 #include <stdbool.h>
 #include <string.h>
-#include <float.h>
 #include <math.h>
 #include <time.h>
-#include <utility.h>
+#include <xtd/time.h>
+#include <xtd/floating-point.h>
 
 #define COLOR_BEGIN(bg,fg)                    "\e[" #bg ";" #fg "m"
 #define COLOR_END                             "\e[m"
@@ -59,17 +59,17 @@ static inline bool integer_equals( long a, long b )
 
 static inline bool test_float_equals( float a, float b )
 {
-	return fabsf( a - b ) < FLT_EPSILON;
+	return float_is_equal( a, b );
 }
 
 static inline bool test_double_equals( double a, double b )
 {
-	return fabs( a - b ) < DBL_EPSILON;
+	return double_is_equal( a, b );
 }
 
 static inline bool test_long_double_equals( long double a, long double b )
 {
-	return fabsl( a - b ) < LDBL_EPSILON;
+	return long_double_is_equal( a, b );
 }
 
 static inline void test_wait_for_true(const bool* flag, int timeout)
@@ -79,19 +79,19 @@ static inline void test_wait_for_true(const bool* flag, int timeout)
 
 	while (!*flag && elapsed < timeout)
 	{
-		test_msleep(10);
+		time_msleep(10);
 		elapsed = time_milliseconds() - start;
 	}
 }
 
-static inline void test_wait_for_value(const int* n, int value, int timeout)
+static inline void test_wait_for_int(const int* n, int value, int timeout)
 {
 	double start = time_milliseconds();
 	double elapsed = 0.0;
 
-	while (*flag != value && elapsed < timeout)
+	while (*n != value && elapsed < timeout)
 	{
-		test_msleep(10);
+		time_msleep(10);
 		elapsed = time_milliseconds() - start;
 	}
 }

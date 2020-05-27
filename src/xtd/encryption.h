@@ -19,38 +19,29 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-#include <stdio.h>
-#include <stdint.h>
-#include <string.h>
-#include <time.h>
-#include "xtd/all.h"
+#ifndef _ENCRYPTION_H_
+#define _ENCRYPTION_H_
+#include <stdlib.h>
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+/*
+ *  Encryption
+ */
+void caesar_cypher_encrypt_buffer ( void* buffer, size_t size, int n );
+void caesar_cypher_decrypt_buffer ( void* buffer, size_t size, int n );
+void caesar_cypher_encrypt_text   ( char* text, size_t size, int n );
+void caesar_cypher_decrypt_text   ( char* text, size_t size, int n );
 
 
-int main( int argc, char *argv[] )
-{
-	int32_t nums[128];
-
-	for( size_t i = 0; i < 128; i++ )
-	{
-		nums[ i ] = (int32_t) rand( );
-	}
-
-	{
-		char* str = debug_buffer_to_string( nums, sizeof(nums), 1, true );
-		printf( "%s\n\n", str );
-		free( str );
-	}
-
-	{
-		char* str = debug_buffer_to_string( nums, sizeof(nums), 2, true );
-		printf( "%s\n\n", str );
-		free( str );
-	}
-
-	{
-		char* str = debug_buffer_to_string( nums, sizeof(nums), 4, true );
-		printf( "%s\n\n", str );
-		free( str );
-	}
-	return 0;
-}
+#ifdef __cplusplus
+} /* extern "C" */
+namespace utility {
+	using ::caesar_cypher_encrypt_buffer;
+	using ::caesar_cypher_decrypt_buffer;
+	using ::caesar_cypher_encrypt_text;
+	using ::caesar_cypher_decrypt_text;
+} /* namespace */
+#endif
+#endif /* _ENCRYPTION_H_ */

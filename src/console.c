@@ -23,12 +23,12 @@
 #include <stdio.h>
 #include <stdint.h>
 #include <stdarg.h>
-#include <string.h>
 #include <wchar.h>
 #include <ctype.h>
 #include <wctype.h>
-#include "console.h"
-#include "utility.h"
+#include "xtd/string.h"
+#include "xtd/time.h"
+#include "xtd/console.h"
 
 #ifdef _WIN32
 #define snprintf _snprintf

@@ -27,8 +27,7 @@
 #include <inttypes.h>
 #include <time.h>
 #include <unistd.h>
-
-#include "utility.h"
+#include "xtd/time.h"
 
 int main( int argc, char *argv[] )
 {

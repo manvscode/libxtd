@@ -2,8 +2,8 @@
 #include <stdio.h>
 #include <string.h>
 #include <unistd.h>
-#include "utility.h"
-#include "console.h"
+#include "xtd/time.h"
+#include "xtd/console.h"
 
 
 static bool progress_task( int* percent, void* data );
@@ -75,11 +75,12 @@ bool process_cmd( const char* command, void* data )
 	else if( strcmp(command, "cwd") == 0 )
     {
         char path[ 512 ];
-        getcwd(path, sizeof(path));
-
-        char cwd[512];
-        snprintf(cwd, sizeof(cwd), "file:%s", cwd);
-        console_set_working_directory( stdout, path );
+        if( !getcwd(path, sizeof(path)) )
+		{
+			char cwd[512];
+			snprintf(cwd, sizeof(cwd), "file:%s", cwd);
+			console_set_working_directory( stdout, path );
+		}
     }
 	else if( strcmp(command, "colors1") == 0 )
 	{

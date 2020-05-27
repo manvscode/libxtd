@@ -1,7 +1,7 @@
 #include <stdbool.h>
 #include <math.h>
 #include <float.h>
-#include "utility.h"
+#include "xtd/floating-point.h"
 
 bool float_is_equal( float a, float b )
 {

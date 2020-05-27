@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2010-2014 by Joseph A. Marrero. http://www.manvscode.com/
+ * Copyright (C) 2010 by Joseph A. Marrero. http://www.manvscode.com/
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -19,61 +19,29 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-#include "utility.h"
-#include "libutility-config.h"
+#ifndef _ENDIAN_H_
+#define _ENDIAN_H_
+#include <stdlib.h>
+#if (defined(__STDC_VERSION__) && (__STDC_VERSION__ >= 199901L)) || (defined(_MSC_VER) && _MSC_VER >= 0)
+# include <stdbool.h>
+#else
+# error "Need a C99 compiler."
+#endif
 
-typedef union two_bytes {
-	unsigned short s;
-	unsigned char bytes[ 2 ];
-} two_bytes_t;
+#ifdef __cplusplus
+extern "C" {
+#endif
 
+bool is_big_endian ( void );
+void hton          ( void* mem, size_t size );
+void ntoh          ( void* mem, size_t size );
 
-bool is_big_endian( void )
-{
-	two_bytes_t check;
-	check.s = 1;
-
-	if( check.bytes[ 0 ] == 1 )
-	{
-		return false; /* little endian */
-	}
-
-	return true;
-}
-
-void swap_every_two_bytes( void* mem, size_t size )
-{
-	unsigned char* buffer = (unsigned char*) mem;
-
-	/* If we have an odd number of bytes, then
-	 * we subtract 1 and swap up until that size.
-	 */
-	size -= (size % 2);
-
-	for( size_t i = 0; i < size - 1; i += 2 )
-	{
-		unsigned char tmp = buffer[ i ];
-		buffer[ i ] = buffer[ i + 1];
-		buffer[ i + 1 ] = tmp;
-	}
-}
-
-void hton( void* mem, size_t size )
-{
-	#ifndef WORDS_BIGENDIAN
-	if( !is_big_endian( ) )
-	{
-		swap_every_two_bytes( mem, size );
-	}
-	#endif
-}
-
-void ntoh( void* mem, size_t size )
-{
-	#ifndef WORDS_BIGENDIAN
-	if( !is_big_endian( ) )
-	{
-		swap_every_two_bytes( mem, size );
-	}
-	#endif
-}
+#ifdef __cplusplus
+} /* extern "C" */
+namespace utility {
+	using ::is_big_endian;
+	using ::hton;
+	using ::ntoh;
+} /* namespace */
+#endif
+#endif /* _ENDIAN_H_ */

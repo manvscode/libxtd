@@ -19,38 +19,29 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-#include <stdio.h>
-#include <stdint.h>
-#include <string.h>
-#include <time.h>
-#include "xtd/all.h"
+#ifndef _FLOATING_POINT_H_
+#define _FLOATING_POINT_H_
+#include <stdlib.h>
+#if (defined(__STDC_VERSION__) && (__STDC_VERSION__ >= 199901L)) || (defined(_MSC_VER) && _MSC_VER >= 0)
+# include <stdbool.h>
+#else
+# error "Need a C99 compiler."
+#endif
 
+#ifdef __cplusplus
+extern "C" {
+#endif
 
-int main( int argc, char *argv[] )
-{
-	int32_t nums[128];
+bool float_is_equal       ( float a, float b );
+bool double_is_equal      ( double a, double b );
+bool long_double_is_equal ( long double a, long double b );
 
-	for( size_t i = 0; i < 128; i++ )
-	{
-		nums[ i ] = (int32_t) rand( );
-	}
-
-	{
-		char* str = debug_buffer_to_string( nums, sizeof(nums), 1, true );
-		printf( "%s\n\n", str );
-		free( str );
-	}
-
-	{
-		char* str = debug_buffer_to_string( nums, sizeof(nums), 2, true );
-		printf( "%s\n\n", str );
-		free( str );
-	}
-
-	{
-		char* str = debug_buffer_to_string( nums, sizeof(nums), 4, true );
-		printf( "%s\n\n", str );
-		free( str );
-	}
-	return 0;
-}
+#ifdef __cplusplus
+} /* extern "C" */
+namespace utility {
+	using ::float_is_equal;
+	using ::double_is_equal;
+	using ::long_double_is_equal;
+} /* namespace */
+#endif
+#endif /* _FLOATING_POINT_H_ */

@@ -19,38 +19,40 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-#include <stdio.h>
-#include <stdint.h>
-#include <string.h>
-#include <time.h>
-#include "xtd/all.h"
+#ifndef _XTD_CHECKSUMS_H_
+#define _XTD_CHECKSUMS_H_
+#include <stdlib.h>
+#if (defined(__STDC_VERSION__) && (__STDC_VERSION__ >= 199901L)) || (defined(_MSC_VER) && _MSC_VER >= 0)
+# include <stdbool.h>
+# include <stdint.h>
+#else
+# error "Need a C99 compiler."
+#endif
+#define PATH_REENTRANT  1
 
+#ifdef __cplusplus
+extern "C" {
+#endif
 
-int main( int argc, char *argv[] )
-{
-	int32_t nums[128];
+/*
+ * Checksums
+ */
+uint32_t java_hash         ( const uint8_t* data, size_t len );
+uint32_t xor8              ( const uint8_t* data, size_t len );
+uint32_t adler32           ( const uint8_t* data, size_t len );
+uint16_t fletcher16_simple ( uint8_t* data, size_t len );
+void     fletcher16        ( uint8_t* check_a, uint8_t* check_b, uint8_t* data, size_t len ); /* faster */
+uint32_t fletcher32        ( uint16_t* data, size_t len );
 
-	for( size_t i = 0; i < 128; i++ )
-	{
-		nums[ i ] = (int32_t) rand( );
-	}
-
-	{
-		char* str = debug_buffer_to_string( nums, sizeof(nums), 1, true );
-		printf( "%s\n\n", str );
-		free( str );
-	}
-
-	{
-		char* str = debug_buffer_to_string( nums, sizeof(nums), 2, true );
-		printf( "%s\n\n", str );
-		free( str );
-	}
-
-	{
-		char* str = debug_buffer_to_string( nums, sizeof(nums), 4, true );
-		printf( "%s\n\n", str );
-		free( str );
-	}
-	return 0;
-}
+#ifdef __cplusplus
+} /* extern "C" */
+namespace utility {
+	using ::java_hash;
+	using ::xor8;
+	using ::adler32;
+	using ::fletcher16_simple;
+	using ::fletcher16;
+	using ::fletcher32;
+} /* namespace */
+#endif
+#endif /* _XTD_CHECKSUMS_H_ */

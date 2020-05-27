@@ -22,8 +22,7 @@
 #include <stdlib.h>
 #include <ctype.h>
 #include <assert.h>
-#include <string.h>
-#include "utility.h"
+#include "xtd/string.h"
 
 char* string_ndup( const char* s, size_t len ) /* allocates memory */
 {
@@ -272,7 +271,7 @@ char* string_substring( const char* str, size_t start, size_t end )
 }
 
 
-// like strtok() but can handle repeated delimeters
+// like strtok() but can handle repeated delimeters (i.e. "one,,three").
 char* string_tokenize_r( char* str, const char* delims, char** saveptr )
 {
 	char* p = NULL;
@@ -306,8 +305,28 @@ char* string_tokenize_r( char* str, const char* delims, char** saveptr )
 
 char* string_tokenize( char* str, const char* delims )
 {
-	static char* src = NULL;
-	return string_tokenize_r( str, delims, &src );
+	static char* saveptr = NULL;
+	return string_tokenize_r( str, delims, &saveptr );
+}
+
+char* string_csv_parse_r( char* str, const char* delims, char string_escape, char** saveptr )
+{
+	char* p = NULL;
+	char* ret = NULL;
+	const char escape_chars[] = { string_escape };
+
+	if( str != NULL )
+	{
+		*saveptr = str;
+	}
+
+	if( *saveptr == NULL )
+	{
+		return NULL;
+	}
+
+
+	return ret;
 }
 
 size_t string_hash( const char* s )

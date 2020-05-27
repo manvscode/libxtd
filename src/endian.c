@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2010 by Joseph A. Marrero. http://www.manvscode.com/
+ * Copyright (C) 2010-2014 by Joseph A. Marrero. http://www.manvscode.com/
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -19,38 +19,62 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-#include <stdio.h>
-#include <stdint.h>
-#include <string.h>
-#include <time.h>
-#include "xtd/all.h"
+#include <stdlib.h>
+#include <stdbool.h>
+#include "libxtd-config.h"
+
+typedef union two_bytes {
+	unsigned short s;
+	unsigned char bytes[ 2 ];
+} two_bytes_t;
 
 
-int main( int argc, char *argv[] )
+bool is_big_endian( void )
 {
-	int32_t nums[128];
+	two_bytes_t check;
+	check.s = 1;
 
-	for( size_t i = 0; i < 128; i++ )
+	if( check.bytes[ 0 ] == 1 )
 	{
-		nums[ i ] = (int32_t) rand( );
+		return false; /* little endian */
 	}
 
-	{
-		char* str = debug_buffer_to_string( nums, sizeof(nums), 1, true );
-		printf( "%s\n\n", str );
-		free( str );
-	}
+	return true;
+}
 
-	{
-		char* str = debug_buffer_to_string( nums, sizeof(nums), 2, true );
-		printf( "%s\n\n", str );
-		free( str );
-	}
+void swap_every_two_bytes( void* mem, size_t size )
+{
+	unsigned char* buffer = (unsigned char*) mem;
 
+	/* If we have an odd number of bytes, then
+	 * we subtract 1 and swap up until that size.
+	 */
+	size -= (size % 2);
+
+	for( size_t i = 0; i < size - 1; i += 2 )
 	{
-		char* str = debug_buffer_to_string( nums, sizeof(nums), 4, true );
-		printf( "%s\n\n", str );
-		free( str );
+		unsigned char tmp = buffer[ i ];
+		buffer[ i ] = buffer[ i + 1];
+		buffer[ i + 1 ] = tmp;
 	}
-	return 0;
+}
+
+void hton( void* mem, size_t size )
+{
+	#ifndef WORDS_BIGENDIAN
+	if( !is_big_endian( ) )
+	{
+		swap_every_two_bytes( mem, size );
+	}
+	#endif
+}
+
+void ntoh( void* mem, size_t size )
+{
+	#ifndef WORDS_BIGENDIAN
+	if( !is_big_endian( ) )
+	{
+		swap_every_two_bytes( mem, size );
+	}
+	#endif
 }

@@ -1,11 +1,11 @@
 AC_PREREQ(2.67)
-AC_INIT([utility], [1.0.0], [manvscode@gmail.com], [utility], [http://www.manvscode.com/])
+AC_INIT([xtd], [1.0.0], [manvscode@gmail.com], [xtd], [http://www.manvscode.com/])
 AM_INIT_AUTOMAKE([1.13 foreign silent-rules dist-zip -Wall -Werror])
 
 AC_CONFIG_MACRO_DIR([m4])
 
 AM_SILENT_RULES([yes])
-AC_CONFIG_HEADERS([src/libutility-config.h])
+AC_CONFIG_HEADERS([src/libxtd-config.h])
 
 AC_PROG_CC
 AC_PROG_CC_STDC
@@ -15,11 +15,11 @@ AC_HEADER_STDC
 AC_TYPE_SIZE_T
 
 AH_TOP([
-#ifndef _LIBUTILITY_CONFIG_H_
-#define _LIBUTILITY_CONFIG_H_
+#ifndef _LIBXTD_CONFIG_H_
+#define _LIBXTD_CONFIG_H_
 ])
 AH_BOTTOM([
-#endif /* _LIBUTILITY_CONFIG_H_ */
+#endif /* _LIBXTD_CONFIG_H_ */
 ])
 
 # If big endian define WORDS_BIGENDIAN
@@ -104,8 +104,8 @@ AC_CONFIG_FILES([
 	Makefile
 	src/Makefile
 	tests/Makefile
-	utility.pc
-	utility-static.pc
+	xtd.pc
+	xtd-static.pc
 ])
 
 AC_OUTPUT

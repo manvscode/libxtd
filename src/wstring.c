@@ -24,7 +24,7 @@
 #include <assert.h>
 #include <wchar.h>
 #include <string.h>
-#include "utility.h"
+#include "xtd/string.h"
 
 wchar_t* wstring_ndup( const wchar_t* s, size_t len ) /* allocates memory */
 {

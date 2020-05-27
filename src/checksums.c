@@ -83,7 +83,7 @@ uint16_t fletcher16_simple( uint8_t* data, size_t len )
 	return (sum2 << 8) | sum1;
 }
 
-void fletcher16( uint8_t* checkA, uint8_t* checkB, uint8_t* data, size_t len )
+void fletcher16( uint8_t* check_a, uint8_t* check_b, uint8_t* data, size_t len )
 {
 	uint16_t sum1 = 0xff, sum2 = 0xff;
 
@@ -100,8 +100,8 @@ void fletcher16( uint8_t* checkA, uint8_t* checkB, uint8_t* data, size_t len )
 	/* Second reduction step to reduce sums to 8 bits */
 	sum1 = (sum1 & 0xff) + (sum1 >> 8);
 	sum2 = (sum2 & 0xff) + (sum2 >> 8);
-	*checkA = (uint8_t)sum1;
-	*checkB = (uint8_t)sum2;
+	*check_a = (uint8_t)sum1;
+	*check_b = (uint8_t)sum2;
 	return;
 }
 

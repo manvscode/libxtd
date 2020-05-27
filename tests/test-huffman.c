@@ -25,8 +25,8 @@
 #include <ctype.h>
 #include <limits.h>
 #include <time.h>
-#include "utility.h"
-#include "console.h"
+#include "xtd/encoding.h"
+#include "xtd/console.h"
 
 int main( int argc, char *argv[] )
 {

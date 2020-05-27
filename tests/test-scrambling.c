@@ -22,8 +22,9 @@
 #include <stdio.h>
 #include <string.h>
 #include <time.h>
-#include "utility.h"
-#include "console.h"
+#include "xtd/memory.h"
+#include "xtd/string.h"
+#include "xtd/console.h"
 
 
 int main( int argc, char *argv[] )

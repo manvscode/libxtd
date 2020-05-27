@@ -19,38 +19,35 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-#include <stdio.h>
-#include <stdint.h>
-#include <string.h>
-#include <time.h>
-#include "xtd/all.h"
+#ifndef _ENCODING_H_
+#define _ENCODING_H_
+#include <stdlib.h>
+#if (defined(__STDC_VERSION__) && (__STDC_VERSION__ >= 199901L)) || (defined(_MSC_VER) && _MSC_VER >= 0)
+# include <stdbool.h>
+#else
+# error "Need a C99 compiler."
+#endif
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+/*
+ * Compression and encodings.
+ */
+bool  huffman_encode ( const void* original, size_t original_size, void** compressed, size_t* compressed_size );
+bool  huffman_decode ( const void* compressed, size_t compressed_size, void** original, size_t* original_size );
+char* base64_encode  ( const void* in, size_t in_size, size_t* out_len );
+void* base64_decode  ( const char* in, size_t in_len, size_t* out_size );
 
 
-int main( int argc, char *argv[] )
-{
-	int32_t nums[128];
-
-	for( size_t i = 0; i < 128; i++ )
-	{
-		nums[ i ] = (int32_t) rand( );
-	}
-
-	{
-		char* str = debug_buffer_to_string( nums, sizeof(nums), 1, true );
-		printf( "%s\n\n", str );
-		free( str );
-	}
-
-	{
-		char* str = debug_buffer_to_string( nums, sizeof(nums), 2, true );
-		printf( "%s\n\n", str );
-		free( str );
-	}
-
-	{
-		char* str = debug_buffer_to_string( nums, sizeof(nums), 4, true );
-		printf( "%s\n\n", str );
-		free( str );
-	}
-	return 0;
-}
+#ifdef __cplusplus
+} /* extern "C" */
+namespace utility {
+	using ::huffman_encode;
+	using ::huffman_decode;
+	using ::base64_encode;
+	using ::base64_decode;
+} /* namespace */
+#endif
+#endif /* _ENCODING_H_ */

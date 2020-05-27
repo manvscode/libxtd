@@ -22,8 +22,9 @@
 #include <stdio.h>
 #include <string.h>
 #include <time.h>
-#include "utility.h"
-#include "console.h"
+#include "xtd/filesystem.h"
+#include "xtd/memory.h"
+#include "xtd/console.h"
 
 
 int main( int argc, char *argv[] )
@@ -41,7 +42,7 @@ int main( int argc, char *argv[] )
 	printf( "app size = %s\n", size_in_best_unit( size, false, 1 ) );
 
 	size_t text_size = 0;
-	char* text = file_load_contents( file, &text_size );
+	char* text = file_slurp( file, &text_size );
 	if( text )
 	{
         console_fg_bright_color_8( stdout, CONSOLE_COLOR8_CYAN );

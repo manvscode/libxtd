@@ -21,12 +21,12 @@ missing
 src/.deps/
 src/Makefile
 src/Makefile.in
-src/libutility-config.h
+src/libxtd-config.h
 tests/.deps/
 tests/Makefile
 tests/Makefile.in
-utility.pc
-utility-static.pc
+xtd.pc
+xtd-static.pc
 
 # Compiled Object files
 *.slo

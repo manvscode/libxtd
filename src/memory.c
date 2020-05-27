@@ -24,87 +24,11 @@
 #include <ctype.h>
 #include <limits.h>
 #include <string.h>
-#include "utility.h"
+#include "xtd/memory.h"
 
 #ifdef _WIN32
 #define snprintf  _snprintf
 #endif
-
-typedef unsigned char byte_t;
-
-const char* byte_to_binary( uint8_t x )
-{
-    static char b[ CHAR_BIT + 1 ];
-    b[0] = '\0';
-
-    for( uint16_t z = SCHAR_MAX + 1; z > 0; z >>= 1)
-    {
-        strcat(b, ((x & z) == z) ? "1" : "0");
-    }
-
-    return b;
-}
-
-
-void buffer_scramble( const char* key, void* buffer, size_t size, unsigned short pivot )
-{
-	size_t key_len  = strlen( key );
-	unsigned char* bytes = (unsigned char*) buffer;
-	int64_t sz = size;
-
-	while( sz >= 0 )
-	{
-		bytes[ sz ] = (bytes[ sz ] + pivot) % 256;
-		bytes[ sz ] = (byte_t) ( bytes[sz] ^ key[sz % key_len] );
-		sz--;
-	}
-}
-
-void buffer_unscramble( const char* key, void* buffer, size_t size, unsigned short pivot )
-{
-	size_t key_len  = strlen( key );
-	unsigned char* bytes = (unsigned char*) buffer;
-	int64_t sz = size;
-
-	while( sz >= 0 )
-	{
-		bytes[ sz ] = (byte_t) ( bytes[sz] ^ key[sz % key_len] );
-		bytes[ sz ] = (bytes[ sz ] - pivot) % 256;
-		sz--;
-	}
-}
-
-void xor_bytes( const void* a, size_t a_size, const void* b, size_t b_size, void* result )
-{
-	const byte_t* p_a = a;
-	const byte_t* p_b = b;
-	byte_t* p_r       = result;
-	long i            = b_size;
-
-	while( i >= 0 )
-	{
-		p_r[ i ] = (byte_t) ( p_b[i] ^ p_a[i % (a_size + 1)] );
-		i--;
-	}
-}
-
-void swap( void* left, void* right, size_t size )
-{
-#if _WIN32
-	unsigned char* tmp = malloc( size );
-#else
-	unsigned char tmp[ size ];
-#endif
-
-	memcpy( tmp, left, size );
-	memcpy( left, right, size );
-	memcpy( right, tmp, size );
-
-#if _WIN32
-	free( tmp );
-#endif
-}
-
 
 static uint64_t size_powers[] = {
 	1,                   // 10^0, 2^0 byte
@@ -191,6 +115,78 @@ const char* size_in_best_unit( size_t size, bool use_base_two, int precision )
 
 	// otherwise display in bytes
 	return size_in_unit( size, unit_bytes, 1 );
+}
+
+const char* byte_to_binary( uint8_t x )
+{
+    static char b[ CHAR_BIT + 1 ];
+    b[0] = '\0';
+
+    for( uint16_t z = SCHAR_MAX + 1; z > 0; z >>= 1)
+    {
+        strcat(b, ((x & z) == z) ? "1" : "0");
+    }
+
+    return b;
+}
+
+void buffer_scramble( const char* key, void* buffer, size_t size, unsigned short pivot )
+{
+	size_t key_len  = strlen( key );
+	unsigned char* bytes = (unsigned char*) buffer;
+	int64_t sz = size;
+
+	while( sz >= 0 )
+	{
+		bytes[ sz ] = (bytes[ sz ] + pivot) % 256;
+		bytes[ sz ] = (byte_t) ( bytes[sz] ^ key[sz % key_len] );
+		sz--;
+	}
+}
+
+void buffer_unscramble( const char* key, void* buffer, size_t size, unsigned short pivot )
+{
+	size_t key_len  = strlen( key );
+	unsigned char* bytes = (unsigned char*) buffer;
+	int64_t sz = size;
+
+	while( sz >= 0 )
+	{
+		bytes[ sz ] = (byte_t) ( bytes[sz] ^ key[sz % key_len] );
+		bytes[ sz ] = (bytes[ sz ] - pivot) % 256;
+		sz--;
+	}
+}
+
+void xor_bytes( const void* a, size_t a_size, const void* b, size_t b_size, void* result )
+{
+	const byte_t* p_a = a;
+	const byte_t* p_b = b;
+	byte_t* p_r       = result;
+	long i            = b_size;
+
+	while( i >= 0 )
+	{
+		p_r[ i ] = (byte_t) ( p_b[i] ^ p_a[i % (a_size + 1)] );
+		i--;
+	}
+}
+
+void swap( void* left, void* right, size_t size )
+{
+#if _WIN32
+	unsigned char* tmp = malloc( size );
+#else
+	unsigned char tmp[ size ];
+#endif
+
+	memcpy( tmp, left, size );
+	memcpy( left, right, size );
+	memcpy( right, tmp, size );
+
+#if _WIN32
+	free( tmp );
+#endif
 }
 
 char* debug_buffer_to_string( const void* data, size_t size, size_t grouping, bool with_spaces )

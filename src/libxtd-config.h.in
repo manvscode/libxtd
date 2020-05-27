@@ -1,8 +1,8 @@
-/* src/libutility-config.h.in.  Generated from configure.ac by autoheader.  */
+/* src/libxtd-config.h.in.  Generated from configure.ac by autoheader.  */
 
 
-#ifndef _LIBUTILITY_CONFIG_H_
-#define _LIBUTILITY_CONFIG_H_
+#ifndef _LIBXTD_CONFIG_H_
+#define _LIBXTD_CONFIG_H_
 
 
 /* Define if building universal (internal helper macro) */
@@ -90,5 +90,5 @@
 #undef size_t
 
 
-#endif /* _LIBUTILITY_CONFIG_H_ */
+#endif /* _LIBXTD_CONFIG_H_ */
 

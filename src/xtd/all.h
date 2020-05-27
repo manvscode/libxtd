@@ -19,38 +19,35 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
+#ifndef _XTD_ALL_H_
+#define _XTD_ALL_H_
+#include <stdlib.h>
 #include <stdio.h>
-#include <stdint.h>
-#include <string.h>
 #include <time.h>
-#include "xtd/all.h"
+#if (defined(__STDC_VERSION__) && (__STDC_VERSION__ >= 199901L)) || (defined(_MSC_VER) && _MSC_VER >= 0)
+# include <stdbool.h>
+# include <stdint.h>
+#else
+# error "Need a C99 compiler."
+#endif
+#define PATH_REENTRANT  1
 
+#ifdef __cplusplus
+extern "C" {
+#endif
 
-int main( int argc, char *argv[] )
-{
-	int32_t nums[128];
+#include <xtd/checksums.h>
+#include <xtd/console.h>
+#include <xtd/encoding.h>
+#include <xtd/encryption.h>
+#include <xtd/endian.h>
+#include <xtd/exceptions.h>
+#include <xtd/filesystem.h>
+#include <xtd/floating-point.h>
+#include <xtd/memory.h>
+#include <xtd/refobj.h>
+#include <xtd/string.h>
+#include <xtd/test.h>
+#include <xtd/time.h>
 
-	for( size_t i = 0; i < 128; i++ )
-	{
-		nums[ i ] = (int32_t) rand( );
-	}
-
-	{
-		char* str = debug_buffer_to_string( nums, sizeof(nums), 1, true );
-		printf( "%s\n\n", str );
-		free( str );
-	}
-
-	{
-		char* str = debug_buffer_to_string( nums, sizeof(nums), 2, true );
-		printf( "%s\n\n", str );
-		free( str );
-	}
-
-	{
-		char* str = debug_buffer_to_string( nums, sizeof(nums), 4, true );
-		printf( "%s\n\n", str );
-		free( str );
-	}
-	return 0;
-}
+#endif /* _XTD_ALL_H_ */
