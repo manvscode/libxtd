@@ -37,7 +37,7 @@ void caesar_cypher_decrypt_text   ( char* text, size_t size, int n );
 
 #ifdef __cplusplus
 } /* extern "C" */
-namespace utility {
+namespace xtd {
 	using ::caesar_cypher_encrypt_buffer;
 	using ::caesar_cypher_decrypt_buffer;
 	using ::caesar_cypher_encrypt_text;

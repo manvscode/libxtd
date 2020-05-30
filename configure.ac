@@ -53,13 +53,9 @@ AM_CONDITIONAL([LINUX], [test "$build_linux" = "yes"])
 AM_CONDITIONAL([WINDOWS], [test "$build_windows" = "yes"])
 AM_CONDITIONAL([OSX], [test "$build_mac" = "yes"])
 
-
-#CFLAGS="-std=c11 -Wall -pedantic -fsanitize=undefined -g -ggdb -O0 -DDEBUG -I/usr/local/include/"
-CFLAGS="$CFLAGS"
-LDFLAGS="$LDFLAGS"
+#CFLAGS="-std=gnu11 -g3 -Og -Wall -pedantic -fsanitize=undefined -DDEBUG"
 
 AM_PROG_AR
-
 
 LT_INIT([shared static win32-dll])
 
@@ -75,9 +71,7 @@ AS_IF([test "$build_linux" = "yes"], [
 
 AC_PROG_LIBTOOL
 AM_PROG_LIBTOOL
-
 AC_PROG_INSTALL
-
 
 AC_ARG_ENABLE([tests],
 	[AS_HELP_STRING([--disable-tests], [Enable test programs.])],
@@ -85,6 +79,7 @@ AC_ARG_ENABLE([tests],
 	[enable_tests=no])
 
 AM_CONDITIONAL([ENABLE_TESTS], [test "$enable_tests" = "yes"])
+
 
 
 echo "------------------------------------------------------------------------------"

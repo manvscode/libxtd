@@ -49,7 +49,7 @@ struct tm*  time_local               ( time_t t, const char* tz ); /* Expects IA
 
 #ifdef __cplusplus
 } /* extern "C" */
-namespace utility {
+namespace xtd {
 	using ::time_seconds;
 	using ::time_milliseconds;
 	using ::time_secs;

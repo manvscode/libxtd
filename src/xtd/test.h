@@ -21,143 +21,125 @@
  */
 #ifndef _TEST_H_
 #define _TEST_H_
-
 #include <stdbool.h>
-#include <string.h>
-#include <math.h>
-#include <time.h>
-#include <xtd/time.h>
-#include <xtd/floating-point.h>
-
-#define COLOR_BEGIN(bg,fg)                    "\e[" #bg ";" #fg "m"
-#define COLOR_END                             "\e[m"
-#define COLOR_TOKEN(color_bg, color_fg, tok)  COLOR_BEGIN(color_bg, color_fg) #tok COLOR_END
-#define COLOR_STRING(color_bg, color_fg, str) COLOR_BEGIN(color_bg, color_fg) str COLOR_END
-
-#define COLOR_GREEN                           COLOR_BEGIN(0,32)
-#define COLOR_RED                             COLOR_BEGIN(0,31)
-#define COLOR_YELLOW                          COLOR_BEGIN(0,33)
-#define COLOR_BLUE                            COLOR_BEGIN(0,34)
-#define COLOR_MAGENTA                         COLOR_BEGIN(0,35)
-#define COLOR_CYAN                            COLOR_BEGIN(0,36)
-#define COLOR_WHITE                           COLOR_BEGIN(0,37)
-
-#define COLOR_GREEN_STR(s)                    COLOR_STRING(0,32,s)
-#define COLOR_YELLOW_STR(s)                   COLOR_STRING(0,33,s)
-#define COLOR_RED_STR(s)                      COLOR_STRING(0,31,s)
-#define COLOR_CYAN_STR(s)                     COLOR_STRING(0,36,s)
-
-typedef bool   (*test_fxn)      ( void );
-typedef size_t (*test_size_fxn) ( void );
-
-static inline bool test_nil( void ) { return false; }
-
-static inline bool integer_equals( long a, long b )
-{
-	return a == b;
-}
-
-static inline bool test_float_equals( float a, float b )
-{
-	return float_is_equal( a, b );
-}
-
-static inline bool test_double_equals( double a, double b )
-{
-	return double_is_equal( a, b );
-}
-
-static inline bool test_long_double_equals( long double a, long double b )
-{
-	return long_double_is_equal( a, b );
-}
-
-static inline void test_wait_for_true(const bool* flag, int timeout)
-{
-	double start = time_milliseconds();
-	double elapsed = 0.0;
-
-	while (!*flag && elapsed < timeout)
-	{
-		time_msleep(10);
-		elapsed = time_milliseconds() - start;
-	}
-}
-
-static inline void test_wait_for_int(const int* n, int value, int timeout)
-{
-	double start = time_milliseconds();
-	double elapsed = 0.0;
-
-	while (*n != value && elapsed < timeout)
-	{
-		time_msleep(10);
-		elapsed = time_milliseconds() - start;
-	}
-}
-
-static inline bool test_feature( unsigned int i, const char* feature, test_fxn test )
-{
-	bool is_passed = test();
-	printf( "%s%5u%s: %s... %s\n", COLOR_CYAN, i, COLOR_END, feature, is_passed ? COLOR_GREEN_STR("ok") : COLOR_RED_STR("failed") );
-	return is_passed;
-}
-
-typedef struct test_feature {
-	const char* feature;
-	test_fxn    function;
-} test_feature_t;
 
 
+/*
+ * This is a generic function that can be used for testing equality between
+ * many different data-types.
+ */
+#define test_assert_equals(ctx, expected, actual, ... ) \
+	_Generic((expected), \
+	         const void*: test_assert_pointer_equals, \
+	               void*: test_assert_pointer_equals, \
+	         const char*: test_assert_string_equals, \
+	               char*: test_assert_string_equals, \
+	         long double: test_assert_long_double_equals, \
+	              double: test_assert_double_equals, \
+	               float: test_assert_float_equals, \
+	       unsigned long: test_assert_unsigned_long_equals, \
+	                long: test_assert_long_equals, \
+	        unsigned int: test_assert_unsigned_int_equals, \
+	                 int: test_assert_int_equals, \
+	      unsigned short: test_assert_unsigned_short_equals, \
+	               short: test_assert_short_equals, \
+	       unsigned char: test_assert_unsigned_char_equals, \
+	                char: test_assert_char_equals \
+	)(ctx, expected, actual, __VA_ARGS__)
 
-static inline bool test_features( const char* suite, const test_feature_t features[], size_t count )
-{
-	bool is_passed = true;
 
-	size_t len = strlen(suite);
-	size_t half_len = len / 2;
-	int w = 10;
-	printf( "%s: %s%-30s%s\n", COLOR_CYAN_STR("Suite"), COLOR_YELLOW, suite, COLOR_END );
-	for( size_t i = 0; is_passed && i < count; i++ )
-	{
-		is_passed = test_feature( i + 1, features[ i ].feature, features[ i ].function );
-	}
+/*
+ * This function will loop and test a boolean flag until it becomes true.
+ */
+void test_wait_for_true(const bool* flag, int timeout);
 
-	printf( "----------------------\n" );
-	printf( "%sOverall%s: %s\n\n", COLOR_CYAN, COLOR_END, is_passed ? COLOR_GREEN_STR("PASSED.") : COLOR_RED_STR("FAILED.") );
-
-	return is_passed;
-}
+/*
+ * This function will loop and test a integer flag until it becomes true.
+ */
+void test_wait_for_int(const int* n, int value, int timeout);
 
 
+/*
+ * This is the internal context passed to each test case.
+ */
+struct test_ctx;
+typedef struct test_ctx test_ctx_t;
+
+
+/*
+ * This is the function signature that all unit tests should follow.
+ */
+typedef bool (*test_fxn_t) ( test_ctx_t* ctx );
+
+/*
+ * This is a convenience for an empty unit test.
+ */
+bool test_nil( test_ctx_t* ctx );
+
+/*
+ * This structure describes a unit
+ */
+typedef struct test_case {
+	const char* description;
+	test_fxn_t test;
+} test_case_t;
+
+/*
+ * This function will run a group of test cases.
+ */
+size_t test_features( const char* description, const test_case_t cases[], size_t count, bool continue_on_failure );
+
+/*
+ * This is the signature for a function that returns a description for the
+ * test suite.
+ */
+typedef const char* (*test_case_description_fxn_t) ( void );
+
+/*
+ * This is the signature for a function that knows how many test cases (see
+ * test_case_t) are in a test suite.
+ */
+typedef size_t (*test_case_count_fxn_t) ( void );
+
+/*
+ * This is the signature for a function that returns the a pointer to an
+ * array of test cases for the test suite.
+ */
+typedef const test_case_t* (*test_case_fxn_t) ( void );
+
+/*
+ * This structure describes a grouping of test cases, also called a test suite.
+ */
 typedef struct test_suite {
-	const char* suite;
-	const test_feature_t* features;
-	test_size_fxn count;
+	test_case_description_fxn_t get_description;
+	test_case_count_fxn_t get_count;
+	test_case_fxn_t get_cases;
 } test_suite_t;
 
-static inline bool test_suites( const test_suite_t suites[], size_t count )
-{
-	bool is_passed = true;
+/*
+ * This function will run several suites of test cases.
+ */
+bool test_suites( const test_suite_t suites[], size_t count, size_t* p_pass_count, size_t* p_fail_count );
 
-	for( size_t i = 0; is_passed && i < count; i++ )
-	{
-		size_t feature_count = suites[ i ].count();
-		is_passed = test_features( suites[ i ].suite, suites[ i ].features, feature_count );
-	}
-
-	printf( "\n" );
-
-	if( is_passed )
-	{
-		printf( "%sAll Suites%s: %s\n\n", COLOR_CYAN, COLOR_END, COLOR_GREEN_STR("PASSED.") );
-	}
-	else
-	{
-		printf( "%sOne or more suites have%s: %s\n\n", COLOR_CYAN, COLOR_END, COLOR_RED_STR("FAILED.") );
-	}
-
-	return is_passed;
-}
+/*
+ * Various assertions that can be used for testing functionality.
+ */
+bool test_assert_true( test_ctx_t* ctx, bool expression, const char* message, ... );
+bool test_assert_not_null( test_ctx_t* ctx, const void* p, const char* message, ... );
+bool test_assert_pointer_equals( test_ctx_t* ctx, const void* a, const void* b, const char* message, ... );
+bool test_assert_memory_equals( test_ctx_t* ctx, const void* a, const void* b, size_t size, const char* message, ... );
+bool test_assert_string_equals( test_ctx_t* ctx, const char* a, const char* b, const char* message, ... );
+bool test_assert_char_equals( test_ctx_t* ctx, char a, char b, const char* message, ... );
+bool test_assert_unsigned_char_equals( test_ctx_t* ctx, unsigned char a, unsigned char b, const char* message, ... );
+bool test_assert_short_equals( test_ctx_t* ctx, short a, short b, const char* message, ... );
+bool test_assert_unsigned_short_equals ( test_ctx_t* ctx, unsigned short a, unsigned short b, const char* message, ... );
+bool test_assert_int_equals( test_ctx_t* ctx, int a, int b, const char* message, ... );
+bool test_assert_unsigned_int_equals( test_ctx_t* ctx, unsigned int a, unsigned int b, const char* message, ... );
+bool test_assert_long_equals( test_ctx_t* ctx, long a, long b, const char* message, ... );
+bool test_assert_unsigned_long_equals( test_ctx_t* ctx, unsigned long a, unsigned long b, const char* message, ... );
+bool test_assert_float_equals( test_ctx_t* ctx, float a, float b, const char* message, ... );
+bool test_assert_double_equals( test_ctx_t* ctx, double a, double b, const char* message, ... );
+bool test_assert_long_double_equals( test_ctx_t* ctx, long double a, long double b, const char* message, ... );
+bool test_assert_size_equals( test_ctx_t* ctx, size_t a, size_t b, const char* message, ... );
 
 #endif /* _TEST_H_ */

@@ -15,6 +15,7 @@ xtd_sources = \
 			  refobj.c \
 			  sort.c \
 			  string.c \
+			  test.c \
 			  time.c \
 			  wstring.c
 
@@ -36,6 +37,7 @@ xtd_headers = \
 			  xtd/memory.h \
 			  xtd/refobj.h \
 			  xtd/string.h \
+			  xtd/test.h \
 			  xtd/time.h \
 			  xtd/all.h
 

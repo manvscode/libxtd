@@ -79,7 +79,7 @@ unsigned int rotate_bits_right      ( unsigned int value, int shift );
 
 #ifdef __cplusplus
 } /* extern "C" */
-namespace utility {
+namespace xtd {
 	using ::byte_t;
 	using ::size_unit_t;
 	using ::size_in_unit;

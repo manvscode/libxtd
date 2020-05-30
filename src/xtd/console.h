@@ -37,8 +37,6 @@
 # endif
 #endif
 
-
-
 /*
  * Console
  */
@@ -78,6 +76,7 @@ void console_reversed              ( FILE* stream );
 void console_hide_cursor           ( FILE* stream );
 void console_show_cursor           ( FILE* stream );
 void console_reset                 ( FILE* stream );
+void console_end                   ( FILE* stream );
 void console_save_position         ( FILE* stream );
 void console_restore_position      ( FILE* stream );
 void console_move_up               ( FILE* stream, int n );
@@ -112,6 +111,7 @@ void wconsole_reversed          ( FILE* stream );
 void wconsole_hide_cursor       ( FILE* stream );
 void wconsole_show_cursor       ( FILE* stream );
 void wconsole_reset             ( FILE* stream );
+void wconsole_end               ( FILE* stream );
 
 
 #define console_clear_screen_to_end(stream)    console_clear_screen( stream, CONSOLE_CLEAR_CURSOR_TO_END ) // clears from cursor to end of screen
@@ -176,7 +176,7 @@ void wconsole_reset             ( FILE* stream );
 
 #ifdef __cplusplus
 } /* extern "C" */
-namespace utility {
+namespace xtd {
     using ::console_fg_color_8;
     using ::console_fg_bright_color_8;
     using ::console_fg_color_256;

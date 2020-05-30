@@ -1,3 +1,7 @@
+#ifdef __linux__
+#include <sys/types.h>
+#endif
+#include <stdlib.h>
 #include "xtd/refobj.h"
 
 typedef struct refobj {

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2010 by Joseph A. Marrero. http://www.manvscode.com/
+ * Copyright (C) 2014 by Joseph A. Marrero. http://www.manvscode.com/
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -19,29 +19,34 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-#ifndef _FLOATING_POINT_H_
-#define _FLOATING_POINT_H_
-#include <stdlib.h>
-#if (defined(__STDC_VERSION__) && (__STDC_VERSION__ >= 199901L)) || (defined(_MSC_VER) && _MSC_VER >= 0)
-# include <stdbool.h>
-#else
-# error "Need a C99 compiler."
+#include <stdio.h>
+#include <string.h>
+#ifndef __STDC_FORMAT_MACROS
+# define __STDC_FORMAT_MACROS
 #endif
+#include <inttypes.h>
+#include "xtd/memory.h"
+#include "xtd/test.h"
 
-#ifdef __cplusplus
-extern "C" {
+const char* MEMORY_TEST_DESCRIPTION = "Testing functions in <xtd/memory.h>";
+const test_case_t MEMORY_TEST_CASES[] = {
+	{ "Test size_in_unit()", test_nil },
+	{ "Test size_in_best_unit()", test_nil },
+	{ "Test byte_to_binary()", test_nil },
+	{ "Test buffer_scramble()", test_nil },
+	{ "Test buffer_unscramble()", test_nil },
+	{ "Test xor_bytes()", test_nil },
+	{ "Test swap()", test_nil },
+	{ "Test debug_buffer_to_string()", test_nil },
+	{ "Test rotate_bits_left()", test_nil },
+	{ "Test rotate_bits_right()", test_nil },
+};
+const size_t MEMORY_TEST_COUNT = sizeof(MEMORY_TEST_CASES) / sizeof(MEMORY_TEST_CASES[0]);
+
+#ifdef TEST_MEMORY
+int main(int argc, char* argv[])
+{
+	size_t pass_count = test_features( MEMORY_TEST_DESCRIPTION, MEMORY_TEST_CASES, MEMORY_TEST_COUNT, true );
+	return MEMORY_TEST_COUNT - pass_count;
+}
 #endif
-
-bool float_is_equal       ( float a, float b );
-bool double_is_equal      ( double a, double b );
-bool long_double_is_equal ( long double a, long double b );
-
-#ifdef __cplusplus
-} /* extern "C" */
-namespace xtd {
-	using ::float_is_equal;
-	using ::double_is_equal;
-	using ::long_double_is_equal;
-} /* namespace */
-#endif
-#endif /* _FLOATING_POINT_H_ */

@@ -77,9 +77,9 @@ int main( int argc, char *argv[] )
 		console_print_divider( stdout, "[ Huffman Encoded ]" );
 
 		size_t header_size = sizeof(size_t) + (UCHAR_MAX + 1 );
-		for( size_t i = header_size; i < compressed_size; i++ )
+		for( size_t i = 0; i < compressed_size; i++ )
 		{
-			printf( "%02x", (uint8_t) compressed[ i ] );
+			printf( "0x%02x, ", (uint8_t) compressed[ i ] );
 		}
 		printf( " (%ld header bytes + %ld bytes = %ld total bytes)\n", header_size, compressed_size - header_size, compressed_size );
 	}

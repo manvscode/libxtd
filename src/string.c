@@ -303,30 +303,17 @@ char* string_tokenize_r( char* str, const char* delims, char** saveptr )
 	return ret;
 }
 
+
 char* string_tokenize( char* str, const char* delims )
 {
 	static char* saveptr = NULL;
+
+	if(str)
+	{
+		saveptr = str;
+	}
+
 	return string_tokenize_r( str, delims, &saveptr );
-}
-
-char* string_csv_parse_r( char* str, const char* delims, char string_escape, char** saveptr )
-{
-	char* p = NULL;
-	char* ret = NULL;
-	const char escape_chars[] = { string_escape };
-
-	if( str != NULL )
-	{
-		*saveptr = str;
-	}
-
-	if( *saveptr == NULL )
-	{
-		return NULL;
-	}
-
-
-	return ret;
 }
 
 size_t string_hash( const char* s )

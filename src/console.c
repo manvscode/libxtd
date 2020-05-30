@@ -194,6 +194,16 @@ void wconsole_reset( FILE* stream )
 	fwprintf( stream, L"\033[0m" );
 }
 
+void console_end( FILE* stream )
+{
+	fprintf( stream, "\033[m" );
+}
+
+void wconsole_end( FILE* stream )
+{
+	fwprintf( stream, L"\033[m" );
+}
+
 void console_save_position( FILE* stream )
 {
 	fprintf( stream, "\033[s" );

@@ -50,10 +50,9 @@ char*       string_to_upper    ( char* s );
 void        string_random      ( string_random_type_t type, char* string, size_t length );
 const char* string_ordinal     ( long number );
 char*       string_replace     ( const char* orig, const char* rep, const char* with ); /* result must be freed */
-char*       string_substring   ( const char* str, size_t start, size_t end );
+char*       string_substring   ( const char* str, size_t start, size_t end ); /* result must be freed */
 char*       string_tokenize_r  ( char* str, const char* delims, char** saveptr );
 char*       string_tokenize    ( char* str, const char* delims );
-char*       string_csv_parse_r ( char* str, const char* delims, char escape, char** saveptr );
 size_t      string_hash        ( const char* s );
 size_t      string_nhash       ( const char* s, size_t len );
 
@@ -78,7 +77,7 @@ wchar_t* wstring_substring  ( const wchar_t* str, size_t start, size_t end );
 
 #ifdef __cplusplus
 } /* extern "C" */
-namespace utility {
+namespace xtd {
 	using ::string_random_type_t;
 	using ::string_ndup;
 	using ::string_dup;

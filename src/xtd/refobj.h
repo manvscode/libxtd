@@ -38,7 +38,7 @@ void  refobj_release ( void* obj );
 
 #ifdef __cplusplus
 } /* extern "C" */
-namespace utility {
+namespace xtd {
 	using ::refobj_destroy_fxn_t;
 	using ::refobj_alloc;
 	using ::refobj_retain;

@@ -46,7 +46,7 @@ uint32_t fletcher32        ( uint16_t* data, size_t len );
 
 #ifdef __cplusplus
 } /* extern "C" */
-namespace utility {
+namespace xtd {
 	using ::java_hash;
 	using ::xor8;
 	using ::adler32;

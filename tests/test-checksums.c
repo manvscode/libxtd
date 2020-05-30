@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2010 by Joseph A. Marrero. http://www.manvscode.com/
+ * Copyright (C) 2014 by Joseph A. Marrero. http://www.manvscode.com/
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -19,29 +19,31 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-#ifndef _FLOATING_POINT_H_
-#define _FLOATING_POINT_H_
-#include <stdlib.h>
-#if (defined(__STDC_VERSION__) && (__STDC_VERSION__ >= 199901L)) || (defined(_MSC_VER) && _MSC_VER >= 0)
-# include <stdbool.h>
-#else
-# error "Need a C99 compiler."
+#include <stdio.h>
+#include <string.h>
+#ifndef __STDC_FORMAT_MACROS
+# define __STDC_FORMAT_MACROS
 #endif
+#include <inttypes.h>
+#include <time.h>
+#include "xtd/checksums.h"
+#include "xtd/test.h"
 
-#ifdef __cplusplus
-extern "C" {
+const char* CHECKSUMS_TEST_DESCRIPTION = "Testing functions in <xtd/checksums.h>";
+const test_case_t CHECKSUMS_TEST_CASES[] = {
+	{ "Test java_hash()", test_nil },
+	{ "Test xor8()", test_nil },
+	{ "Test adler32()", test_nil },
+	{ "Test fletcher16_simple()", test_nil },
+	{ "Test fletcher16()", test_nil },
+	{ "Test fletcher32()", test_nil },
+};
+const size_t CHECKSUMS_TEST_COUNT = sizeof(CHECKSUMS_TEST_CASES) / sizeof(CHECKSUMS_TEST_CASES[0]);
+
+#ifdef TEST_CHECKSUMS
+int main(int argc, char* argv[])
+{
+	size_t pass_count = test_features( CHECKSUMS_TEST_DESCRIPTION, CHECKSUMS_TEST_CASES, CHECKSUMS_TEST_COUNT, true );
+	return CHECKSUMS_TEST_COUNT - pass_count;
+}
 #endif
-
-bool float_is_equal       ( float a, float b );
-bool double_is_equal      ( double a, double b );
-bool long_double_is_equal ( long double a, long double b );
-
-#ifdef __cplusplus
-} /* extern "C" */
-namespace xtd {
-	using ::float_is_equal;
-	using ::double_is_equal;
-	using ::long_double_is_equal;
-} /* namespace */
-#endif
-#endif /* _FLOATING_POINT_H_ */

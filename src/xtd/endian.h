@@ -38,7 +38,7 @@ void ntoh          ( void* mem, size_t size );
 
 #ifdef __cplusplus
 } /* extern "C" */
-namespace utility {
+namespace xtd {
 	using ::is_big_endian;
 	using ::hton;
 	using ::ntoh;

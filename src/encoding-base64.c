@@ -125,16 +125,16 @@ char* base64_encode( const void* in, size_t in_size, size_t* out_len )
 	return output;
 }
 
-void* base64_decode( const char* in, size_t in_len, size_t* out_size )
+void* base64_decode( const char* in, size_t in_len, size_t* out_len )
 {
 	unsigned char* output = NULL;
 
 	if( in_len % 4 == 0 )
 	{
 		char* equal_sign = strchr(in, '=');
-		*out_size = ((in_len * 3) / 4) - (equal_sign ? (in + in_len - equal_sign) : 0);
+		*out_len = ((in_len * 3) / 4) - (equal_sign ? (in + in_len - equal_sign) : 0);
 
-		output = malloc( *out_size );
+		output = malloc( *out_len + 1);
 
 		if( output )
 		{
@@ -147,25 +147,27 @@ void* base64_decode( const char* in, size_t in_len, size_t* out_size )
 
 				output[ j++ ] = (w << 2) | (x >> 4);
 
-				if( y < 64 )
+				if( y >= 0 && y < 64 )
 				{
 					output[ j++ ] = (x << 4) | (y >> 2);
 
-					if( z < 64 )
+					if( z >= 0 && z < 64 )
 					{
 						output[ j++ ] = (y << 6) | z;
 					}
 				}
 			}
+
+			output[ *out_len ] =  '\0';
 		}
 		else
 		{
-			out_size = 0;
+			out_len = 0;
 		}
 	}
 	else
 	{
-		out_size = 0;
+		out_len = 0;
 	}
 
 	return output;

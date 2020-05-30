@@ -19,11 +19,14 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-#ifndef _FLOATING_POINT_H_
-#define _FLOATING_POINT_H_
+#ifndef _XTD_ALL_H_
+#define _XTD_ALL_H_
 #include <stdlib.h>
+#include <stdio.h>
+#include <time.h>
 #if (defined(__STDC_VERSION__) && (__STDC_VERSION__ >= 199901L)) || (defined(_MSC_VER) && _MSC_VER >= 0)
 # include <stdbool.h>
+# include <stdint.h>
 #else
 # error "Need a C99 compiler."
 #endif
@@ -32,16 +35,5 @@
 extern "C" {
 #endif
 
-bool float_is_equal       ( float a, float b );
-bool double_is_equal      ( double a, double b );
-bool long_double_is_equal ( long double a, long double b );
 
-#ifdef __cplusplus
-} /* extern "C" */
-namespace xtd {
-	using ::float_is_equal;
-	using ::double_is_equal;
-	using ::long_double_is_equal;
-} /* namespace */
-#endif
-#endif /* _FLOATING_POINT_H_ */
+#endif /* _XTD_ALL_H_ */

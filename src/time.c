@@ -8,7 +8,7 @@ uint64_t time_secs( void )
 
 uint64_t time_msecs( void )
 {
-	return (uint64_t) time_seconds( );
+	return (uint64_t) time_milliseconds( );
 }
 
 const char* time_iso8601( time_t t )

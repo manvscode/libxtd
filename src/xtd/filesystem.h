@@ -66,7 +66,7 @@ void        directory_enumerate      ( const char* path, bool recursive, directo
 
 #ifdef __cplusplus
 } /* extern "C" */
-namespace utility {
+namespace xtd {
 	using ::file_exists;
 	using ::file_is_writeable;
 	using ::file_is_readable;

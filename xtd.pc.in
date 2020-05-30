@@ -4,7 +4,7 @@ libdir=@libdir@
 includedir=@includedir@
 
 Name: @PACKAGE_NAME@
-Description: A collection of utility code for projects using C/C++.
+Description: This library aims to provide an extension to the standard library.  Specifically, it offers C programs many useful cross platform functions for timing, file IO functionality, checksums, hashes, string functionality, compression, reference counting, and bit manipulation.
 URL: @PACKAGE_URL@
 Version: @PACKAGE_VERSION@
 Requires:

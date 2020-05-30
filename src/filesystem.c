@@ -19,6 +19,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
+#include <stddef.h>
 #include <stdio.h>
 #include <stdbool.h>
 #include <string.h>
@@ -179,7 +180,8 @@ char* __path_r( const char* path, char dir_separator, char* buffer, size_t size 
 {
 	char* p     = (char*) path;
 	char *slash = NULL;
-	ssize_t length  = 0;
+	//ssize_t length  = 0;
+	size_t length  = 0;
 
 	while( *p )
 	{
@@ -223,7 +225,8 @@ char* __path( const char* path, char dir_separator ) /* allocates memory */
 {
 	char* p     = (char*) path;
 	char *slash = NULL;
-	ssize_t length  = 0;
+	//ssize_t length  = 0;
+	size_t length  = 0;
 
 	while( *p ) // find the last dir_separator
 	{
