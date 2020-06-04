@@ -81,19 +81,18 @@ AC_ARG_ENABLE([tests],
 AM_CONDITIONAL([ENABLE_TESTS], [test "$enable_tests" = "yes"])
 
 
-
-echo "------------------------------------------------------------------------------"
+AC_MSG_NOTICE([---------------------------------------------------------------------])
 if [test -z "$CFLAGS"]; then
-	echo "  CFLAGS: Not set"
+	AC_MSG_NOTICE([ CFLAGS: Not set])
 else
-	echo "  CFLAGS: $CFLAGS"
+	AC_MSG_NOTICE([ CFLAGS: ${CFLAGS}])
 fi
 if [test -z "$LDFLAGS"]; then
-	echo " LDFLAGS: Not set"
+	AC_MSG_NOTICE([LDFLAGS: Not set])
 else
-	echo " LDFLAGS: $LDFLAGS"
+	AC_MSG_NOTICE([LDFLAGS: ${LDFLAGS}])
 fi
-echo "------------------------------------------------------------------------------"
+AC_MSG_NOTICE([---------------------------------------------------------------------])
 
 AC_CONFIG_FILES([
 	Makefile

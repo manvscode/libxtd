@@ -19,8 +19,8 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-#ifndef _REFOBJ_H_
-#define _REFOBJ_H_
+#ifndef _XTD_REFOBJ_H_
+#define _XTD_REFOBJ_H_
 #include <stdlib.h>
 
 #ifdef __cplusplus
@@ -45,4 +45,4 @@ namespace xtd {
 	using ::refobj_release;
 } /* namespace */
 #endif
-#endif /* _REFOBJ_H_ */
+#endif /* _XTD_REFOBJ_H_ */

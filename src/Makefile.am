@@ -3,6 +3,7 @@
 # Add new files in alphabetical order. Thanks.
 xtd_sources = \
 			  checksums.c \
+			  cmdopt.c \
 			  console.c \
 			  encoding-base64.c \
 			  encoding-huffman.c \
@@ -28,6 +29,7 @@ endif
 
 xtd_headers = \
 			  xtd/checksums.h \
+			  xtd/cmdopt.h \
 			  xtd/console.h \
 			  xtd/encoding.h \
 			  xtd/endian.h \

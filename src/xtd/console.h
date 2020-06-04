@@ -19,8 +19,8 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-#ifndef _CONSOLE_H_
-#define _CONSOLE_H_
+#ifndef _XTD_CONSOLE_H_
+#define _XTD_CONSOLE_H_
 
 #if (defined(__STDC_VERSION__) && (__STDC_VERSION__ >= 199901L)) || (defined(_MSC_VER) && _MSC_VER >= 0)
 # include <stdbool.h>
@@ -209,5 +209,5 @@ namespace xtd {
     using ::console_command_prompt_loop;
 } /* namespace */
 #endif
-#endif /* _CONSOLE_H_ */
+#endif /* _XTD_CONSOLE_H_ */
 

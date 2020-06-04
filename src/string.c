@@ -289,7 +289,7 @@ char* string_tokenize_r( char* str, const char* delims, char** saveptr )
 
 	if( (p = strpbrk(*saveptr, delims)) != NULL )
 	{
-		*p  = 0;
+		*p  = '\0';
 		ret = *saveptr;
 		*saveptr = ++p;
 
