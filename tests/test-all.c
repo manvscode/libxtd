@@ -42,6 +42,24 @@ static const test_case_t* checksums_test_cases()
 	return CHECKSUMS_TEST_CASES;
 }
 // ------------------------------------------------------------------
+extern const char* CMDOPT_TEST_DESCRIPTION;
+extern const size_t CMDOPT_TEST_COUNT;
+extern const test_case_t CMDOPT_TEST_CASES[];
+
+static size_t cmdopt_test_case_count()
+{
+	return CMDOPT_TEST_COUNT;
+}
+
+static const char* cmdopt_test_description()
+{
+	return CMDOPT_TEST_DESCRIPTION;
+}
+static const test_case_t* cmdopt_test_cases()
+{
+	return CMDOPT_TEST_CASES;
+}
+// ------------------------------------------------------------------
 extern const char* ENCODING_TEST_DESCRIPTION;
 extern const size_t ENCODING_TEST_COUNT;
 extern const test_case_t ENCODING_TEST_CASES[];
@@ -207,6 +225,7 @@ static const test_case_t* time_test_cases()
 
 const test_suite_t suites[] = {
 	{ checksums_test_description, checksums_test_case_count, checksums_test_cases },
+	{ cmdopt_test_description, cmdopt_test_case_count, cmdopt_test_cases },
 	{ encoding_test_description, encoding_test_case_count, encoding_test_cases },
 	{ encryption_test_description, encryption_test_case_count, encryption_test_cases },
 	{ endian_test_description, endian_test_case_count, endian_test_cases },

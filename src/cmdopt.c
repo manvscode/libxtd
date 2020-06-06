@@ -22,47 +22,87 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
+#include <math.h>
+#include <assert.h>
 #include "xtd/cmdopt.h"
 
+struct cmd_opt_ctx {
+	int argc;
+	const char** argv;
+	int opt_args_count;
+	const char** opt_args;
+};
+
+int cmd_opt_argc( const cmd_opt_ctx_t* ctx )
+{
+	return ctx->argc;
+}
+
+const char** cmd_opt_argv( const cmd_opt_ctx_t* ctx )
+{
+	return ctx->argv;
+}
+
+size_t cmd_opt_args_count( const cmd_opt_ctx_t* ctx )
+{
+	return ctx->opt_args_count;
+}
+
+const char** cmd_opt_args( const cmd_opt_ctx_t* ctx )
+{
+	return ctx->opt_args;
+}
 
 cmd_opt_result_t cmd_opt_process(
 	int argc, char* argv[],
 	const cmd_opt_t* options, size_t option_count,
-	cmd_opt_error_t on_error, void* user_data )
+	cmd_opt_error_t on_error, cmd_opt_handler_t on_unexpected,
+	void* user_data )
 {
+	assert( argv && "Command line arguments cannot be null." );
+	assert( options && "Options cannot be null." );
 	cmd_opt_result_t result = CMD_OPT_SUCCESS;
 
 	if( argc <= 1 )
 	{
 		result = CMD_OPT_ERR_NO_OPTIONS;
-		on_error( user_data, result, NULL );
+		if( on_error ) on_error( result, NULL, user_data );
 		goto done;
 	}
 
 	for( int arg = 1; arg < argc; arg++ )
 	{
-		const cmd_opt_t* option = cmd_opt_find( options, option_count, argv[ arg ] );
 		bool is_processed = false;
+
+		// Look for an explicit option.
+		const cmd_opt_t* option = cmd_opt_find( options, option_count, argv[ arg ] );
 
 		if( option )
 		{
-			// Does this option expect arguments
+			// Does this option expect arguments?
 			if( option->opt_arg_count > 0 )
 			{
 				if( (arg + option->opt_arg_count) < argc )
 				{
+					cmd_opt_ctx_t ctx = (cmd_opt_ctx_t) {
+						.argc = argc,
+						.argv = (const char**) argv,
+						.opt_args_count = option->opt_arg_count,
+						.opt_args = (const char**) &argv[ arg + 1 ],
+					};
+
 					// has the arguments
-					if( !option->callback( user_data, (const char**) &argv[arg + 1], option->opt_arg_count ) )
+					if( !option->callback( &ctx, user_data ) )
 					{
 						result = CMD_OPT_ERR_ABORTED;
-						on_error( user_data, result, argv[arg] );
+						if( on_error ) on_error( result, argv[arg], user_data );
 						goto done;
 					}
 				}
 				else
 				{
 					result = CMD_OPT_ERR_INVALID_ARG_COUNT;
-					on_error( user_data, result, argv[arg] );
+					if( on_error ) on_error( result, argv[arg], user_data );
 					goto done;
 				}
 
@@ -70,12 +110,39 @@ cmd_opt_result_t cmd_opt_process(
 			}
 			else // This is a boolean option
 			{
-				if( !option->callback( user_data, NULL, 0 ) )
+				cmd_opt_ctx_t ctx = (cmd_opt_ctx_t) {
+					.argc = argc,
+					.argv = (const char**) argv,
+					.opt_args_count = 0,
+					.opt_args = NULL,
+				};
+
+				if( !option->callback( &ctx, user_data ) )
 				{
 					result = CMD_OPT_ERR_ABORTED;
-					on_error( user_data, result, argv[arg] );
+					if( on_error ) on_error( result, argv[arg], user_data );
 					goto done;
 				}
+			}
+
+			is_processed = true;
+		}
+
+		if( !is_processed && on_unexpected )
+		{
+			cmd_opt_ctx_t ctx = (cmd_opt_ctx_t) {
+				.argc = argc,
+				.argv = (const char**) argv,
+				.opt_args_count = 1,
+				.opt_args = (const char**) &argv[ arg ],
+			};
+
+			// has the arguments
+			if( !on_unexpected( &ctx, user_data ) )
+			{
+				result = CMD_OPT_ERR_ABORTED;
+				if( on_error ) on_error( result, argv[arg], user_data );
+				goto done;
 			}
 
 			is_processed = true;
@@ -84,7 +151,7 @@ cmd_opt_result_t cmd_opt_process(
 		if( !is_processed )
 		{
 			result = CMD_OPT_ERR_UNEXPECTED_OPTION;
-			on_error( user_data, result, argv[arg] );
+			if( on_error ) on_error( result, argv[arg], user_data );
 			goto done;
 		}
 	}
@@ -93,25 +160,41 @@ done:
 	return result;
 }
 
-void cmd_opt_help( const cmd_opt_t* options, size_t option_count )
+void cmd_opt_print_help( const cmd_opt_t* options, size_t option_count )
 {
+	assert( options && "Options cannot be null." );
 	for( int o = 0; o < option_count; o++ )
 	{
 		const cmd_opt_t* opt = &options[ o ];
-		printf( "  %3.3s, %-20.20s   %-48.48s\n", opt->opt_short, opt->opt_long, opt->opt_description );
+		if( opt->opt_short && opt->opt_long && opt->opt_description )
+		{
+			printf( "  %3.3s, %-20.20s   %-48.48s\n", opt->opt_short, opt->opt_long, opt->opt_description );
+		}
 	}
 }
 
 const cmd_opt_t* cmd_opt_find( const cmd_opt_t* options, size_t option_count, const char* argv )
 {
+	assert( options && "Options cannot be null." );
 	const cmd_opt_t* result = NULL;
 
 	for( int o = 0; !result && o < option_count; o++ )
 	{
 		const cmd_opt_t* option = &options[ o ];
-		if( strcmp( option->opt_short, argv ) == 0 || strcmp( option->opt_long, argv ) == 0 )
+		if( argv ) // explict option
 		{
-			result = option;
+			if( (option->opt_short && strcmp( option->opt_short, argv ) == 0) ||
+				(option->opt_long && strcmp( option->opt_long, argv ) == 0) )
+			{
+				result = option;
+			}
+		}
+		else // wildcard option
+		{
+			if( option->opt_short == NULL && option->opt_long == NULL )
+			{
+				result = option;
+			}
 		}
 	}
 
@@ -119,7 +202,7 @@ const cmd_opt_t* cmd_opt_find( const cmd_opt_t* options, size_t option_count, co
 }
 
 
-bool cmd_opt_nop( void* user_data, const char* arguments[], size_t count )
+bool cmd_opt_nop( const char* arguments[], size_t count, void* user_data )
 {
 	return true;
 }

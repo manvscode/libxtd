@@ -13,6 +13,7 @@ $(top_builddir)/bin/test-huffman \
 $(top_builddir)/bin/test-scrambling \
 \
 $(top_builddir)/bin/test-checksums \
+$(top_builddir)/bin/test-cmdopt \
 $(top_builddir)/bin/test-encoding \
 $(top_builddir)/bin/test-encryption \
 $(top_builddir)/bin/test-endian \
@@ -26,6 +27,7 @@ $(top_builddir)/bin/test-time
 __top_builddir__bin_test_all_LDFLAGS         = -lm $(top_builddir)/lib/libxtd.la
 __top_builddir__bin_test_all_SOURCES         = test-all.c \
 											   test-checksums.c \
+											   test-cmdopt.c \
 											   test-encoding.c \
 											   test-encryption.c \
 											   test-endian.c \
@@ -57,6 +59,9 @@ __top_builddir__bin_test_scrambling_SOURCES  = test-scrambling.c
 __top_builddir__bin_test_checksums_CFLAGS       = -DTEST_CHECKSUMS
 __top_builddir__bin_test_checksums_LDFLAGS      = -lm $(top_builddir)/lib/libxtd.la
 __top_builddir__bin_test_checksums_SOURCES      = test-checksums.c
+__top_builddir__bin_test_cmdopt_CFLAGS          = -DTEST_CMDOPT
+__top_builddir__bin_test_cmdopt_LDFLAGS         = -static -lm $(top_builddir)/lib/libxtd.la
+__top_builddir__bin_test_cmdopt_SOURCES         = test-cmdopt.c
 __top_builddir__bin_test_encoding_CFLAGS        = -DTEST_ENCODING
 __top_builddir__bin_test_encoding_LDFLAGS       = -lm $(top_builddir)/lib/libxtd.la
 __top_builddir__bin_test_encoding_SOURCES       = test-encoding.c

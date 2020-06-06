@@ -32,6 +32,7 @@ Building requires Homebrew and Autotools.
 
 ## Features
 * Reference Counted Pointers
+* Command-line argument acquisition.
 * Cross-platform file IO.
 * Memory size string formatting.
 * Checksums and hashes (Java Hash, 8-bit XOR, Adler32, Fletcher16, and Fletcher32).

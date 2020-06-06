@@ -21,8 +21,14 @@
  */
 #ifndef _TEST_H_
 #define _TEST_H_
+#if (defined(__STDC_VERSION__) && (__STDC_VERSION__ >= 199901L)) || (defined(_MSC_VER) && _MSC_VER >= 0)
+# include <stdbool.h>
+# include <stdint.h>
+#else
+# error "Need a C99 compiler."
+#endif
+#include <stdlib.h>
 #include <stdbool.h>
-
 
 /*
  * This is a generic function that can be used for testing equality between
@@ -47,7 +53,6 @@
 	                char: test_assert_char_equals \
 	)(ctx, expected, actual, __VA_ARGS__)
 
-
 /*
  * This function will loop and test a boolean flag until it becomes true.
  */
@@ -58,13 +63,11 @@ void test_wait_for_true(const bool* flag, int timeout);
  */
 void test_wait_for_int(const int* n, int value, int timeout);
 
-
 /*
  * This is the internal context passed to each test case.
  */
 struct test_ctx;
 typedef struct test_ctx test_ctx_t;
-
 
 /*
  * This is the function signature that all unit tests should follow.
