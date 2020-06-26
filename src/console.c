@@ -26,6 +26,8 @@
 #include <wchar.h>
 #include <ctype.h>
 #include <wctype.h>
+#include <sys/ioctl.h>
+#include <unistd.h>
 #include "xtd/string.h"
 #include "xtd/time.h"
 #include "xtd/console.h"
@@ -197,6 +199,20 @@ void wconsole_reset( FILE* stream )
 void console_end( FILE* stream )
 {
 	fprintf( stream, "\033[m" );
+}
+
+bool console_dimensions( FILE* stream, int* rows, int* cols )
+{
+	struct winsize w;
+	int fd = fileno(stream);
+	if( fd >= 0 && !ioctl(fd, TIOCGWINSZ, &w) )
+	{
+		*rows = w.ws_row;
+		*cols = w.ws_col;
+		return true;
+	}
+
+	return false;
 }
 
 void wconsole_end( FILE* stream )

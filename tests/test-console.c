@@ -180,6 +180,33 @@ bool process_cmd( const char* command, void* data )
 	{
 		console_clear_screen_all( stdout );
 	}
+	else if( strcmp(command, "diagonal") == 0 )
+	{
+		console_clear_screen_all( stdout );
+
+		int rows = 0;
+		int cols = 0;
+		console_dimensions(stdout, &rows, &cols);
+
+		for( int x = 0; x < cols; x += 1)
+		{
+			for( int y = 0; y < rows; y += 1)
+			{
+				console_goto( stdout, x, y );
+				if( x == y )
+				{
+					console_bg_color_256( stdout, CONSOLE_COLOR256_BLUE );
+					fprintf( stdout, " " );
+				}
+				else
+				{
+					console_bg_color_256( stdout, CONSOLE_COLOR256_GREY_23 );
+					fprintf( stdout, " " );
+				}
+				console_reset( stdout );
+			}
+		}
+	}
 	else
 	{
 		console_fg_color_8( stdout, CONSOLE_COLOR8_RED );
