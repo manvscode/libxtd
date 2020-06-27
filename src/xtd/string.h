@@ -23,6 +23,7 @@
 #define _XTD_STRING_H_
 #include <stdlib.h>
 #include <string.h>
+#include <stdbool.h>
 
 #ifdef __cplusplus
 extern "C" {
@@ -49,6 +50,7 @@ char*       string_to_lower    ( char* s );
 char*       string_to_upper    ( char* s );
 void        string_random      ( string_random_type_t type, char* string, size_t length );
 const char* string_ordinal     ( long number );
+bool        string_starts_with ( const char* s, const char* prefix );
 char*       string_replace     ( const char* orig, const char* rep, const char* with ); /* result must be freed */
 char*       string_substring   ( const char* str, size_t start, size_t end ); /* result must be freed */
 char*       string_tokenize_r  ( char* str, const char* delims, char** saveptr );

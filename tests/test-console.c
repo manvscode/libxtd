@@ -3,6 +3,7 @@
 #include <string.h>
 #include <unistd.h>
 #include "xtd/time.h"
+#include "xtd/string.h"
 #include "xtd/console.h"
 
 
@@ -27,6 +28,7 @@ static const char* text[] = {
 
 int main()
 {
+	signal( SIGWINCH, on_window_changed );
 #if 0
 	console_fg_color_8( stdout, CONSOLE_COLOR8_YELLOW );
 	printf( "Type 'help' to see commands.\n" );
@@ -61,6 +63,8 @@ bool process_cmd( const char* command, void* data )
 		printf( "  %10s   %-50s\n", "fader2", "Demo text fader." );
 		printf( "  %10s   %-50s\n", "fader3", "Demo text fader." );
 		printf( "  %10s   %-50s\n", "clear", "Clear the screen." );
+		printf( "  %10s   %-50s\n", "size", "Get the window size." );
+		printf( "  %10s   %-50s\n", "set-size", "Set the window size." );
 		printf( "  %10s   %-50s\n", "quit", "Quit the app." );
 	}
 	else if( strcmp(command, "reset") == 0 )
@@ -186,7 +190,7 @@ bool process_cmd( const char* command, void* data )
 
 		int rows = 0;
 		int cols = 0;
-		console_dimensions(stdout, &rows, &cols);
+		console_size(stdout, &rows, &cols);
 
 		for( int x = 0; x < cols; x += 1)
 		{
@@ -205,6 +209,23 @@ bool process_cmd( const char* command, void* data )
 				}
 				console_reset( stdout );
 			}
+		}
+	}
+	else if( strcmp(command, "size") == 0 )
+	{
+		int rows = 0;
+		int cols = 0;
+		console_size( stdout, &rows, &cols );
+		printf("%dx%d\n", cols, rows );
+	}
+	else if( string_starts_with(command, "set-size") )
+	{
+		int rows = 0;
+		int cols = 0;
+		if( sscanf( command, "set-size %d %d", &rows, &cols ) == 2 )
+		{
+			console_set_size( stdout, rows, cols );
+			printf("Set size to %dx%d\n", cols, rows );
 		}
 	}
 	else

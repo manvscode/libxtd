@@ -201,7 +201,7 @@ void console_end( FILE* stream )
 	fprintf( stream, "\033[m" );
 }
 
-bool console_dimensions( FILE* stream, int* rows, int* cols )
+bool console_size( FILE* stream, int* rows, int* cols )
 {
 	struct winsize w;
 	int fd = fileno(stream);
@@ -213,6 +213,16 @@ bool console_dimensions( FILE* stream, int* rows, int* cols )
 	}
 
 	return false;
+}
+
+bool console_set_size( FILE* stream, int rows, int cols )
+{
+	struct winsize w = (struct winsize) {
+		.ws_row = rows,
+		.ws_col = cols,
+	};
+	int fd = fileno(stream);
+	return fd >= 0 && !ioctl(fd, TIOCSWINSZ, &w);
 }
 
 void wconsole_end( FILE* stream )

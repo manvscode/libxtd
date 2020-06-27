@@ -199,6 +199,26 @@ const char* string_ordinal( long number )
 	}
 }
 
+bool string_starts_with( const char* str, const char* prefix )
+{
+	bool result = true;
+	char* s = (char*) str;
+	char* p = (char*) prefix;
+
+	assert( s && "String is null" );
+	assert( p && "Prefix is null" );
+
+	while( *p && result )
+	{
+		if( *s++ != *p++ )
+		{
+			result = false;
+		}
+	}
+
+	return result;
+}
+
 char* string_replace( const char* orig, const char* rep, const char* with )
 {
     char* result; // the return string
