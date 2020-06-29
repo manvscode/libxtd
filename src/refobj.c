@@ -1,4 +1,7 @@
-#ifdef __linux__
+#if defined(_WIN32) || defined(_WIN64)
+#include <BaseTsd.h>
+typedef SSIZE_T ssize_t;
+#else
 #include <sys/types.h>
 #endif
 #include <stdlib.h>

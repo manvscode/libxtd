@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <unistd.h>
+//#include <signal.h>
 #include "xtd/time.h"
 #include "xtd/string.h"
 #include "xtd/console.h"
@@ -28,7 +29,7 @@ static const char* text[] = {
 
 int main()
 {
-	signal( SIGWINCH, on_window_changed );
+	//signal( SIGWINCH, on_window_changed );
 #if 0
 	console_fg_color_8( stdout, CONSOLE_COLOR8_YELLOW );
 	printf( "Type 'help' to see commands.\n" );
