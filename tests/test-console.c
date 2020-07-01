@@ -65,7 +65,9 @@ bool process_cmd( const char* command, void* data )
 		printf( "  %10s   %-50s\n", "fader3", "Demo text fader." );
 		printf( "  %10s   %-50s\n", "clear", "Clear the screen." );
 		printf( "  %10s   %-50s\n", "size", "Get the window size." );
+		printf( "  %10s   %-50s\n", "diagonal", "Test drawing." );
 		printf( "  %10s   %-50s\n", "set-size", "Set the window size." );
+		printf( "  %10s   %-50s\n", "cursor-pos", "Get the cursor position" );
 		printf( "  %10s   %-50s\n", "quit", "Quit the app." );
 	}
 	else if( strcmp(command, "reset") == 0 )
@@ -91,8 +93,8 @@ bool process_cmd( const char* command, void* data )
 	{
 		for( int i = 0; i < 256; i++ )
 		{
-			console_fg_color_256( stdout, 15 );
-			console_bg_color_256( stdout, i );
+			console_fg_color_8( stdout, 15 );
+			console_bg_color_8( stdout, i );
 			printf( " %02x ", i );
 
 			if( (i+1) % 16 == 0 )
@@ -106,7 +108,7 @@ bool process_cmd( const char* command, void* data )
 	{
 		for( int i = 0; i < 256; i++ )
 		{
-			console_fg_color_256( stdout, i );
+			console_fg_color_8( stdout, i );
 			printf( " %02x ", i );
 
 			if( (i+1) % 16 == 0 )
@@ -122,7 +124,7 @@ bool process_cmd( const char* command, void* data )
 	}
 	else if( strcmp(command, "lm") == 0 )
 	{
-		console_fg_color_256( stdout, CONSOLE_COLOR8_YELLOW );
+		console_fg_color_8( stdout, CONSOLE_COLOR8_YELLOW );
 		printf(" TEST -|>  ");
 		console_reset(stdout);
 		console_progress_indicator( stdout, "Loading magic...", PROGRESS_INDICATOR_STYLE_FADE, progress_task, NULL );
@@ -200,12 +202,12 @@ bool process_cmd( const char* command, void* data )
 				console_goto( stdout, x, y );
 				if( x == y )
 				{
-					console_bg_color_256( stdout, CONSOLE_COLOR256_BLUE );
+					console_bg_color_8( stdout, CONSOLE_COLOR8_BLUE );
 					fprintf( stdout, " " );
 				}
 				else
 				{
-					console_bg_color_256( stdout, CONSOLE_COLOR256_GREY_23 );
+					console_bg_color_8( stdout, CONSOLE_COLOR8_GREY_23 );
 					fprintf( stdout, " " );
 				}
 				console_reset( stdout );
@@ -229,9 +231,32 @@ bool process_cmd( const char* command, void* data )
 			printf("Set size to %dx%d\n", cols, rows );
 		}
 	}
+	else if( strcmp(command, "cursor-pos") == 0 )
+	{
+		int x = 0;
+		int y = 0;
+		console_get_cursor_position( stdout, &x, &y );
+		printf("Cursor at %dx%d\n", x, y );
+	}
+	else if( strcmp(command, "test-text") == 0 )
+	{
+		fprintf( stdout, "\033[52m" );
+		console_fg_color_24( stdout, 200, 100, 200 );
+		printf( "This is " );
+		console_strikethrough_begin( stdout );
+		printf( "good" );
+		console_strikethrough_end( stdout );
+		printf( " " );
+		console_bold_begin( stdout );
+		console_underline_begin( stdout );
+		printf( "great.\n" );
+		console_underline_end( stdout );
+		console_bold_end( stdout );
+		console_reset_fg_color( stdout );
+	}
 	else
 	{
-		console_fg_color_8( stdout, CONSOLE_COLOR8_RED );
+		console_fg_color_8( stdout, CONSOLE_COLOR8_BRIGHT_RED );
 		printf( "ERROR:" );
 		console_reset( stdout );
 		printf( " Unrecognized command '%s'\n", command );

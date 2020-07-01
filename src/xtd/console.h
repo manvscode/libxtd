@@ -64,36 +64,59 @@ typedef enum console_text_fader_style {
 #define CONSOLE_CLEAR_CURSOR_TO_START   1
 #define CONSOLE_CLEAR_ALL               2
 
-void console_set_document          ( FILE* stream, const char* document );
-void console_set_working_directory ( FILE* stream, const char* path );
+#define CONSOLE_FONT_0     10
+#define CONSOLE_FONT_1     11
+#define CONSOLE_FONT_2     12
+#define CONSOLE_FONT_3     13
+
+void console_set_document          ( FILE* stream, const char* document ); /* macos x only */
+void console_set_working_directory ( FILE* stream, const char* path ); /* macos x only */
+
+void console_color_4               ( FILE* stream, int color );
 void console_fg_color_8            ( FILE* stream, int color );
-void console_fg_bright_color_8     ( FILE* stream, int color );
-void console_fg_color_256          ( FILE* stream, int color );
-void console_bg_color_256          ( FILE* stream, int color );
-void console_bold                  ( FILE* stream );
-void console_underline             ( FILE* stream );
-void console_reversed              ( FILE* stream );
+void console_bg_color_8            ( FILE* stream, int color );
+void console_fg_color_24           ( FILE* stream, unsigned char r, unsigned char g, unsigned char b );
+void console_bg_color_24           ( FILE* stream, unsigned char r, unsigned char g, unsigned char b );
+void console_reset_fg_color        ( FILE* stream );
+void console_reset_bg_color        ( FILE* stream );
+void console_bold_begin            ( FILE* stream );
+void console_bold_end              ( FILE* stream );
+void console_italic_begin          ( FILE* stream );  /* Not widely supported */
+void console_italic_end            ( FILE* stream );  /* Not widely supported */
+void console_underline_begin       ( FILE* stream );
+void console_underline_end         ( FILE* stream );
+void console_strikethrough_begin   ( FILE* stream );
+void console_strikethrough_end     ( FILE* stream );
+void console_reversed_begin        ( FILE* stream );
+void console_reversed_end          ( FILE* stream );
+void console_conceal_begin         ( FILE* stream );
+void console_conceal_end           ( FILE* stream );
+void console_blink_begin           ( FILE* stream );
+void console_blink_end             ( FILE* stream );
+void console_set_font              ( FILE* stream, int f ); /* Not widely supported */
+void console_reset                 ( FILE* stream );
 void console_hide_cursor           ( FILE* stream );
 void console_show_cursor           ( FILE* stream );
-void console_reset                 ( FILE* stream );
-void console_end                   ( FILE* stream );
-bool console_size                  ( FILE* stream, int* rows, int* cols );
-bool console_set_size              ( FILE* stream, int rows, int cols );
 void console_save_position         ( FILE* stream );
 void console_restore_position      ( FILE* stream );
 void console_move_up               ( FILE* stream, int n );
 void console_move_down             ( FILE* stream, int n );
 void console_move_left             ( FILE* stream, int n );
 void console_move_right            ( FILE* stream, int n );
-void console_bar_graph             ( FILE* stream, int bar_width, char bar_symbol, const int* colors, size_t color_count, int bkg_color, int percent );
-void console_progress_indicator_ex ( FILE* stream, const char* task, int progress_bar_width, char bar_symbol, const int* colors, size_t color_count, int bkg_color, console_progress_fxn_t fxn, void* data );
-void console_progress_indicator    ( FILE* stream, const char* task, console_progress_indictor_style_t style, console_progress_fxn_t fxn, void* data );
+void console_page_up               ( FILE* stream, int n );
+void console_page_down             ( FILE* stream, int n );
 void console_next_line             ( FILE* stream, int n );
 void console_prev_line             ( FILE* stream, int n );
 void console_set_column            ( FILE* stream, int x );
 void console_goto                  ( FILE* stream, int x, int y );
+bool console_get_cursor_position   ( FILE* stream, int* x, int* y );
 void console_clear_screen          ( FILE* stream, int type );
 void console_clear_line            ( FILE* stream, int type );
+bool console_size                  ( FILE* stream, int* rows, int* cols );
+bool console_set_size              ( FILE* stream, int rows, int cols );
+void console_bar_graph             ( FILE* stream, int bar_width, char bar_symbol, const int* colors, size_t color_count, int bkg_color, int percent );
+void console_progress_indicator_ex ( FILE* stream, const char* task, int progress_bar_width, char bar_symbol, const int* colors, size_t color_count, int bkg_color, console_progress_fxn_t fxn, void* data );
+void console_progress_indicator    ( FILE* stream, const char* task, console_progress_indictor_style_t style, console_progress_fxn_t fxn, void* data );
 void console_text_fader_ex         ( FILE* stream, const char* text, const int* colors, size_t color_count, int millis );
 void console_text_fader            ( FILE* stream, console_text_fader_style_t style, const char* text );
 void console_text_faderf           ( FILE* stream, console_text_fader_style_t style, const char* format, ... );
@@ -103,17 +126,18 @@ bool console_command_prompt               ( char* command_buf, size_t command_bu
 noreturn void console_command_prompt_loop ( const char* prompt, int prompt_color, console_handle_command_fxn_t on_cmd, void* data );
 
 
+void wconsole_fg_color_4        ( FILE* stream, int color );
 void wconsole_fg_color_8        ( FILE* stream, int color );
-void wconsole_fg_bright_color_8 ( FILE* stream, int color );
-void wconsole_fg_color_256      ( FILE* stream, int color );
-void wconsole_bg_color_256      ( FILE* stream, int color );
-void wconsole_bold              ( FILE* stream );
-void wconsole_underline         ( FILE* stream );
-void wconsole_reversed          ( FILE* stream );
+void wconsole_bg_color_8        ( FILE* stream, int color );
+void wconsole_bold_begin        ( FILE* stream );
+void wconsole_bold_end          ( FILE* stream );
+void wconsole_underline_begin   ( FILE* stream );
+void wconsole_underline_end     ( FILE* stream );
+void wconsole_reversed_begin    ( FILE* stream );
+void wconsole_reversed_end      ( FILE* stream );
 void wconsole_hide_cursor       ( FILE* stream );
 void wconsole_show_cursor       ( FILE* stream );
 void wconsole_reset             ( FILE* stream );
-void wconsole_end               ( FILE* stream );
 
 
 #define console_clear_screen_to_end(stream)    console_clear_screen( stream, CONSOLE_CLEAR_CURSOR_TO_END ) // clears from cursor to end of screen
@@ -124,65 +148,93 @@ void wconsole_end               ( FILE* stream );
 #define console_clear_line_all(stream)         console_clear_line( stream, CONSOLE_CLEAR_ALL ) // clears whole line
 
 
-#define CONSOLE_COLOR8_BLACK             30
-#define CONSOLE_COLOR8_RED               31
-#define CONSOLE_COLOR8_GREEN             32
-#define CONSOLE_COLOR8_YELLOW            33
-#define CONSOLE_COLOR8_BLUE              34
-#define CONSOLE_COLOR8_MAGENTA           35
-#define CONSOLE_COLOR8_CYAN              36
-#define CONSOLE_COLOR8_WHITE             37
+#define CONSOLE_FG_COLOR4_BLACK             30
+#define CONSOLE_FG_COLOR4_RED               31
+#define CONSOLE_FG_COLOR4_GREEN             32
+#define CONSOLE_FG_COLOR4_YELLOW            33
+#define CONSOLE_FG_COLOR4_BLUE              34
+#define CONSOLE_FG_COLOR4_MAGENTA           35
+#define CONSOLE_FG_COLOR4_CYAN              36
+#define CONSOLE_FG_COLOR4_WHITE             37
+#define CONSOLE_FG_COLOR4_BRIGHT_BLACK      90
+#define CONSOLE_FG_COLOR4_BRIGHT_RED        91
+#define CONSOLE_FG_COLOR4_BRIGHT_GREEN      92
+#define CONSOLE_FG_COLOR4_BRIGHT_YELLOW     93
+#define CONSOLE_FG_COLOR4_BRIGHT_BLUE       94
+#define CONSOLE_FG_COLOR4_BRIGHT_MAGENTA    95
+#define CONSOLE_FG_COLOR4_BRIGHT_CYAN       96
+#define CONSOLE_FG_COLOR4_BRIGHT_WHITE      97
 
-#define CONSOLE_COLOR256_BLACK           0x00
-#define CONSOLE_COLOR256_RED             0x01
-#define CONSOLE_COLOR256_GREEN           0x02
-#define CONSOLE_COLOR256_YELLOW          0x03
-#define CONSOLE_COLOR256_BLUE            0x04
-#define CONSOLE_COLOR256_MAGENTA         0x05
-#define CONSOLE_COLOR256_CYAN            0x06
-#define CONSOLE_COLOR256_WHITE           0x07
-#define CONSOLE_COLOR256_BRIGHT_BLACK    0x08
-#define CONSOLE_COLOR256_BRIGHT_RED      0x09
-#define CONSOLE_COLOR256_BRIGHT_GREEN    0x0a
-#define CONSOLE_COLOR256_BRIGHT_YELLOW   0x0b
-#define CONSOLE_COLOR256_BRIGHT_BLUE     0x0c
-#define CONSOLE_COLOR256_BRIGHT_MAGENTA  0x0d
-#define CONSOLE_COLOR256_BRIGHT_CYAN     0x0e
-#define CONSOLE_COLOR256_BRIGHT_WHITE    0x0f
-#define CONSOLE_COLOR256_GREY_00         0xe8
-#define CONSOLE_COLOR256_GREY_01         0xe9
-#define CONSOLE_COLOR256_GREY_02         0xea
-#define CONSOLE_COLOR256_GREY_03         0xeb
-#define CONSOLE_COLOR256_GREY_04         0xec
-#define CONSOLE_COLOR256_GREY_05         0xed
-#define CONSOLE_COLOR256_GREY_06         0xee
-#define CONSOLE_COLOR256_GREY_07         0xef
-#define CONSOLE_COLOR256_GREY_08         0xf0
-#define CONSOLE_COLOR256_GREY_09         0xf1
-#define CONSOLE_COLOR256_GREY_10         0xf2
-#define CONSOLE_COLOR256_GREY_11         0xf3
-#define CONSOLE_COLOR256_GREY_12         0xf4
-#define CONSOLE_COLOR256_GREY_13         0xf5
-#define CONSOLE_COLOR256_GREY_14         0xf6
-#define CONSOLE_COLOR256_GREY_15         0xf7
-#define CONSOLE_COLOR256_GREY_16         0xf8
-#define CONSOLE_COLOR256_GREY_17         0xf9
-#define CONSOLE_COLOR256_GREY_18         0xfa
-#define CONSOLE_COLOR256_GREY_19         0xfb
-#define CONSOLE_COLOR256_GREY_20         0xfc
-#define CONSOLE_COLOR256_GREY_21         0xfd
-#define CONSOLE_COLOR256_GREY_22         0xfe
-#define CONSOLE_COLOR256_GREY_23         0xff
+#define CONSOLE_BG_COLOR4_BLACK             40
+#define CONSOLE_BG_COLOR4_RED               41
+#define CONSOLE_BG_COLOR4_GREEN             42
+#define CONSOLE_BG_COLOR4_YELLOW            43
+#define CONSOLE_BG_COLOR4_BLUE              44
+#define CONSOLE_BG_COLOR4_MAGENTA           45
+#define CONSOLE_BG_COLOR4_CYAN              46
+#define CONSOLE_BG_COLOR4_WHITE             47
+#define CONSOLE_BG_COLOR4_BRIGHT_BLACK      100
+#define CONSOLE_BG_COLOR4_BRIGHT_RED        101
+#define CONSOLE_BG_COLOR4_BRIGHT_GREEN      102
+#define CONSOLE_BG_COLOR4_BRIGHT_YELLOW     103
+#define CONSOLE_BG_COLOR4_BRIGHT_BLUE       104
+#define CONSOLE_BG_COLOR4_BRIGHT_MAGENTA    105
+#define CONSOLE_BG_COLOR4_BRIGHT_CYAN       106
+#define CONSOLE_BG_COLOR4_BRIGHT_WHITE      107
+
+#define CONSOLE_COLOR8_BLACK           0x00
+#define CONSOLE_COLOR8_RED             0x01
+#define CONSOLE_COLOR8_GREEN           0x02
+#define CONSOLE_COLOR8_YELLOW          0x03
+#define CONSOLE_COLOR8_BLUE            0x04
+#define CONSOLE_COLOR8_MAGENTA         0x05
+#define CONSOLE_COLOR8_CYAN            0x06
+#define CONSOLE_COLOR8_WHITE           0x07
+
+#define CONSOLE_COLOR8_BRIGHT_BLACK    0x08
+#define CONSOLE_COLOR8_BRIGHT_RED      0x09
+#define CONSOLE_COLOR8_BRIGHT_GREEN    0x0a
+#define CONSOLE_COLOR8_BRIGHT_YELLOW   0x0b
+#define CONSOLE_COLOR8_BRIGHT_BLUE     0x0c
+#define CONSOLE_COLOR8_BRIGHT_MAGENTA  0x0d
+#define CONSOLE_COLOR8_BRIGHT_CYAN     0x0e
+#define CONSOLE_COLOR8_BRIGHT_WHITE    0x0f
+
+#define CONSOLE_COLOR8_RGB(r, g, b)    (16 + 36 * (r) + 6 * (g) + (b)) /* r in [0, 5], g in [0, 5], b in [0, 5] */
+
+#define CONSOLE_COLOR8_GREY_00         0xe8  /* darker */
+#define CONSOLE_COLOR8_GREY_01         0xe9
+#define CONSOLE_COLOR8_GREY_02         0xea
+#define CONSOLE_COLOR8_GREY_03         0xeb
+#define CONSOLE_COLOR8_GREY_04         0xec
+#define CONSOLE_COLOR8_GREY_05         0xed
+#define CONSOLE_COLOR8_GREY_06         0xee
+#define CONSOLE_COLOR8_GREY_07         0xef
+#define CONSOLE_COLOR8_GREY_08         0xf0
+#define CONSOLE_COLOR8_GREY_09         0xf1
+#define CONSOLE_COLOR8_GREY_10         0xf2
+#define CONSOLE_COLOR8_GREY_11         0xf3
+#define CONSOLE_COLOR8_GREY_12         0xf4
+#define CONSOLE_COLOR8_GREY_13         0xf5
+#define CONSOLE_COLOR8_GREY_14         0xf6
+#define CONSOLE_COLOR8_GREY_15         0xf7
+#define CONSOLE_COLOR8_GREY_16         0xf8
+#define CONSOLE_COLOR8_GREY_17         0xf9
+#define CONSOLE_COLOR8_GREY_18         0xfa
+#define CONSOLE_COLOR8_GREY_19         0xfb
+#define CONSOLE_COLOR8_GREY_20         0xfc
+#define CONSOLE_COLOR8_GREY_21         0xfd
+#define CONSOLE_COLOR8_GREY_22         0xfe
+#define CONSOLE_COLOR8_GREY_23         0xff /* lighter */
 
 
 
 #ifdef __cplusplus
 } /* extern "C" */
 namespace xtd {
+    using ::console_color_4;
     using ::console_fg_color_8;
-    using ::console_fg_bright_color_8;
-    using ::console_fg_color_256;
-    using ::console_bg_color_256;
+    using ::console_bg_color_8;
     using ::console_bold;
     using ::console_underline;
     using ::console_reversed;

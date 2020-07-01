@@ -96,74 +96,172 @@ void console_set_working_directory( FILE* stream, const char* path )
     fprintf( stream, "\033]7;%s\007", path );
 }
 
-void console_fg_color_8( FILE* stream, int color )
+void console_color_4( FILE* stream, int color )
 {
 	fprintf( stream, "\033[%dm", color );
 }
 
-void wconsole_fg_color_8( FILE* stream, int color )
+void wconsole_fg_color_4( FILE* stream, int color )
 {
 	fwprintf( stream, L"\033[%dm", color );
 }
 
-void console_fg_bright_color_8( FILE* stream, int color )
-{
-	fprintf( stream, "\033[%d;1m", color );
-}
+//void console_fg_bright_color_4( FILE* stream, int color )
+//{
+	//fprintf( stream, "\033[%d;1m", color );
+//}
 
-void wconsole_fg_bright_color_8( FILE* stream, int color )
-{
-	fwprintf( stream, L"\033[%d;1m", color );
-}
+//void wconsole_fg_bright_color_4( FILE* stream, int color )
+//{
+	//fwprintf( stream, L"\033[%d;1m", color );
+//}
 
-void console_fg_color_256( FILE* stream, int color )
+void console_fg_color_8( FILE* stream, int color )
 {
 	fprintf( stream, "\033[38;5;%dm", color );
 }
 
-void wconsole_fg_color_256( FILE* stream, int color )
+void wconsole_fg_color_8( FILE* stream, int color )
 {
 	fwprintf( stream, L"\033[38;5;%dm", color );
 }
 
-void console_bg_color_256( FILE* stream, int color )
+void console_bg_color_8( FILE* stream, int color )
 {
 	fprintf( stream, "\033[48;5;%dm", color );
 }
 
-void wconsole_bg_color_256( FILE* stream, int color )
+void wconsole_bg_color_8( FILE* stream, int color )
 {
 	fwprintf( stream, L"\033[48;5;%dm", color );
 }
 
-void console_bold( FILE* stream )
+void console_fg_color_24( FILE* stream, unsigned char r, unsigned char g, unsigned char b )
+{
+	fprintf( stream, "\033[38;2;%d;%d;%dm", (int) r, (int) g, (int) b ); // TODO
+}
+
+void console_bg_color_24( FILE* stream, unsigned char r, unsigned char g, unsigned char b )
+{
+	fprintf( stream, "\033[48;2;%d;%d;%dm", (int) r, (int) g, (int) b ); // TODO
+}
+
+void console_reset_fg_color( FILE* stream )
+{
+	fprintf( stream, "\033[39m" );
+}
+
+void console_reset_bg_color( FILE* stream )
+{
+	fprintf( stream, "\033[49m" );
+}
+
+
+void console_bold_begin( FILE* stream )
 {
 	fprintf( stream, "\033[1m" );
 }
 
-void wconsole_bold( FILE* stream )
+void console_bold_end( FILE* stream )
+{
+	fprintf( stream, "\033[21m" );
+}
+
+void console_italic_begin( FILE* stream )
+{
+	fprintf( stream, "\033[3m" );
+}
+
+void console_italic_end( FILE* stream )
+{
+	fprintf( stream, "\033[23m" );
+}
+
+void wconsole_bold_begin( FILE* stream )
 {
 	fwprintf( stream, L"\033[1m" );
 }
 
-void console_underline( FILE* stream )
+void wconsole_bold_end( FILE* stream )
+{
+	fwprintf( stream, L"\033[21m" );
+}
+
+void console_underline_begin( FILE* stream )
 {
 	fprintf( stream, "\033[4m" );
 }
 
-void wconsole_underline( FILE* stream )
+void console_underline_end( FILE* stream )
+{
+	fprintf( stream, "\033[24m" );
+}
+
+void console_strikethrough_begin( FILE* stream )
+{
+	fprintf( stream, "\033[9m" );
+}
+
+void console_strikethrough_end( FILE* stream )
+{
+	fprintf( stream, "\033[29m" );
+}
+
+void wconsole_underline_begin( FILE* stream )
 {
 	fwprintf( stream, L"\033[4m" );
 }
 
-void console_reversed( FILE* stream )
+void wconsole_underline_end( FILE* stream )
+{
+	fwprintf( stream, L"\033[24m" );
+}
+
+void console_reversed_begin( FILE* stream )
 {
 	fprintf( stream, "\033[7m" );
 }
 
-void wconsole_reversed( FILE* stream )
+void console_reversed_end( FILE* stream )
+{
+	fprintf( stream, "\033[27m" );
+}
+
+void console_conceal_begin( FILE* stream )
+{
+	fprintf( stream, "\033[8m" );
+}
+
+void console_conceal_end( FILE* stream )
+{
+	fprintf( stream, "\033[28m" );
+}
+
+void console_blink_begin( FILE* stream )
+{
+	//fprintf( stream, "\033[%dm", fast ? 6 : 5 );
+	fprintf( stream, "\033[5m" );
+}
+
+void console_blink_end( FILE* stream )
+{
+	//fprintf( stream, "\033[%dm", fast ? 6 : 5 );
+	fprintf( stream, "\033[25m" );
+}
+
+void console_set_font( FILE* stream, int f )
+{
+	fprintf( stream, "\033[%dm", f );
+}
+
+void wconsole_reversed_begin( FILE* stream )
 {
 	fwprintf( stream, L"\033[7m" );
+}
+
+void wconsole_reversed_end( FILE* stream )
+{
+	fwprintf( stream, L"\033[27m" );
 }
 
 void console_hide_cursor( FILE* stream )
@@ -196,40 +294,6 @@ void wconsole_reset( FILE* stream )
 	fwprintf( stream, L"\033[0m" );
 }
 
-void console_end( FILE* stream )
-{
-	fprintf( stream, "\033[m" );
-}
-
-bool console_size( FILE* stream, int* rows, int* cols )
-{
-	struct winsize w;
-	int fd = fileno(stream);
-	if( fd >= 0 && !ioctl(fd, TIOCGWINSZ, &w) )
-	{
-		*rows = w.ws_row;
-		*cols = w.ws_col;
-		return true;
-	}
-
-	return false;
-}
-
-bool console_set_size( FILE* stream, int rows, int cols )
-{
-	struct winsize w = (struct winsize) {
-		.ws_row = rows,
-		.ws_col = cols,
-	};
-	int fd = fileno(stream);
-	return fd >= 0 && !ioctl(fd, TIOCSWINSZ, &w);
-}
-
-void wconsole_end( FILE* stream )
-{
-	fwprintf( stream, L"\033[m" );
-}
-
 void console_save_position( FILE* stream )
 {
 	fprintf( stream, "\033[s" );
@@ -260,6 +324,16 @@ void console_move_right( FILE* stream, int n )
 	fprintf( stream, "\033[%dC", n );
 }
 
+void console_page_up( FILE* stream, int n )
+{
+	fprintf( stream, "\033[%dS", n );
+}
+
+void console_page_down( FILE* stream, int n )
+{
+	fprintf( stream, "\033[%dT", n );
+}
+
 void console_next_line( FILE* stream, int n )
 {
 	fprintf( stream, "\033[%dE", n );
@@ -278,6 +352,17 @@ void console_set_column( FILE* stream, int x )
 void console_goto( FILE* stream, int x, int y )
 {
 	fprintf( stream, "\033[%d;%dH", y, x );
+	//fprintf( stream, "\033[%d;%df", y, x ); // horizontal vertical position
+}
+
+bool console_get_cursor_position( FILE* stream, int* x, int* y )
+{
+	console_conceal_begin( stream );
+	fprintf( stream, "\033[6n");
+	fflush( stream );
+	int result = fscanf( stdin, "\033[%d;%dR", y, x );
+	console_conceal_end( stream );
+	return result == 2;
 }
 
 void console_clear_screen( FILE* stream, int type )
@@ -288,6 +373,30 @@ void console_clear_screen( FILE* stream, int type )
 void console_clear_line( FILE* stream, int type )
 {
 	fprintf( stream, "\033[%dK", type );
+}
+
+bool console_size( FILE* stream, int* rows, int* cols )
+{
+	struct winsize w;
+	int fd = fileno(stream);
+	if( fd >= 0 && !ioctl(fd, TIOCGWINSZ, &w) )
+	{
+		*rows = w.ws_row;
+		*cols = w.ws_col;
+		return true;
+	}
+
+	return false;
+}
+
+bool console_set_size( FILE* stream, int rows, int cols )
+{
+	struct winsize w = (struct winsize) {
+		.ws_row = rows,
+		.ws_col = cols,
+	};
+	int fd = fileno(stream);
+	return fd >= 0 && !ioctl(fd, TIOCSWINSZ, &w);
 }
 
 void console_bar_graph( FILE* stream, int bar_width, char bar_symbol, const int* colors, size_t color_count, int bkg_color, int percent )
@@ -301,22 +410,22 @@ void console_bar_graph( FILE* stream, int bar_width, char bar_symbol, const int*
 		{
 			if( bar_symbol == ' ' )
 			{
-				console_bg_color_256( stream, colors[color_idx] );
+				console_bg_color_8( stream, colors[color_idx] );
 			}
 			else
 			{
-				console_fg_color_256( stream, colors[color_idx] );
+				console_fg_color_8( stream, colors[color_idx] );
 			}
 		}
 		else
 		{
 			if( bar_symbol == ' ' )
 			{
-				console_bg_color_256( stream, bkg_color );
+				console_bg_color_8( stream, bkg_color );
 			}
 			else
 			{
-				console_fg_color_256( stream, bkg_color );
+				console_fg_color_8( stream, bkg_color );
 			}
 		}
 		fprintf( stream, "%c", bar_symbol );
@@ -421,7 +530,7 @@ void console_text_fader_ex( FILE* stream, const char* text, const int* colors, s
 	 */
 	for( size_t i = 0, k = 0; k < color_count && i < len; i++, k++ )
 	{
-		console_fg_color_256( stream, colors[k] );
+		console_fg_color_8( stream, colors[k] );
 		fprintf( stream, "%c", text[ i ] );
 		fflush( stream );
 
@@ -451,7 +560,7 @@ void console_text_fader_ex( FILE* stream, const char* text, const int* colors, s
 			 */
 			for( size_t i = 0; j > color_count && i < j - color_count; i++ )
 			{
-				console_fg_color_256( stream, colors[0] );
+				console_fg_color_8( stream, colors[0] );
 				fprintf( stream, "%c", text[ i ] );
 				fflush( stream );
 			}
@@ -462,7 +571,7 @@ void console_text_fader_ex( FILE* stream, const char* text, const int* colors, s
 			 */
 			for( size_t i = j - color_count, k = 0; j < len && i < j; i++, k++ )
 			{
-				console_fg_color_256(stream, colors[k] );
+				console_fg_color_8(stream, colors[k] );
 				fprintf( stream, "%c", text[ i ] );
 				fflush( stream );
 			}
@@ -482,7 +591,7 @@ void console_text_fader_ex( FILE* stream, const char* text, const int* colors, s
 		{
 			for( size_t i = len - color_count, k = 0; i < len; i++, k++ )
 			{
-				console_fg_color_256( stream, colors[k] );
+				console_fg_color_8( stream, colors[k] );
 				fprintf( stream, "%c", text[ i ] );
 				fflush( stream );
 
@@ -510,7 +619,7 @@ void console_text_fader_ex( FILE* stream, const char* text, const int* colors, s
 
 			for( size_t i = j, k = 0; i < len && k < color_count; i++, k++ )
 			{
-				console_fg_color_256(stream, colors[k] );
+				console_fg_color_8(stream, colors[k] );
 				fprintf( stream, "%c", text[ i ] );
 				fflush( stream );
 			}
@@ -657,7 +766,7 @@ bool console_command_prompt( char* command_buf, size_t command_buf_size, const c
 {
 	bool not_quiting = true;
 
-	console_fg_color_256( stdout, prompt_color );
+	console_fg_color_8( stdout, prompt_color );
 	fputs( prompt, stdout );
 	console_reset( stdout );
 

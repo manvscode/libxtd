@@ -45,7 +45,7 @@ int main( int argc, char *argv[] )
 	char* text = file_slurp( file, &text_size );
 	if( text )
 	{
-        console_fg_bright_color_8( stdout, CONSOLE_COLOR8_CYAN );
+        console_fg_color_8( stdout, CONSOLE_COLOR8_BRIGHT_GREEN );
 		console_print_divider( stdout, file );
 		printf( "%s", text );
 		console_print_divider( stdout, NULL );

@@ -62,7 +62,7 @@ int main( int argc, char *argv[] )
 	console_print_divider( stdout, "[ Moby Dick ]" );
 	size_t moby_dick_size = strlen(moby_dick) + 1;
 	printf( "%s\n", moby_dick );
-    console_fg_bright_color_8( stdout, CONSOLE_COLOR8_CYAN );
+    console_fg_color_8( stdout, CONSOLE_COLOR8_BRIGHT_CYAN );
 	console_print_divider( stdout, "[ Before Encoding ]" );
 
 	for( size_t i = 0; i < moby_dick_size; i++ )
@@ -86,7 +86,7 @@ int main( int argc, char *argv[] )
 
 	if( huffman_decode( compressed, compressed_size, (void**) &original, &original_size ) )
 	{
-        console_fg_bright_color_8( stdout, CONSOLE_COLOR8_BLUE );
+    	console_fg_color_8( stdout, CONSOLE_COLOR8_BLUE );
 		console_print_divider( stdout, "[ Huffman Decoded ]" );
 		printf( "%s\n", original );
 

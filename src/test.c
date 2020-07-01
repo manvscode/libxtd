@@ -119,73 +119,73 @@ static bool test_feature( unsigned int i, const char* feature, test_fxn_t test )
 	memset(description + len, ' ', sizeof(description) - len );
 	description[ sizeof(description) - 1 ] = '\0';
 
-	console_fg_color_256( stdout, CONSOLE_COLOR256_GREY_10 );
+	console_fg_color_8( stdout, CONSOLE_COLOR8_GREY_10 );
 	printf(VERTICAL_BAR);
-	console_end( stdout );
+	console_reset( stdout );
 
-	console_fg_color_256( stdout, CONSOLE_COLOR256_CYAN );
+	console_fg_color_8( stdout, CONSOLE_COLOR8_CYAN );
 	printf( "%7u ", i );
-	console_end( stdout );
+	console_reset( stdout );
 
-	console_fg_color_256( stdout, CONSOLE_COLOR256_GREY_10 );
+	console_fg_color_8( stdout, CONSOLE_COLOR8_GREY_10 );
 	printf( "%s", VERTICAL_BAR );
-	console_end( stdout );
+	console_reset( stdout );
 
 	if(is_passed)
 	{
-		console_fg_color_256( stdout, CONSOLE_COLOR256_BRIGHT_GREEN );
+		console_fg_color_8( stdout, CONSOLE_COLOR8_BRIGHT_GREEN );
 		printf( " %s", CHECKMARK );
-		console_end( stdout );
+		console_reset( stdout );
 	}
 	else
 	{
-		console_fg_color_256( stdout, CONSOLE_COLOR256_BRIGHT_RED );
+		console_fg_color_8( stdout, CONSOLE_COLOR8_BRIGHT_RED );
 		printf( " %s", XMARK );
-		console_end( stdout );
+		console_reset( stdout );
 	}
 
 	printf( " %-*.*s ", COL2_WIDTH - 3 - 1, COL2_WIDTH - 3 - 1, description );
 	/*
 	if(is_passed)
 	{
-		console_fg_color_256( stdout, CONSOLE_COLOR256_BRIGHT_GREEN );
+		console_fg_color_8( stdout, CONSOLE_COLOR8_BRIGHT_GREEN );
 		printf( "%s ", CHECKMARK );
-		console_end( stdout );
+		console_reset( stdout );
 	}
 	else
 	{
-		console_fg_color_256( stdout, CONSOLE_COLOR256_BRIGHT_RED );
+		console_fg_color_8( stdout, CONSOLE_COLOR8_BRIGHT_RED );
 		printf( "%s ", XMARK );
-		console_end( stdout );
+		console_reset( stdout );
 	}
 	*/
 
-	console_fg_color_256( stdout, CONSOLE_COLOR256_GREY_10 );
+	console_fg_color_8( stdout, CONSOLE_COLOR8_GREY_10 );
 	printf( "%s", VERTICAL_BAR );
-	console_end( stdout );
+	console_reset( stdout );
 	printf( "\n" );
 
 	if( ctx.message )
 	{
-		console_fg_color_256( stdout, CONSOLE_COLOR256_GREY_10 );
+		console_fg_color_8( stdout, CONSOLE_COLOR8_GREY_10 );
 		printf(VERTICAL_BAR);
-		console_end( stdout );
+		console_reset( stdout );
 
 		printf("%*.*s", COL1_WIDTH, COL1_WIDTH, "");
 
-		console_fg_color_256( stdout, CONSOLE_COLOR256_GREY_10 );
+		console_fg_color_8( stdout, CONSOLE_COLOR8_GREY_10 );
 		printf(VERTICAL_BAR);
-		console_end( stdout );
+		console_reset( stdout );
 
 		printf( "   %s ", BULLET );
 
-		console_fg_color_256( stdout, CONSOLE_COLOR256_BRIGHT_RED );
+		console_fg_color_8( stdout, CONSOLE_COLOR8_BRIGHT_RED );
 		printf( "%-*.*s", COL2_WIDTH - 5, COL2_WIDTH - 5, ctx.message );
-		console_end( stdout );
+		console_reset( stdout );
 
-		console_fg_color_256( stdout, CONSOLE_COLOR256_GREY_10 );
+		console_fg_color_8( stdout, CONSOLE_COLOR8_GREY_10 );
 		printf(VERTICAL_BAR);
-		console_end( stdout );
+		console_reset( stdout );
 
 		printf( "\n" );
 
@@ -202,7 +202,7 @@ size_t test_features( const char* description, const test_case_t cases[], size_t
 	size_t pass_count = 0;
 	int len;
 
-	console_fg_color_256( stdout, CONSOLE_COLOR256_GREY_10 );
+	console_fg_color_8( stdout, CONSOLE_COLOR8_GREY_10 );
 	printf(CORNER_TL);
 	len = COL1_WIDTH;
 	while( len-- > 0 ) printf(HORIZONTAL_BAR);
@@ -210,33 +210,33 @@ size_t test_features( const char* description, const test_case_t cases[], size_t
 	len = COL2_WIDTH;
 	while( len-- > 0 ) printf(HORIZONTAL_BAR);
 	printf(CORNER_TR);
-	console_end( stdout );
+	console_reset( stdout );
 	printf("\n");
 
 
-	console_fg_color_256( stdout, CONSOLE_COLOR256_GREY_10 );
+	console_fg_color_8( stdout, CONSOLE_COLOR8_GREY_10 );
 	printf("%s", VERTICAL_BAR );
-	console_end( stdout );
+	console_reset( stdout );
 
-	console_fg_color_256( stdout, CONSOLE_COLOR256_BRIGHT_CYAN );
+	console_fg_color_8( stdout, CONSOLE_COLOR8_BRIGHT_CYAN );
 	printf("   Cases");
-	console_end( stdout );
+	console_reset( stdout );
 
-	console_fg_color_256( stdout, CONSOLE_COLOR256_GREY_10 );
+	console_fg_color_8( stdout, CONSOLE_COLOR8_GREY_10 );
 	printf("%s", VERTICAL_BAR );
-	console_end( stdout );
+	console_reset( stdout );
 
-	console_fg_color_256( stdout, CONSOLE_COLOR256_BRIGHT_YELLOW );
+	console_fg_color_8( stdout, CONSOLE_COLOR8_BRIGHT_YELLOW );
 	printf( " %-*.*s ", COL2_WIDTH - 2, COL2_WIDTH - 2, description );
-	console_end( stdout );
+	console_reset( stdout );
 
-	console_fg_color_256( stdout, CONSOLE_COLOR256_GREY_10 );
+	console_fg_color_8( stdout, CONSOLE_COLOR8_GREY_10 );
 	printf("%s", VERTICAL_BAR );
-	console_end( stdout );
+	console_reset( stdout );
 
 	printf("\n");
 
-	console_fg_color_256( stdout, CONSOLE_COLOR256_GREY_10 );
+	console_fg_color_8( stdout, CONSOLE_COLOR8_GREY_10 );
 	printf(INTERSECTION_L);
 	len = COL1_WIDTH;
 	while( len-- > 0 ) printf(HORIZONTAL_BAR);
@@ -244,7 +244,7 @@ size_t test_features( const char* description, const test_case_t cases[], size_t
 	len = COL2_WIDTH;
 	while( len-- > 0 ) printf(HORIZONTAL_BAR);
 	printf(INTERSECTION_R);
-	console_end( stdout );
+	console_reset( stdout );
 	printf("\n");
 
 	for( size_t i = 0; i < count; i++ )
@@ -261,7 +261,7 @@ size_t test_features( const char* description, const test_case_t cases[], size_t
 		}
 	}
 
-	console_fg_color_256( stdout, CONSOLE_COLOR256_GREY_10 );
+	console_fg_color_8( stdout, CONSOLE_COLOR8_GREY_10 );
 	printf(INTERSECTION_L);
 	len = COL1_WIDTH;
 	while( len-- > 0 ) printf(HORIZONTAL_BAR);
@@ -269,23 +269,23 @@ size_t test_features( const char* description, const test_case_t cases[], size_t
 	len = COL2_WIDTH;
 	while( len-- > 0 ) printf(HORIZONTAL_BAR);
 	printf(INTERSECTION_R);
-	console_end( stdout );
+	console_reset( stdout );
 	printf("\n");
 
 
 	if( continue_on_failure )
 	{
-		console_fg_color_256( stdout, CONSOLE_COLOR256_GREY_10 );
+		console_fg_color_8( stdout, CONSOLE_COLOR8_GREY_10 );
 		printf(VERTICAL_BAR );
-		console_end( stdout );
+		console_reset( stdout );
 
-		console_fg_color_256( stdout, CONSOLE_COLOR256_BRIGHT_CYAN );
+		console_fg_color_8( stdout, CONSOLE_COLOR8_BRIGHT_CYAN );
 		printf(" Results");
-		console_end( stdout );
+		console_reset( stdout );
 
-		console_fg_color_256( stdout, CONSOLE_COLOR256_GREY_10 );
+		console_fg_color_8( stdout, CONSOLE_COLOR8_GREY_10 );
 		printf(VERTICAL_BAR );
-		console_end( stdout );
+		console_reset( stdout );
 
 		size_t fail_count = count - pass_count;
 
@@ -293,9 +293,9 @@ size_t test_features( const char* description, const test_case_t cases[], size_t
 		sz += printf(" ");
 		if( pass_count > 0 )
 		{
-			console_fg_color_256( stdout, CONSOLE_COLOR256_BRIGHT_GREEN );
+			console_fg_color_8( stdout, CONSOLE_COLOR8_BRIGHT_GREEN );
 			sz += printf("%zu passed", pass_count);
-			console_end( stdout );
+			console_reset( stdout );
 			if( fail_count > 0 )
 			{
 				sz += printf(", ");
@@ -304,55 +304,55 @@ size_t test_features( const char* description, const test_case_t cases[], size_t
 
 		if( fail_count > 0 )
 		{
-			console_fg_color_256( stdout, CONSOLE_COLOR256_BRIGHT_RED );
+			console_fg_color_8( stdout, CONSOLE_COLOR8_BRIGHT_RED );
 			sz += printf("%zu failed", fail_count);
-			console_end( stdout );
+			console_reset( stdout );
 		}
 		sz += printf(".");
 
 		printf(" %*.*s ", COL2_WIDTH - sz - 2, COL2_WIDTH - sz - 2, "" );
 
-		console_fg_color_256( stdout, CONSOLE_COLOR256_GREY_10 );
+		console_fg_color_8( stdout, CONSOLE_COLOR8_GREY_10 );
 		printf(VERTICAL_BAR );
-		console_end( stdout );
+		console_reset( stdout );
 		printf("\n");
 
 	}
 	else
 	{
-		console_fg_color_256( stdout, CONSOLE_COLOR256_GREY_10 );
+		console_fg_color_8( stdout, CONSOLE_COLOR8_GREY_10 );
 		printf("%s", VERTICAL_BAR);
-		console_end( stdout );
+		console_reset( stdout );
 
-		console_fg_color_256( stdout, CONSOLE_COLOR256_BRIGHT_CYAN );
+		console_fg_color_8( stdout, CONSOLE_COLOR8_BRIGHT_CYAN );
 		printf(" Results");
-		console_end( stdout );
+		console_reset( stdout );
 
-		console_fg_color_256( stdout, CONSOLE_COLOR256_GREY_10 );
+		console_fg_color_8( stdout, CONSOLE_COLOR8_GREY_10 );
 		printf("%s", VERTICAL_BAR);
-		console_end( stdout );
+		console_reset( stdout );
 
 		if( pass_count == count )
 		{
-			console_fg_color_256( stdout, CONSOLE_COLOR256_BRIGHT_GREEN );
+			console_fg_color_8( stdout, CONSOLE_COLOR8_BRIGHT_GREEN );
 			printf(" %-*.*s ", COL2_WIDTH - 2, COL2_WIDTH - 2, "Passed!");
-			console_end( stdout );
+			console_reset( stdout );
 		}
 		else
 		{
-			console_fg_color_256( stdout, CONSOLE_COLOR256_BRIGHT_RED );
+			console_fg_color_8( stdout, CONSOLE_COLOR8_BRIGHT_RED );
 			printf(" %-*.*s ", COL2_WIDTH - 2, COL2_WIDTH - 2, "Failed!");
-			console_end( stdout );
+			console_reset( stdout );
 		}
 
-		console_fg_color_256( stdout, CONSOLE_COLOR256_GREY_10 );
+		console_fg_color_8( stdout, CONSOLE_COLOR8_GREY_10 );
 		printf("%s", VERTICAL_BAR);
-		console_end( stdout );
+		console_reset( stdout );
 
 		printf("\n");
 	}
 
-	console_fg_color_256( stdout, CONSOLE_COLOR256_GREY_10 );
+	console_fg_color_8( stdout, CONSOLE_COLOR8_GREY_10 );
 	printf(CORNER_BL);
 	len = COL1_WIDTH;
 	while( len-- > 0 ) printf(HORIZONTAL_BAR);
@@ -360,7 +360,7 @@ size_t test_features( const char* description, const test_case_t cases[], size_t
 	len = COL2_WIDTH;
 	while( len-- > 0 ) printf(HORIZONTAL_BAR);
 	printf(CORNER_BR);
-	console_end( stdout );
+	console_reset( stdout );
 	printf("\n");
 
 	return pass_count;
@@ -386,58 +386,58 @@ bool test_suites( const test_suite_t suites[], size_t count, size_t* p_pass_coun
 
 	printf( "\n" );
 
-	console_fg_color_256( stdout, CONSOLE_COLOR256_GREY_10 );
+	console_fg_color_8( stdout, CONSOLE_COLOR8_GREY_10 );
 	printf(CORNER_TL);
 	len = COL1_WIDTH + 1;
 	while( len-- > 0 ) printf(HORIZONTAL_BAR);
 	len = COL2_WIDTH;
 	while( len-- > 0 ) printf(HORIZONTAL_BAR);
 	printf(CORNER_TR);
-	console_end( stdout );
+	console_reset( stdout );
 	printf("\n");
 
 
 	{
-		console_fg_color_256( stdout, CONSOLE_COLOR256_GREY_10 );
+		console_fg_color_8( stdout, CONSOLE_COLOR8_GREY_10 );
 		printf(VERTICAL_BAR);
-		console_end( stdout );
+		console_reset( stdout );
 		printf(" ");
 
 		int pass_percentage = (int) ((100.0f * pass_count) / total_count);
 		int fail_percentage = 100 - pass_percentage;
 
 		int sz = 0;
-		//console_fg_color_256( stdout, CONSOLE_COLOR256_BRIGHT_CYAN );
+		//console_fg_color_8( stdout, CONSOLE_COLOR8_BRIGHT_CYAN );
 		sz += printf( "Out of %zu tests", total_count );
-		//console_end( stdout );
+		//console_reset( stdout );
 		sz += printf( ", " );
 
-		console_fg_color_256( stdout, CONSOLE_COLOR256_BRIGHT_GREEN );
+		console_fg_color_8( stdout, CONSOLE_COLOR8_BRIGHT_GREEN );
 		sz += printf( "%d%% passed", pass_percentage );
-		console_end( stdout );
+		console_reset( stdout );
 		sz += printf( ", and " );
 
-		console_fg_color_256( stdout, CONSOLE_COLOR256_BRIGHT_RED );
+		console_fg_color_8( stdout, CONSOLE_COLOR8_BRIGHT_RED );
 		sz += printf( "%d%% failed", fail_percentage);
-		console_end( stdout );
+		console_reset( stdout );
 		sz += printf( "." );
 
 		printf("%*.*s", WIDTH - sz - 3, WIDTH - sz - 3, "");
-		console_fg_color_256( stdout, CONSOLE_COLOR256_GREY_10 );
+		console_fg_color_8( stdout, CONSOLE_COLOR8_GREY_10 );
 		printf(VERTICAL_BAR);
-		console_end( stdout );
+		console_reset( stdout );
 
 		printf("\n");
 	}
 
-	console_fg_color_256( stdout, CONSOLE_COLOR256_GREY_10 );
+	console_fg_color_8( stdout, CONSOLE_COLOR8_GREY_10 );
 	printf(CORNER_BL);
 	len = COL1_WIDTH + 1;
 	while( len-- > 0 ) printf(HORIZONTAL_BAR);
 	len = COL2_WIDTH;
 	while( len-- > 0 ) printf(HORIZONTAL_BAR);
 	printf(CORNER_BR);
-	console_end( stdout );
+	console_reset( stdout );
 	printf("\n");
 
 	if( p_pass_count )
