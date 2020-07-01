@@ -27,6 +27,7 @@
 #include <ctype.h>
 #include <wctype.h>
 #include <sys/ioctl.h>
+#include <sys/termios.h>
 #include <unistd.h>
 #include "xtd/string.h"
 #include "xtd/time.h"
@@ -294,6 +295,79 @@ void wconsole_reset( FILE* stream )
 	fwprintf( stream, L"\033[0m" );
 }
 
+bool console_echo_enable( FILE* stream )
+{
+	bool result = false;
+	struct termios tbuf;
+	int fd = fileno(stream);
+	if( fd >= 0 && !ioctl(fd, TCGETS, &tbuf) )
+	{
+		tbuf.c_lflag |= ECHO;
+
+		if( !ioctl(fd, TCSETS, &tbuf) )
+		{
+			result = true;
+		}
+	}
+
+	return result;
+
+}
+
+bool console_echo_disable( FILE* stream )
+{
+	bool result = false;
+	struct termios tbuf;
+	int fd = fileno(stream);
+	if( fd >= 0 && !ioctl(fd, TCGETS, &tbuf) )
+	{
+		tbuf.c_lflag &= ~ECHO;
+
+		if( !ioctl(fd, TCSETS, &tbuf) )
+		{
+			result = true;
+		}
+	}
+
+	return result;
+}
+
+bool console_canonical_enable( FILE* stream )
+{
+	bool result = false;
+	struct termios tbuf;
+	int fd = fileno(stream);
+	if( fd >= 0 && !ioctl(fd, TCGETS, &tbuf) )
+	{
+		tbuf.c_lflag |= ICANON;
+
+		if( !ioctl(fd, TCSETS, &tbuf) )
+		{
+			result = true;
+		}
+	}
+
+	return result;
+}
+
+bool console_canonical_disable( FILE* stream )
+{
+	bool result = false;
+	struct termios tbuf;
+	int fd = fileno(stream);
+	if( fd >= 0 && !ioctl(fd, TCGETS, &tbuf) )
+	{
+		tbuf.c_lflag &= ~ICANON;
+
+		if( !ioctl(fd, TCSETS, &tbuf) )
+		{
+			result = true;
+		}
+	}
+
+	return result;
+}
+
 void console_save_position( FILE* stream )
 {
 	fprintf( stream, "\033[s" );
@@ -357,11 +431,11 @@ void console_goto( FILE* stream, int x, int y )
 
 bool console_get_cursor_position( FILE* stream, int* x, int* y )
 {
-	console_conceal_begin( stream );
+	console_echo_disable(stdout);
 	fprintf( stream, "\033[6n");
 	fflush( stream );
 	int result = fscanf( stdin, "\033[%d;%dR", y, x );
-	console_conceal_end( stream );
+	console_echo_enable(stdout);
 	return result == 2;
 }
 

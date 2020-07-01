@@ -95,6 +95,11 @@ void console_blink_begin           ( FILE* stream );
 void console_blink_end             ( FILE* stream );
 void console_set_font              ( FILE* stream, int f ); /* Not widely supported */
 void console_reset                 ( FILE* stream );
+bool console_echo_enable           ( FILE* stream );
+bool console_echo_disable          ( FILE* stream );
+bool console_canonical_enable      ( FILE* stream );
+bool console_canonical_disable     ( FILE* stream );
+
 void console_hide_cursor           ( FILE* stream );
 void console_show_cursor           ( FILE* stream );
 void console_save_position         ( FILE* stream );

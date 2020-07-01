@@ -233,9 +233,11 @@ bool process_cmd( const char* command, void* data )
 	}
 	else if( strcmp(command, "cursor-pos") == 0 )
 	{
+		console_canonical_disable( stdin );
 		int x = 0;
 		int y = 0;
 		console_get_cursor_position( stdout, &x, &y );
+		console_canonical_enable( stdin );
 		printf("Cursor at %dx%d\n", x, y );
 	}
 	else if( strcmp(command, "test-text") == 0 )
@@ -253,6 +255,18 @@ bool process_cmd( const char* command, void* data )
 		console_underline_end( stdout );
 		console_bold_end( stdout );
 		console_reset_fg_color( stdout );
+	}
+	else if( strcmp(command, "password") == 0 )
+	{
+		char password[ 64 ] = { '\0' };
+		printf("Password: ");
+		console_echo_disable(stdin);
+		fgets(password, sizeof(password), stdin);
+		string_trim(password, "\n\t ");
+		console_echo_enable(stdin);
+
+		printf("\n");
+		printf( "password=\"%s\"\n", password );
 	}
 	else
 	{
