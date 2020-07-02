@@ -300,6 +300,7 @@ bool console_echo_enable( FILE* stream )
 	bool result = false;
 	struct termios tbuf;
 	int fd = fileno(stream);
+#if 0
 	if( fd >= 0 && !ioctl(fd, TCGETS, &tbuf) )
 	{
 		tbuf.c_lflag |= ECHO;
@@ -309,6 +310,17 @@ bool console_echo_enable( FILE* stream )
 			result = true;
 		}
 	}
+#else
+	if( fd >= 0 && !tcgetattr(fd, &tbuf) )
+	{
+		tbuf.c_lflag |= ECHO;
+
+		if( !tcsetattr(fd, TCSANOW, &tbuf) )
+		{
+			result = true;
+		}
+	}
+#endif
 
 	return result;
 
@@ -319,6 +331,7 @@ bool console_echo_disable( FILE* stream )
 	bool result = false;
 	struct termios tbuf;
 	int fd = fileno(stream);
+#if 0
 	if( fd >= 0 && !ioctl(fd, TCGETS, &tbuf) )
 	{
 		tbuf.c_lflag &= ~ECHO;
@@ -328,6 +341,17 @@ bool console_echo_disable( FILE* stream )
 			result = true;
 		}
 	}
+#else
+	if( fd >= 0 && !tcgetattr(fd, &tbuf) )
+	{
+		tbuf.c_lflag &= ~ECHO;
+
+		if( !tcsetattr(fd, TCSANOW, &tbuf) )
+		{
+			result = true;
+		}
+	}
+#endif
 
 	return result;
 }
@@ -337,6 +361,7 @@ bool console_canonical_enable( FILE* stream )
 	bool result = false;
 	struct termios tbuf;
 	int fd = fileno(stream);
+#if 0
 	if( fd >= 0 && !ioctl(fd, TCGETS, &tbuf) )
 	{
 		tbuf.c_lflag |= ICANON;
@@ -346,6 +371,17 @@ bool console_canonical_enable( FILE* stream )
 			result = true;
 		}
 	}
+#else
+	if( fd >= 0 && !tcgetattr(fd, &tbuf) )
+	{
+		tbuf.c_lflag |= ICANON;
+
+		if( !tcsetattr(fd, TCSANOW, &tbuf) )
+		{
+			result = true;
+		}
+	}
+#endif
 
 	return result;
 }
@@ -355,6 +391,7 @@ bool console_canonical_disable( FILE* stream )
 	bool result = false;
 	struct termios tbuf;
 	int fd = fileno(stream);
+#if 0
 	if( fd >= 0 && !ioctl(fd, TCGETS, &tbuf) )
 	{
 		tbuf.c_lflag &= ~ICANON;
@@ -364,6 +401,17 @@ bool console_canonical_disable( FILE* stream )
 			result = true;
 		}
 	}
+#else
+	if( fd >= 0 && !tcgetattr(fd, &tbuf) )
+	{
+		tbuf.c_lflag &= ~ICANON;
+
+		if( !tcsetattr(fd, TCSANOW, &tbuf) )
+		{
+			result = true;
+		}
+	}
+#endif
 
 	return result;
 }
