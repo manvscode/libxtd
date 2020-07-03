@@ -914,3 +914,45 @@ noreturn void console_command_prompt_loop( const char* prompt, int prompt_color,
 		}
 	}
 }
+
+
+// requires calling setlocale(LC_ALL, "")
+void console_curved_box( int x, int y, int w, int h )
+{
+	if( x <= 0 ) x = 1;
+	if( y <= 0 ) y = 1;
+	if( w <= 0 ) w = 3;
+	if( h <= 0 ) h = 3;
+
+	int inner_width  = w - 2;
+	int inner_height = h - 2;
+
+	console_goto(stdout, x, y);
+	printf("%lc", CONSOLE_CURVED_BOX_TLCORNER );
+	for( int i = 0; i < inner_width; i++ )
+	{
+		printf("%lc", CONSOLE_CURVED_BOX_HLINE );
+	}
+	printf("%lc", CONSOLE_CURVED_BOX_TRCORNER );
+
+	for( int i = 0; i < inner_height; i++ ) // vertical lines on left
+	{
+		console_goto(stdout, x, y + i + 1);
+		printf("%lc", CONSOLE_CURVED_BOX_VLINE );
+	}
+
+	for( int i = 0; i < inner_height; i++ ) // vertical lines on right
+	{
+		console_goto(stdout, x + inner_width + 1, y + i + 1);
+		printf("%lc", CONSOLE_CURVED_BOX_VLINE );
+	}
+
+	console_goto(stdout, x, y + inner_height + 1);
+	printf("%lc", CONSOLE_CURVED_BOX_BLCORNER );
+	for( int i = 0; i < inner_width; i++ )
+	{
+		printf("%lc", CONSOLE_CURVED_BOX_HLINE );
+	}
+	printf("%lc", CONSOLE_CURVED_BOX_BRCORNER );
+}
+

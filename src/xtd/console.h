@@ -233,6 +233,15 @@ void wconsole_reset             ( FILE* stream );
 #define CONSOLE_COLOR8_GREY_23         0xff /* lighter */
 
 
+#define CONSOLE_CURVED_BOX_TLCORNER    L'\x256d' // ╭
+#define CONSOLE_CURVED_BOX_TRCORNER    L'\x256e' // ╮
+#define CONSOLE_CURVED_BOX_BRCORNER    L'\x256f' // ╯
+#define CONSOLE_CURVED_BOX_BLCORNER    L'\x2570' // ╰
+#define CONSOLE_CURVED_BOX_HLINE       L'\x2500' // ╶
+#define CONSOLE_CURVED_BOX_VLINE       L'\x2502' // ╷
+
+void console_curved_box( int x, int y, int width, int height );
+
 
 #ifdef __cplusplus
 } /* extern "C" */
