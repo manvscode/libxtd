@@ -127,8 +127,8 @@ void console_text_fader            ( FILE* stream, console_text_fader_style_t st
 void console_text_faderf           ( FILE* stream, console_text_fader_style_t style, const char* format, ... );
 void console_print_divider         ( FILE* stream, const char* title );
 
-bool console_command_prompt               ( char* command_buf, size_t command_buf_size, const char* prompt, int prompt_color, console_handle_command_fxn_t on_cmd, void* data );
-noreturn void console_command_prompt_loop ( const char* prompt, int prompt_color, console_handle_command_fxn_t on_cmd, void* data );
+bool console_command_prompt      ( char* command_buf, size_t command_buf_size, const char* prompt, int prompt_color, console_handle_command_fxn_t on_cmd, void* data );
+void console_command_prompt_loop ( const char* prompt, int prompt_color, console_handle_command_fxn_t on_cmd, void* data );
 
 
 void wconsole_fg_color_4        ( FILE* stream, int color );

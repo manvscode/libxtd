@@ -115,7 +115,7 @@ static bool test_feature( unsigned int i, const char* feature, test_fxn_t test )
 
 	if( len > sizeof(description) ) len = sizeof(description);
 
-	strncpy( description, feature, len );
+	memcpy( description, feature, len );
 	memset(description + len, ' ', sizeof(description) - len );
 	description[ sizeof(description) - 1 ] = '\0';
 

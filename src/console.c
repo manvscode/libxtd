@@ -901,7 +901,7 @@ bool console_command_prompt( char* command_buf, size_t command_buf_size, const c
 	return not_quiting;
 }
 
-noreturn void console_command_prompt_loop( const char* prompt, int prompt_color, console_handle_command_fxn_t on_cmd, void* data )
+void console_command_prompt_loop( const char* prompt, int prompt_color, console_handle_command_fxn_t on_cmd, void* data )
 {
 	bool quiting = false;
 	char command[ 256 ];
