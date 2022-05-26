@@ -44,7 +44,9 @@
 	              double: test_assert_double_equals, \
 	               float: test_assert_float_equals, \
 	       unsigned long: test_assert_unsigned_long_equals, \
+	  unsigned long long: test_assert_unsigned_long_long_equals, \
 	                long: test_assert_long_equals, \
+	           long long: test_assert_long_long_equals, \
 	        unsigned int: test_assert_unsigned_int_equals, \
 	                 int: test_assert_int_equals, \
 	      unsigned short: test_assert_unsigned_short_equals, \
@@ -139,7 +141,9 @@ bool test_assert_unsigned_short_equals ( test_ctx_t* ctx, unsigned short a, unsi
 bool test_assert_int_equals( test_ctx_t* ctx, int a, int b, const char* message, ... );
 bool test_assert_unsigned_int_equals( test_ctx_t* ctx, unsigned int a, unsigned int b, const char* message, ... );
 bool test_assert_long_equals( test_ctx_t* ctx, long a, long b, const char* message, ... );
+bool test_assert_long_long_equals( test_ctx_t* ctx, long long a, long long b, const char* message, ... );
 bool test_assert_unsigned_long_equals( test_ctx_t* ctx, unsigned long a, unsigned long b, const char* message, ... );
+bool test_assert_unsigned_long_long_equals( test_ctx_t* ctx, unsigned long long a, unsigned long long b, const char* message, ... );
 bool test_assert_float_equals( test_ctx_t* ctx, float a, float b, const char* message, ... );
 bool test_assert_double_equals( test_ctx_t* ctx, double a, double b, const char* message, ... );
 bool test_assert_long_double_equals( test_ctx_t* ctx, long double a, long double b, const char* message, ... );

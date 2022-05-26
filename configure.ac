@@ -1,5 +1,5 @@
 AC_PREREQ(2.67)
-AC_INIT([xtd], [1.0.0], [manvscode@gmail.com], [xtd], [http://www.manvscode.com/])
+AC_INIT([xtd], [1.0.0], [manvscode@gmail.com], [xtd], [https://joemarrero.com/])
 AM_INIT_AUTOMAKE([1.13 foreign silent-rules dist-zip -Wall -Werror])
 
 AC_CONFIG_MACRO_DIR([m4])
@@ -52,8 +52,6 @@ esac
 AM_CONDITIONAL([LINUX], [test "$build_linux" = "yes"])
 AM_CONDITIONAL([WINDOWS], [test "$build_windows" = "yes"])
 AM_CONDITIONAL([OSX], [test "$build_mac" = "yes"])
-
-#CFLAGS="-std=gnu11 -g3 -Og -Wall -pedantic -fsanitize=undefined -DDEBUG"
 
 AM_PROG_AR
 

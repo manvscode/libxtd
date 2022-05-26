@@ -4,7 +4,6 @@
 xtd_sources = \
 			  checksums.c \
 			  cmdopt.c \
-			  console.c \
 			  encoding-base64.c \
 			  encoding-huffman.c \
 			  encryption-caesar.c \
@@ -21,9 +20,9 @@ xtd_sources = \
 			  wstring.c
 
 if WINDOWS
-    xtd_sources += filesystem-windows.c time-windows.c
+    xtd_sources += console-windows.c filesystem-windows.c time-windows.c
 else # Linux and MacOS X
-    xtd_sources += filesystem-unix.c time-unix.c
+    xtd_sources += console-unix.c filesystem-unix.c time-unix.c
 endif
 
 

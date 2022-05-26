@@ -29,25 +29,80 @@
 #include <xtd/floating-point.h>
 #include <xtd/test.h>
 
-#define COLOR_BEGIN(bg,fg)                    "\033[" #bg ";" #fg "m"
-#define COLOR_END                             "\033[m"
-#define COLOR_TOKEN(color_bg, color_fg, tok)  COLOR_BEGIN(color_bg, color_fg) #tok COLOR_END
-#define COLOR_STRING(color_bg, color_fg, str) COLOR_BEGIN(color_bg, color_fg) str COLOR_END
+#if defined(_WIN32) || defined(_WIN64) || defined(__MINGW32__) || defined(__MINGW64)
+# define COLOR_BEGIN(bg,fg)                    ""
+# define COLOR_END                             ""
+# define COLOR_TOKEN(color_bg, color_fg, tok)  COLOR_BEGIN(color_bg, color_fg) #tok COLOR_END
+# define COLOR_STRING(color_bg, color_fg, str) COLOR_BEGIN(color_bg, color_fg) str COLOR_END
 
-#define COLOR_GREEN                           COLOR_BEGIN(0,32)
-#define COLOR_RED                             COLOR_BEGIN(0,31)
-#define COLOR_BRIGHT_RED                      "\033[9;1m"
-#define COLOR_YELLOW                          COLOR_BEGIN(0,33)
-#define COLOR_BLUE                            COLOR_BEGIN(0,34)
-#define COLOR_MAGENTA                         COLOR_BEGIN(0,35)
-#define COLOR_CYAN                            COLOR_BEGIN(0,36)
-#define COLOR_WHITE                           COLOR_BEGIN(0,37)
+# define COLOR_GREEN                           COLOR_BEGIN(0,32)
+# define COLOR_RED                             COLOR_BEGIN(0,31)
+# define COLOR_BRIGHT_RED                      ""
+# define COLOR_YELLOW                          COLOR_BEGIN(0,33)
+# define COLOR_BLUE                            COLOR_BEGIN(0,34)
+# define COLOR_MAGENTA                         COLOR_BEGIN(0,35)
+# define COLOR_CYAN                            COLOR_BEGIN(0,36)
+# define COLOR_WHITE                           COLOR_BEGIN(0,37)
 
-#define COLOR_GREEN_STR(s)                    COLOR_STRING(0,32,s)
-#define COLOR_YELLOW_STR(s)                   COLOR_STRING(0,33,s)
-#define COLOR_RED_STR(s)                      COLOR_STRING(0,31,s)
-#define COLOR_CYAN_STR(s)                     COLOR_STRING(0,36,s)
+# define COLOR_GREEN_STR(s)                    COLOR_STRING(0,32,s)
+# define COLOR_YELLOW_STR(s)                   COLOR_STRING(0,33,s)
+# define COLOR_RED_STR(s)                      COLOR_STRING(0,31,s)
+# define COLOR_CYAN_STR(s)                     COLOR_STRING(0,36,s)
 
+# define CORNER_TL "+"
+# define CORNER_TR "+"
+# define CORNER_BL "+"
+# define CORNER_BR "+"
+# define INTERSECTION_L "+"
+# define INTERSECTION_R "+"
+# define INTERSECTION_T "+"
+# define INTERSECTION_B "+"
+# define INTERSECTION_C "+"
+# define HORIZONTAL_BAR "-"
+# define VERTICAL_BAR "|"
+# define BULLET "*"
+# define CHECKMARK "y"
+# define XMARK     "n"
+#else
+# define COLOR_BEGIN(bg,fg)                    "\033[" #bg ";" #fg "m"
+# define COLOR_END                             "\033[m"
+# define COLOR_TOKEN(color_bg, color_fg, tok)  COLOR_BEGIN(color_bg, color_fg) #tok COLOR_END
+# define COLOR_STRING(color_bg, color_fg, str) COLOR_BEGIN(color_bg, color_fg) str COLOR_END
+
+# define COLOR_GREEN                           COLOR_BEGIN(0,32)
+# define COLOR_RED                             COLOR_BEGIN(0,31)
+# define COLOR_BRIGHT_RED                      "\033[9;1m"
+# define COLOR_YELLOW                          COLOR_BEGIN(0,33)
+# define COLOR_BLUE                            COLOR_BEGIN(0,34)
+# define COLOR_MAGENTA                         COLOR_BEGIN(0,35)
+# define COLOR_CYAN                            COLOR_BEGIN(0,36)
+# define COLOR_WHITE                           COLOR_BEGIN(0,37)
+
+# define COLOR_GREEN_STR(s)                    COLOR_STRING(0,32,s)
+# define COLOR_YELLOW_STR(s)                   COLOR_STRING(0,33,s)
+# define COLOR_RED_STR(s)                      COLOR_STRING(0,31,s)
+# define COLOR_CYAN_STR(s)                     COLOR_STRING(0,36,s)
+
+# define CORNER_TL "\u250c"
+# define CORNER_TR "\u2510"
+# define CORNER_BL "\u2514"
+# define CORNER_BR "\u2518"
+# define INTERSECTION_L "\u251c"
+# define INTERSECTION_R "\u2524"
+# define INTERSECTION_T "\u252c"
+# define INTERSECTION_B "\u2534"
+# define INTERSECTION_C "\u253c"
+# define HORIZONTAL_BAR "\u2500"
+# define VERTICAL_BAR "\u2502"
+# define BULLET "\u2022"
+# define CHECKMARK "\u2713"
+# define XMARK     "\u2718"
+#endif
+
+
+#define COL1_WIDTH  8
+#define COL2_WIDTH  69
+#define WIDTH  (1 + COL1_WIDTH + 1 + COL2_WIDTH + 1)
 
 bool test_nil( test_ctx_t* ctx )
 {
@@ -78,29 +133,10 @@ void test_wait_for_int(const int* n, int value, int timeout)
 		elapsed = time_milliseconds() - start;
 	}
 }
-#define CORNER_TL "\u250c"
-#define CORNER_TR "\u2510"
-#define CORNER_BL "\u2514"
-#define CORNER_BR "\u2518"
-#define INTERSECTION_L "\u251c"
-#define INTERSECTION_R "\u2524"
-#define INTERSECTION_T "\u252c"
-#define INTERSECTION_B "\u2534"
-#define INTERSECTION_C "\u253c"
-#define HORIZONTAL_BAR "\u2500"
-#define VERTICAL_BAR "\u2502"
-#define BULLET "\u2022"
-
-#define CHECKMARK "\u2713"
-#define XMARK     "\u2718"
 
 struct test_ctx {
 	char* message;
 };
-
-#define COL1_WIDTH  8
-#define COL2_WIDTH  69
-#define WIDTH  (1 + COL1_WIDTH + 1 + COL2_WIDTH + 1)
 
 static bool test_feature( unsigned int i, const char* feature, test_fxn_t test )
 {
@@ -696,7 +732,47 @@ bool test_assert_long_equals( test_ctx_t* ctx, long a, long b, const char* messa
 	return result;
 }
 
+bool test_assert_long_long_equals( test_ctx_t* ctx, long long a, long long b, const char* message, ... )
+{
+	bool result = a == b;
+	if (!result)
+	{
+		va_list args;
+		va_start(args, message);
+		char formatted_msg[512];
+		vsnprintf(formatted_msg, sizeof(formatted_msg), message, args);
+		formatted_msg[ sizeof(formatted_msg) - 1 ] = '\0';
+		va_end(args);
+
+		if( !ctx->message )
+		{
+			ctx->message = string_dup(formatted_msg);
+		}
+	}
+	return result;
+}
+
 bool test_assert_unsigned_long_equals( test_ctx_t* ctx, unsigned long a, unsigned long b, const char* message, ... )
+{
+	bool result = a == b;
+	if (!result)
+	{
+		va_list args;
+		va_start(args, message);
+		char formatted_msg[512];
+		vsnprintf(formatted_msg, sizeof(formatted_msg), message, args);
+		formatted_msg[ sizeof(formatted_msg) - 1 ] = '\0';
+		va_end(args);
+
+		if( !ctx->message )
+		{
+			ctx->message = string_dup(formatted_msg);
+		}
+	}
+	return result;
+}
+
+bool test_assert_unsigned_long_long_equals( test_ctx_t* ctx, unsigned long long a, unsigned long long b, const char* message, ... )
 {
 	bool result = a == b;
 	if (!result)

@@ -1,5 +1,5 @@
 if ENABLE_TESTS
-AM_CFLAGS = -Wall -pedantic -g3 -Og -I$(top_builddir)/src/
+AM_CFLAGS = -Wall -pedantic -static -I$(top_builddir)/src/
 
 bin_PROGRAMS = \
 $(top_builddir)/bin/test-all \
@@ -56,37 +56,37 @@ __top_builddir__bin_test_huffman_SOURCES     = test-huffman.c
 __top_builddir__bin_test_scrambling_LDFLAGS  = -lm $(top_builddir)/lib/libxtd.la
 __top_builddir__bin_test_scrambling_SOURCES  = test-scrambling.c
 
-__top_builddir__bin_test_checksums_CFLAGS       = -DTEST_CHECKSUMS
+__top_builddir__bin_test_checksums_CFLAGS       = -DTEST_CHECKSUMS -static
 __top_builddir__bin_test_checksums_LDFLAGS      = -lm $(top_builddir)/lib/libxtd.la
 __top_builddir__bin_test_checksums_SOURCES      = test-checksums.c
-__top_builddir__bin_test_cmdopt_CFLAGS          = -DTEST_CMDOPT
+__top_builddir__bin_test_cmdopt_CFLAGS          = -DTEST_CMDOPT -static
 __top_builddir__bin_test_cmdopt_LDFLAGS         = -static -lm $(top_builddir)/lib/libxtd.la
 __top_builddir__bin_test_cmdopt_SOURCES         = test-cmdopt.c
-__top_builddir__bin_test_encoding_CFLAGS        = -DTEST_ENCODING
+__top_builddir__bin_test_encoding_CFLAGS        = -DTEST_ENCODING -static
 __top_builddir__bin_test_encoding_LDFLAGS       = -lm $(top_builddir)/lib/libxtd.la
 __top_builddir__bin_test_encoding_SOURCES       = test-encoding.c
-__top_builddir__bin_test_encryption_CFLAGS      = -DTEST_ENCRYPTION
+__top_builddir__bin_test_encryption_CFLAGS      = -DTEST_ENCRYPTION -static
 __top_builddir__bin_test_encryption_LDFLAGS     = -lm $(top_builddir)/lib/libxtd.la
 __top_builddir__bin_test_encryption_SOURCES     = test-encryption.c
-__top_builddir__bin_test_endian_CFLAGS          = -DTEST_ENDIAN
+__top_builddir__bin_test_endian_CFLAGS          = -DTEST_ENDIAN -static
 __top_builddir__bin_test_endian_LDFLAGS         = -lm $(top_builddir)/lib/libxtd.la
 __top_builddir__bin_test_endian_SOURCES         = test-endian.c
-__top_builddir__bin_test_filesystem_CFLAGS      = -DTEST_FILESYSTEM
+__top_builddir__bin_test_filesystem_CFLAGS      = -DTEST_FILESYSTEM -static
 __top_builddir__bin_test_filesystem_LDFLAGS     = -lm $(top_builddir)/lib/libxtd.la
 __top_builddir__bin_test_filesystem_SOURCES     = test-filesystem.c
-__top_builddir__bin_test_floating_point_CFLAGS  = -DTEST_FLOATING_POINT
+__top_builddir__bin_test_floating_point_CFLAGS  = -DTEST_FLOATING_POINT -static
 __top_builddir__bin_test_floating_point_LDFLAGS = -lm $(top_builddir)/lib/libxtd.la
 __top_builddir__bin_test_floating_point_SOURCES = test-floating-point.c
-__top_builddir__bin_test_memory_CFLAGS          = -DTEST_MEMORY
+__top_builddir__bin_test_memory_CFLAGS          = -DTEST_MEMORY -static
 __top_builddir__bin_test_memory_LDFLAGS         = -lm $(top_builddir)/lib/libxtd.la
 __top_builddir__bin_test_memory_SOURCES         = test-memory.c
-__top_builddir__bin_test_refobj_CFLAGS          = -DTEST_REFOBJ
+__top_builddir__bin_test_refobj_CFLAGS          = -DTEST_REFOBJ -static
 __top_builddir__bin_test_refobj_LDFLAGS         = -lm $(top_builddir)/lib/libxtd.la
 __top_builddir__bin_test_refobj_SOURCES         = test-refobj.c
-__top_builddir__bin_test_string_CFLAGS          = -DTEST_STRING
+__top_builddir__bin_test_string_CFLAGS          = -DTEST_STRING -static
 __top_builddir__bin_test_string_LDFLAGS         = -lm $(top_builddir)/lib/libxtd.la
 __top_builddir__bin_test_string_SOURCES         = test-string.c
-__top_builddir__bin_test_time_CFLAGS            = -DTEST_TIME
+__top_builddir__bin_test_time_CFLAGS            = -DTEST_TIME -static
 __top_builddir__bin_test_time_LDFLAGS           = -lm $(top_builddir)/lib/libxtd.la
 __top_builddir__bin_test_time_SOURCES           = test-time.c
 endif

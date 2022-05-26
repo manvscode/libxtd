@@ -41,9 +41,9 @@ int main( int argc, char *argv[] )
 		size_t original_size = 0;
 		char* original = base64_decode( base64_encoded, base64_encoded_len, &original_size );
 
-		printf( "   Input: %s (len = %lu)\n", input, input_len + 1 );
-		printf( "  Base64: %s (len = %lu)\n", base64_encoded, base64_encoded_len );
-		printf( "Original: %s (len = %lu)\n", original, original_size );
+		printf( "   Input: %s (len = %zu)\n", input, input_len + 1 );
+		printf( "  Base64: %s (len = %zu)\n", base64_encoded, base64_encoded_len );
+		printf( "Original: %s (len = %zu)\n", original, original_size );
 	}
 
 

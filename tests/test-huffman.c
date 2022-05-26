@@ -69,7 +69,7 @@ int main( int argc, char *argv[] )
 	{
 		printf( "%02x", (uint8_t) moby_dick[ i ] );
 	}
-	printf( " (%ld bytes)\n", moby_dick_size );
+	printf( " (%zu bytes)\n", moby_dick_size );
 
 	if( huffman_encode( moby_dick, moby_dick_size, (void**) &compressed, &compressed_size ) )
 	{
@@ -81,7 +81,7 @@ int main( int argc, char *argv[] )
 		{
 			printf( "0x%02x, ", (uint8_t) compressed[ i ] );
 		}
-		printf( " (%ld header bytes + %ld bytes = %ld total bytes)\n", header_size, compressed_size - header_size, compressed_size );
+		printf( " (%zu header bytes + %lld bytes = %zu total bytes)\n", header_size, (long long) (compressed_size - header_size), compressed_size );
 	}
 
 	if( huffman_decode( compressed, compressed_size, (void**) &original, &original_size ) )
@@ -94,7 +94,7 @@ int main( int argc, char *argv[] )
 		{
 			printf( "%02x", (uint8_t) original[ i ] );
 		}
-		printf( " (%ld bytes)\n", original_size );
+		printf( " (%zu bytes)\n", original_size );
 	}
     console_reset(stdout);
 
