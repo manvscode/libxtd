@@ -27,6 +27,7 @@ tests/Makefile
 tests/Makefile.in
 xtd.pc
 xtd-static.pc
+src/stamp-h1
 
 # Compiled Object files
 *.slo

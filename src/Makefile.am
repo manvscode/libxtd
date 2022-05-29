@@ -46,8 +46,10 @@ library_includedir = $(includedir)/@PACKAGE_NAME@-@PACKAGE_VERSION@/xtd/
 library_include_HEADERS = $(xtd_headers)
 
 # Library
-lib_LTLIBRARIES                       = $(top_builddir)/lib/libxtd.la
-__top_builddir__lib_libxtd_la_SOURCES = $(xtd_sources)
-__top_builddir__lib_libxtd_la_CFLAGS  = -fPIC
-__top_builddir__lib_libxtd_la_LIBADD  = -lm
+lib_LTLIBRARIES                        = $(top_builddir)/lib/libxtd.la
+__top_builddir__lib_libxtd_la_SOURCES  = $(xtd_sources)
+__top_builddir__lib_libxtd_la_CFLAGS   = -fPIC
+__top_builddir__lib_libxtd_la_LDFLAGS  = -no-undefined
+#__top_builddir__lib_libxtd_la_LDFLAGS  = -version-info ${VERSION} -no-undefined
+__top_builddir__lib_libxtd_la_LIBADD   = -lm
 
