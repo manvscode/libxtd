@@ -1,6 +1,13 @@
 # libxtd
-A extension to the standard C library. This library aims to provide additional
-functionality for projects using C.
+An extension of the standard C library, offering enhanced functionality to streamline and expand capabilities 
+for C-based projects.
+
+## Donate, if you found this tool useful
+
+The development of this library took numerous hours of development and testing.  If you found that it
+is useful to you, then please consider making a donation of bitcoin to: **bc1qezh0x9324px8aszr09xmmtxqe7ttd7ftumayhv**
+
+All donations help cover maintenance costs.
 
 ## Building
 
@@ -65,7 +72,7 @@ Building requires Homebrew and Autotools.
 * **<xtd/time.h>** -- this is where cross-platform time related functions can be found.
 
 ## License
-    Copyright (C) 2010-2020 Joseph A. Marrero.  http://www.manvscode.com/
+    Copyright (C) 2010-2025 Joseph A. Marrero.  http://www.manvscode.com/
     
     Permission is hereby granted, free of charge, to any person obtaining a copy
     of this software and associated documentation files (the "Software"), to deal
