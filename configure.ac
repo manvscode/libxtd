@@ -1,5 +1,5 @@
-AC_PREREQ(2.67)
-AC_INIT([xtd], [1.0.0], [manvscode@gmail.com], [xtd], [https://joemarrero.com/])
+AC_PREREQ([2.72])
+AC_INIT([xtd],[1.0.0],[manvscode@gmail.com],[xtd],[https://joemarrero.com/])
 AM_INIT_AUTOMAKE([1.13 foreign silent-rules dist-zip -Wall -Werror])
 
 AC_CONFIG_MACRO_DIR([m4])
@@ -8,10 +8,7 @@ AM_SILENT_RULES([yes])
 AC_CONFIG_HEADERS([src/libxtd-config.h])
 
 AC_PROG_CC
-AC_PROG_CC_STDC
-AC_PROG_CC_C99
 AC_C_INLINE
-AC_HEADER_STDC
 AC_TYPE_SIZE_T
 
 AH_TOP([
