@@ -25,103 +25,102 @@
 #define MOD_ADLER 65521
 #endif
 
-
-uint32_t java_hash( const uint8_t* data, size_t len )
+uint32_t java_hash(const uint8_t* data, size_t len)
 {
-	uint32_t hash = 0;
-	size_t i;
+    uint32_t hash = 0;
+    size_t i;
 
-	for( i = 0; i < len; i++ )
-	{
-		hash = 31 * hash + data[ i ];
-	}
+    for (i = 0; i < len; i++)
+    {
+        hash = 31 * hash + data[ i ];
+    }
 
-	return hash;
+    return hash;
 }
 
-uint32_t xor8( const uint8_t* data, size_t len )
+uint32_t xor8(const uint8_t* data, size_t len)
 {
-	uint32_t lrc = 0;
-	size_t index;
+    uint32_t lrc = 0;
+    size_t index;
 
-	for( index = 0; index < len; index++ )
-	{
-		lrc = (lrc + data[ index ]) & 0xFF;
-	}
+    for (index = 0; index < len; index++)
+    {
+        lrc = (lrc + data[ index ]) & 0xFF;
+    }
 
-	return ((lrc ^ 0xFF) + 1) & 0xFF;
+    return ((lrc ^ 0xFF) + 1) & 0xFF;
 }
 
 /* where data is the location of the data in physical memory and len is the length of the data in bytes */
-uint32_t adler32( const uint8_t* data, size_t len )
+uint32_t adler32(const uint8_t* data, size_t len)
 {
-	uint32_t a = 1, b = 0;
-	size_t index;
+    uint32_t a = 1, b = 0;
+    size_t index;
 
-	/* Process each byte of the data in order */
-	for( index = 0; index < len; ++index )
-	{
-		a = (a + data[ index ]) % MOD_ADLER;
-		b = (b + a) % MOD_ADLER;
-	}
+    /* Process each byte of the data in order */
+    for (index = 0; index < len; ++index)
+    {
+        a = (a + data[ index ]) % MOD_ADLER;
+        b = (b + a) % MOD_ADLER;
+    }
 
-	return (b << 16) | a;
+    return (b << 16) | a;
 }
 
-uint16_t fletcher16_simple( uint8_t* data, size_t len )
+uint16_t fletcher16_simple(uint8_t* data, size_t len)
 {
-	uint16_t sum1 = 0;
-	uint16_t sum2 = 0;
-	size_t index;
+    uint16_t sum1 = 0;
+    uint16_t sum2 = 0;
+    size_t index;
 
-	for( index = 0; index < len; ++index )
-	{
-		sum1 = (sum1 + data[ index ]) % 255;
-		sum2 = (sum2 + sum1) % 255;
-	}
+    for (index = 0; index < len; ++index)
+    {
+        sum1 = (sum1 + data[ index ]) % 255;
+        sum2 = (sum2 + sum1) % 255;
+    }
 
-	return (sum2 << 8) | sum1;
+    return (sum2 << 8) | sum1;
 }
 
-void fletcher16( uint8_t* check_a, uint8_t* check_b, uint8_t* data, size_t len )
+void fletcher16(uint8_t* check_a, uint8_t* check_b, uint8_t* data, size_t len)
 {
-	uint16_t sum1 = 0xff, sum2 = 0xff;
+    uint16_t sum1 = 0xff, sum2 = 0xff;
 
-	while (len) {
-		size_t tlen = len > 21 ? 21 : len;
-		len -= tlen;
-		do {
-			sum1 += *data++;
-			sum2 += sum1;
-		} while (--tlen);
-		sum1 = (sum1 & 0xff) + (sum1 >> 8);
-		sum2 = (sum2 & 0xff) + (sum2 >> 8);
-	}
-	/* Second reduction step to reduce sums to 8 bits */
-	sum1 = (sum1 & 0xff) + (sum1 >> 8);
-	sum2 = (sum2 & 0xff) + (sum2 >> 8);
-	*check_a = (uint8_t)sum1;
-	*check_b = (uint8_t)sum2;
-	return;
+    while (len) {
+        size_t tlen = len > 21 ? 21 : len;
+        len -= tlen;
+        do {
+            sum1 += *data++;
+            sum2 += sum1;
+        } while (--tlen);
+        sum1 = (sum1 & 0xff) + (sum1 >> 8);
+        sum2 = (sum2 & 0xff) + (sum2 >> 8);
+    }
+    /* Second reduction step to reduce sums to 8 bits */
+    sum1 = (sum1 & 0xff) + (sum1 >> 8);
+    sum2 = (sum2 & 0xff) + (sum2 >> 8);
+    *check_a = (uint8_t)sum1;
+    *check_b = (uint8_t)sum2;
+    return;
 }
 
-uint32_t fletcher32( uint16_t* data, size_t len )
+uint32_t fletcher32(uint16_t* data, size_t len)
 {
-	uint32_t sum1 = 0xffff, sum2 = 0xffff;
+    uint32_t sum1 = 0xffff, sum2 = 0xffff;
 
-	while (len) {
-		size_t tlen = len > 360 ? 360 : len;
-		len -= tlen;
-		do {
-			sum1 += *data++;
-			sum2 += sum1;
-		} while (--tlen);
-		sum1 = (sum1 & 0xffff) + (sum1 >> 16);
-		sum2 = (sum2 & 0xffff) + (sum2 >> 16);
-	}
-	/* Second reduction step to reduce sums to 16 bits */
-	sum1 = (sum1 & 0xffff) + (sum1 >> 16);
-	sum2 = (sum2 & 0xffff) + (sum2 >> 16);
-	return sum2 << 16 | sum1;
+    while (len) {
+        size_t tlen = len > 360 ? 360 : len;
+        len -= tlen;
+        do {
+            sum1 += *data++;
+            sum2 += sum1;
+        } while (--tlen);
+        sum1 = (sum1 & 0xffff) + (sum1 >> 16);
+        sum2 = (sum2 & 0xffff) + (sum2 >> 16);
+    }
+    /* Second reduction step to reduce sums to 16 bits */
+    sum1 = (sum1 & 0xffff) + (sum1 >> 16);
+    sum2 = (sum2 & 0xffff) + (sum2 >> 16);
+    return sum2 << 16 | sum1;
 }
 

@@ -30,23 +30,23 @@
 
 const char* MEMORY_TEST_DESCRIPTION = "Testing functions in <xtd/memory.h>";
 const test_case_t MEMORY_TEST_CASES[] = {
-	{ "Test size_in_unit()", test_nil },
-	{ "Test size_in_best_unit()", test_nil },
-	{ "Test byte_to_binary()", test_nil },
-	{ "Test buffer_scramble()", test_nil },
-	{ "Test buffer_unscramble()", test_nil },
-	{ "Test xor_bytes()", test_nil },
-	{ "Test swap()", test_nil },
-	{ "Test debug_buffer_to_string()", test_nil },
-	{ "Test rotate_bits_left()", test_nil },
-	{ "Test rotate_bits_right()", test_nil },
+    { "Test size_in_unit()", test_nil },
+    { "Test size_in_best_unit()", test_nil },
+    { "Test byte_to_binary()", test_nil },
+    { "Test buffer_scramble()", test_nil },
+    { "Test buffer_unscramble()", test_nil },
+    { "Test xor_bytes()", test_nil },
+    { "Test swap()", test_nil },
+    { "Test debug_buffer_to_string()", test_nil },
+    { "Test rotate_bits_left()", test_nil },
+    { "Test rotate_bits_right()", test_nil },
 };
 const size_t MEMORY_TEST_COUNT = sizeof(MEMORY_TEST_CASES) / sizeof(MEMORY_TEST_CASES[0]);
 
 #ifdef TEST_MEMORY
 int main(int argc, char* argv[])
 {
-	size_t pass_count = test_features( MEMORY_TEST_DESCRIPTION, MEMORY_TEST_CASES, MEMORY_TEST_COUNT, true );
-	return MEMORY_TEST_COUNT - pass_count;
+    size_t pass_count = test_features(MEMORY_TEST_DESCRIPTION, MEMORY_TEST_CASES, MEMORY_TEST_COUNT, true);
+    return MEMORY_TEST_COUNT - pass_count;
 }
 #endif

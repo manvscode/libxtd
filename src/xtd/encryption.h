@@ -29,19 +29,19 @@ extern "C" {
 /*
  *  Encryption
  */
-void caesar_cypher_encrypt_buffer ( void* buffer, size_t size, int n );
-void caesar_cypher_decrypt_buffer ( void* buffer, size_t size, int n );
-void caesar_cypher_encrypt_text   ( char* text, size_t size, int n );
-void caesar_cypher_decrypt_text   ( char* text, size_t size, int n );
+void caesar_cypher_encrypt_buffer (void* buffer, size_t size, int n);
+void caesar_cypher_decrypt_buffer (void* buffer, size_t size, int n);
+void caesar_cypher_encrypt_text   (char* text, size_t size, int n);
+void caesar_cypher_decrypt_text   (char* text, size_t size, int n);
 
 
 #ifdef __cplusplus
 } /* extern "C" */
 namespace xtd {
-	using ::caesar_cypher_encrypt_buffer;
-	using ::caesar_cypher_decrypt_buffer;
-	using ::caesar_cypher_encrypt_text;
-	using ::caesar_cypher_decrypt_text;
+    using ::caesar_cypher_encrypt_buffer;
+    using ::caesar_cypher_decrypt_buffer;
+    using ::caesar_cypher_encrypt_text;
+    using ::caesar_cypher_decrypt_text;
 } /* namespace */
 #endif
 #endif /* _ENCRYPTION_H_ */

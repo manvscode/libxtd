@@ -26,128 +26,128 @@
 #include "xtd/memory.h"
 #include "xtd/filesystem.h"
 
-const char* file_size_string( const char* path, bool use_base_two, int precision )
+const char* file_size_string(const char* path, bool use_base_two, int precision)
 {
-	int64_t size = file_size( path );
-	return size_in_best_unit( (size_t) (size >= 0 ? size : 0), use_base_two, precision );
+    int64_t size = file_size(path);
+    return size_in_best_unit((size_t) (size >= 0 ? size : 0), use_base_two, precision);
 }
 
-bool file_copy( const char* src_path, const char* dst_path )
+bool file_copy(const char* src_path, const char* dst_path)
 {
-	FILE* src_file = NULL;
-	FILE* dst_file = NULL;
-	char buffer[ 4096 ];
+    FILE* src_file = NULL;
+    FILE* dst_file = NULL;
+    char buffer[ 4096 ];
 
-	src_file = fopen( src_path, "rb" );
+    src_file = fopen(src_path, "rb");
 
-	if( !src_path )
-	{
-		return false;
-	}
+    if (!src_path)
+    {
+        return false;
+    }
 
-	dst_file = fopen( dst_path, "wb" );
+    dst_file = fopen(dst_path, "wb");
 
-	if( !dst_path )
-	{
-		return false;
-	}
+    if (!dst_path)
+    {
+        return false;
+    }
 
-	while( !feof( src_file ) )
-	{
-    	size_t bytes_read    = fread( buffer, sizeof(char), sizeof(buffer), src_file );
-		size_t bytes_written = 0;
+    while (!feof(src_file))
+    {
+        size_t bytes_read    = fread(buffer, sizeof(char), sizeof(buffer), src_file);
+        size_t bytes_written = 0;
 
-		while( bytes_read - bytes_written > 0 )
-		{
-			bytes_written += fwrite( buffer + bytes_written, sizeof(char), bytes_read - bytes_written, dst_file );
-		}
-	}
+        while (bytes_read - bytes_written > 0)
+        {
+            bytes_written += fwrite(buffer + bytes_written, sizeof(char), bytes_read - bytes_written, dst_file);
+        }
+    }
 
-	fclose( src_file );
-	fclose( dst_file );
+    fclose(src_file);
+    fclose(dst_file);
 
-	return true;
+    return true;
 }
 
-const char* file_extension( const char* filename )
+const char* file_extension(const char* filename)
 {
-	const char* extension = strrchr( filename, '.' );
+    const char* extension = strrchr(filename, '.');
 
-	if( !extension )
-	{
-		return NULL;
-	}
-	else
-	{
-		extension += 1;
+    if (!extension)
+    {
+        return NULL;
+    }
+    else
+    {
+        extension += 1;
 
-		if( !extension )
-		{
-			return NULL;
-		}
-	}
+        if (!extension)
+        {
+            return NULL;
+        }
+    }
 
-	return extension;
+    return extension;
 }
 
-char* file_slurp( const char* path, size_t *size )
+char* file_slurp(const char* path, size_t *size)
 {
-	FILE* file = fopen( path, "r" );
-	char* result = NULL;
+    FILE* file = fopen(path, "r");
+    char* result = NULL;
 
-	if( file )
-	{
-		fseek( file, 0, SEEK_END );
-		size_t file_size = ftell( file ); /* TODO: what if size is 0 */
-		fseek( file, 0, SEEK_SET );
+    if (file)
+    {
+        fseek(file, 0, SEEK_END);
+        size_t file_size = ftell(file); /* TODO: what if size is 0 */
+        fseek(file, 0, SEEK_SET);
 
-		if( file_size > 0 )
-		{
-			*size = file_size + 1;
-			result = (char*) malloc( sizeof(char) * (*size) );
+        if (file_size > 0)
+        {
+            *size = file_size + 1;
+            result = (char*) malloc(sizeof(char) * (*size));
 
-			if( result )
-			{
-				char* buffer = result;
-				long sz      = file_size;
+            if (result)
+            {
+                char* buffer = result;
+                long sz      = file_size;
 
-				while( !feof( file ) && sz > 0 )
-				{
-					size_t bytes_read = fread( buffer, sizeof(char), sz, file );
-					buffer += bytes_read;
-					sz   -= bytes_read;
-				}
+                while (!feof(file) && sz > 0)
+                {
+                    size_t bytes_read = fread(buffer, sizeof(char), sz, file);
+                    buffer += bytes_read;
+                    sz   -= bytes_read;
+                }
 
-				result[ *size - 1 ] = '\0';
-			}
-		}
+                result[ *size - 1 ] = '\0';
+            }
+        }
 
-		fclose( file );
-	}
+        fclose(file);
+    }
 
-	return result;
+    return result;
 }
 
-int file_readline( FILE* stream, char* buffer, size_t size )
+int file_readline(FILE* stream, char* buffer, size_t size)
 {
-    if( fgets( buffer, size, stream ) == NULL )
-	{
+    if (fgets(buffer, size, stream) == NULL)
+    {
         return EOF;
     }
 
-    char *n = strchr( buffer, '\n' );
+    char *n = strchr(buffer, '\n');
 
-    if( n )
-	{
+    if (n)
+    {
         *n = '\0';
         /* A line was read successfully without truncation. */
     }
-	else
-	{
+    else
+    {
         int c;
-        while( (c = getc(stream)) != EOF && c != '\n');
-        if( c == EOF )
-		{
+        while ((c = getc(stream)) != EOF && c != '\n');
+        if (c == EOF)
+        {
             return EOF;
         }
         /* A line was read successfully but was truncated. */
@@ -156,111 +156,111 @@ int file_readline( FILE* stream, char* buffer, size_t size )
     return 0;
 }
 
-const char* basename( const char* path, char dir_separator )
+const char* basename(const char* path, char dir_separator)
 {
-	#if 1
-	const char *base = path;
+#if 1
+    const char *base = path;
 
-	while( *path )
-	{
-		if( *path++ == dir_separator )
-		{
-			base = path;
-		}
-	}
+    while (*path)
+    {
+        if (*path++ == dir_separator)
+        {
+            base = path;
+        }
+    }
 
-	return base;
-	#else
-	const char* basename = strrchr( path, dir_separator );
-	return basename ? basename + 1 : path;
-	#endif
+    return base;
+#else
+    const char* basename = strrchr(path, dir_separator);
+    return basename ? basename + 1 : path;
+#endif
 }
 
-char* __path_r( const char* path, char dir_separator, char* buffer, size_t size ) /* returns NULL on error  */
+char* __path_r(const char* path, char dir_separator, char* buffer, size_t size) /* returns NULL on error  */
 {
-	char* p     = (char*) path;
-	char *slash = NULL;
-	//ssize_t length  = 0;
-	size_t length  = 0;
+    char* p     = (char*) path;
+    char *slash = NULL;
+    //ssize_t length  = 0;
+    size_t length  = 0;
 
-	while( *p )
-	{
-		if( *p == dir_separator )
-		{
-			slash = p;
-		}
+    while (*p)
+    {
+        if (*p == dir_separator)
+        {
+            slash = p;
+        }
 
-		p++;
-	}
+        p++;
+    }
 
-	if( slash )
-	{
-		if( path == slash )
-		{
-			length = 1;
-		}
-		else
-		{
-			length = slash - path;
-		}
-	}
-	else
-	{
-		length = p - path;
-	}
+    if (slash)
+    {
+        if (path == slash)
+        {
+            length = 1;
+        }
+        else
+        {
+            length = slash - path;
+        }
+    }
+    else
+    {
+        length = p - path;
+    }
 
-	char* result = NULL;
+    char* result = NULL;
 
-	if( size >= (length + 1) )
-	{
-		strncpy( buffer, path, length );
-		buffer[ length ] = '\0';
-		result = buffer;
-	}
+    if (size >= (length + 1))
+    {
+        strncpy(buffer, path, length);
+        buffer[ length ] = '\0';
+        result = buffer;
+    }
 
-	return result;
+    return result;
 }
 
-char* __path( const char* path, char dir_separator ) /* allocates memory */
+char* __path(const char* path, char dir_separator) /* allocates memory */
 {
-	char* p     = (char*) path;
-	char *slash = NULL;
-	//ssize_t length  = 0;
-	size_t length  = 0;
+    char* p     = (char*) path;
+    char *slash = NULL;
+    //ssize_t length  = 0;
+    size_t length  = 0;
 
-	while( *p ) // find the last dir_separator
-	{
-		if( *p == dir_separator )
-		{
-			slash = p;
-		}
+    while (*p) // find the last dir_separator
+    {
+        if (*p == dir_separator)
+        {
+            slash = p;
+        }
 
-		p++;
-	}
+        p++;
+    }
 
-	if( slash )
-	{
-		if( path == slash )
-		{
-			length = 1;
-		}
-		else
-		{
-			length = slash - path;
-		}
-	}
-	else
-	{
-		length = p - path;
-	}
+    if (slash)
+    {
+        if (path == slash)
+        {
+            length = 1;
+        }
+        else
+        {
+            length = slash - path;
+        }
+    }
+    else
+    {
+        length = p - path;
+    }
 
-	char* result = malloc( length + 1 );
+    char* result = malloc(length + 1);
 
-	if( result )
-	{
-		strncpy( result, path, length );
-		result[ length ] = '\0';
-	}
+    if (result)
+    {
+        strncpy(result, path, length);
+        result[ length ] = '\0';
+    }
 
-	return result;
+    return result;
 }

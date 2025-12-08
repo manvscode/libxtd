@@ -30,16 +30,16 @@
 
 const char* REFOBJ_TEST_DESCRIPTION = "Testing functions in <xtd/refobj.h>";
 const test_case_t REFOBJ_TEST_CASES[] = {
-	{ "Test refobj_alloc()", test_nil },
-	{ "Test refobj_retain()", test_nil },
-	{ "Test refobj_release()", test_nil },
+    { "Test refobj_alloc()", test_nil },
+    { "Test refobj_retain()", test_nil },
+    { "Test refobj_release()", test_nil },
 };
 const size_t REFOBJ_TEST_COUNT = sizeof(REFOBJ_TEST_CASES) / sizeof(REFOBJ_TEST_CASES[0]);
 
 #ifdef TEST_REFOBJ
 int main(int argc, char* argv[])
 {
-	size_t pass_count = test_features( REFOBJ_TEST_DESCRIPTION, REFOBJ_TEST_CASES, REFOBJ_TEST_COUNT, true );
-	return REFOBJ_TEST_COUNT - pass_count;
+    size_t pass_count = test_features(REFOBJ_TEST_DESCRIPTION, REFOBJ_TEST_CASES, REFOBJ_TEST_COUNT, true);
+    return REFOBJ_TEST_COUNT - pass_count;
 }
 #endif

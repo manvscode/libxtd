@@ -31,19 +31,19 @@
 
 const char* CHECKSUMS_TEST_DESCRIPTION = "Testing functions in <xtd/checksums.h>";
 const test_case_t CHECKSUMS_TEST_CASES[] = {
-	{ "Test java_hash()", test_nil },
-	{ "Test xor8()", test_nil },
-	{ "Test adler32()", test_nil },
-	{ "Test fletcher16_simple()", test_nil },
-	{ "Test fletcher16()", test_nil },
-	{ "Test fletcher32()", test_nil },
+    { "Test java_hash()", test_nil },
+    { "Test xor8()", test_nil },
+    { "Test adler32()", test_nil },
+    { "Test fletcher16_simple()", test_nil },
+    { "Test fletcher16()", test_nil },
+    { "Test fletcher32()", test_nil },
 };
 const size_t CHECKSUMS_TEST_COUNT = sizeof(CHECKSUMS_TEST_CASES) / sizeof(CHECKSUMS_TEST_CASES[0]);
 
 #ifdef TEST_CHECKSUMS
 int main(int argc, char* argv[])
 {
-	size_t pass_count = test_features( CHECKSUMS_TEST_DESCRIPTION, CHECKSUMS_TEST_CASES, CHECKSUMS_TEST_COUNT, true );
-	return CHECKSUMS_TEST_COUNT - pass_count;
+    size_t pass_count = test_features(CHECKSUMS_TEST_DESCRIPTION, CHECKSUMS_TEST_CASES, CHECKSUMS_TEST_COUNT, true);
+    return CHECKSUMS_TEST_COUNT - pass_count;
 }
 #endif

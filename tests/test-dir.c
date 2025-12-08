@@ -24,58 +24,55 @@
 #include <assert.h>
 #include "xtd/filesystem.h"
 
-void handle_file( const char* filename, void* args );
+void handle_file(const char* filename, void* args);
 
 
-int main( int argc, char *argv[] )
+int main(int argc, char *argv[])
 {
-	if( argc < 1 )
-	{
-		return -1;
-	}
+    if (argc < 1)
+    {
+        return -1;
+    }
 
-	char* path = argv[ 1 ];
-	int count = 0;
+    char* path = argv[ 1 ];
+    int count = 0;
 
-	directory_enumerate( path, true, ENUMERATE_FILES, handle_file, &count );
+    directory_enumerate(path, true, ENUMERATE_FILES, handle_file, &count);
 
+    const char* path1 = "/joe/apps/junk/";
+    const char* path2 = "/joe/apps/junk/omg";
+    const char* path3 = "/";
 
-	const char* path1 = "/joe/apps/junk/";
-	const char* path2 = "/joe/apps/junk/omg";
-	const char* path3 = "/";
+    const char* basename_path1 = file_basename(path1);
+    const char* basename_path2 = file_basename(path2);
+    const char* basename_path3 = file_basename(path3);
 
-	const char* basename_path1 = file_basename( path1 );
-	const char* basename_path2 = file_basename( path2 );
-	const char* basename_path3 = file_basename( path3 );
+    printf("basename_path1 = %s --> %s\n", path1, basename_path1);
+    printf("basename_path2 = %s --> %s\n", path2, basename_path2);
+    printf("basename_path3 = %s --> %s\n", path3, basename_path3);
 
-	printf( "basename_path1 = %s --> %s\n", path1, basename_path1 );
-	printf( "basename_path2 = %s --> %s\n", path2, basename_path2 );
-	printf( "basename_path3 = %s --> %s\n", path3, basename_path3 );
+    char* path_path1 = directory_path(path1);
+    char* path_path2 = directory_path(path2);
+    char* path_path3 = directory_path(path3);
 
-	char* path_path1 = directory_path( path1 );
-	char* path_path2 = directory_path( path2 );
-	char* path_path3 = directory_path( path3 );
+    printf("path_path1 = %s --> %s\n", path1, path_path1);
+    printf("path_path2 = %s --> %s\n", path2, path_path2);
+    printf("path_path3 = %s --> %s\n", path3, path_path3);
 
-	printf( "path_path1 = %s --> %s\n", path1, path_path1 );
-	printf( "path_path2 = %s --> %s\n", path2, path_path2 );
-	printf( "path_path3 = %s --> %s\n", path3, path_path3 );
+    bool dir_created = directory_create(path3);
+    if (dir_created)
+    {
+        printf("%s was created.\n", path3);
+    }
 
-	bool dir_created = directory_create( path3 );
-	if( dir_created )
-	{
-		printf( "%s was created.\n", path3);
-	}
-
-	return 0;
+    return 0;
 }
 
-void handle_file( const char* filename, void* args )
+void handle_file(const char* filename, void* args)
 {
-	bool is_dir = is_directory( filename );
-
-
-	int* count = (int*) args;
-	(*count)++;
-	printf( "%3d.) %4s --> %-60s\n", *count, is_dir ? "DIR" : "FILE", filename );
-	assert( !is_dir );
+    bool is_dir = is_directory(filename);
+    int* count = (int*) args;
+    (*count)++;
+    printf("%3d.) %4s --> %-60s\n", *count, is_dir ? "DIR" : "FILE", filename);
+    assert(!is_dir);
 }

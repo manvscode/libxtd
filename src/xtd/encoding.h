@@ -35,19 +35,19 @@ extern "C" {
 /*
  * Compression and encodings.
  */
-bool  huffman_encode ( const void* original, size_t original_size, void** compressed, size_t* compressed_size );
-bool  huffman_decode ( const void* compressed, size_t compressed_size, void** original, size_t* original_size );
-char* base64_encode  ( const void* in, size_t in_size, size_t* out_len );
-void* base64_decode  ( const char* in, size_t in_len, size_t* out_len );
+bool  huffman_encode (const void* original, size_t original_size, void** compressed, size_t* compressed_size);
+bool  huffman_decode (const void* compressed, size_t compressed_size, void** original, size_t* original_size);
+char* base64_encode  (const void* in, size_t in_size, size_t* out_len);
+void* base64_decode  (const char* in, size_t in_len, size_t* out_len);
 
 
 #ifdef __cplusplus
 } /* extern "C" */
 namespace xtd {
-	using ::huffman_encode;
-	using ::huffman_decode;
-	using ::base64_encode;
-	using ::base64_decode;
+    using ::huffman_encode;
+    using ::huffman_decode;
+    using ::base64_encode;
+    using ::base64_decode;
 } /* namespace */
 #endif
 #endif /* _ENCODING_H_ */

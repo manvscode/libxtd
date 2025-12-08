@@ -38,60 +38,60 @@ extern "C" {
 typedef unsigned char byte_t;
 
 typedef enum size_unit {
-	unit_bytes = 0,
+    unit_bytes = 0,
 
-	unit_kilobytes,
-	unit_megabytes,
-	unit_gigabytes,
-	unit_terabytes,
-	unit_petabytes,
-	unit_exabytes,
+    unit_kilobytes,
+    unit_megabytes,
+    unit_gigabytes,
+    unit_terabytes,
+    unit_petabytes,
+    unit_exabytes,
 
-	unit_kibibytes,
-	unit_mebibytes,
-	unit_gibibytes,
-	unit_tebibytes,
-	unit_exibytes
+    unit_kibibytes,
+    unit_mebibytes,
+    unit_gibibytes,
+    unit_tebibytes,
+    unit_exibytes
 } size_unit_t;
 
-const char*  size_in_unit           ( size_t size, size_unit_t unit, int precision );
-const char*  size_in_best_unit      ( size_t size, bool use_base_two, int precision );
-const char*  byte_to_binary         ( uint8_t x );
-void         buffer_scramble        ( const char* key, void* buffer, size_t size, unsigned short pivot );
-void         buffer_unscramble      ( const char* key, void* buffer, size_t size, unsigned short pivot );
-void         xor_bytes              ( const void* a, size_t a_size, const void* b, size_t b_size, void* result );
-void         swap                   ( void* left, void* right, size_t size );
-char*        debug_buffer_to_string ( const void* data, size_t size, size_t grouping, bool with_spaces ); /* allocates memory */
-unsigned int rotate_bits_left       ( unsigned int value, int shift );
-unsigned int rotate_bits_right      ( unsigned int value, int shift );
+const char*  size_in_unit           (size_t size, size_unit_t unit, int precision);
+const char*  size_in_best_unit      (size_t size, bool use_base_two, int precision);
+const char*  byte_to_binary         (uint8_t x);
+void         buffer_scramble        (const char* key, void* buffer, size_t size, unsigned short pivot);
+void         buffer_unscramble      (const char* key, void* buffer, size_t size, unsigned short pivot);
+void         xor_bytes              (const void* a, size_t a_size, const void* b, size_t b_size, void* result);
+void         swap                   (void* left, void* right, size_t size);
+char*        debug_buffer_to_string (const void* data, size_t size, size_t grouping, bool with_spaces); /* allocates memory */
+unsigned int rotate_bits_left       (unsigned int value, int shift);
+unsigned int rotate_bits_right      (unsigned int value, int shift);
 
 /*
  * Macros
  */
 #define Ob(x)                           ((unsigned)Ob_(0 ## x ## uL))
 #define Ob_(x)                          (x & 1 | x >> 2 & 2 | x >> 4 & 4 | x >> 6 & 8 | x >> 8 & 16 | x >> 10 & 32 | x >> 12 & 64 | x >> 14 & 128)
-#define bit_is_disabled( flag, flags )  (!bit_is_set(flag, flags))
-#define bit_is_enabled( flag, flags )   (bit_is_set(flag, flags))
-#define bit_is_set( flag, flags )       (((flags) & (flag)) != 0)
-#define bit_toggle( flag, flags )       ((flags) ^= (flag))
-#define bit_set( flag, flags )          ((flags) |= (flag))
-#define bit_unset( flag, flags )        ((flags) &= ~(flag))
+#define bit_is_disabled(flag, flags)  (!bit_is_set(flag, flags))
+#define bit_is_enabled(flag, flags)   (bit_is_set(flag, flags))
+#define bit_is_set(flag, flags)       (((flags) & (flag)) != 0)
+#define bit_toggle(flag, flags)       ((flags) ^= (flag))
+#define bit_set(flag, flags)          ((flags) |= (flag))
+#define bit_unset(flag, flags)        ((flags) &= ~(flag))
 
 #ifdef __cplusplus
 } /* extern "C" */
 namespace xtd {
-	using ::byte_t;
-	using ::size_unit_t;
-	using ::size_in_unit;
-	using ::size_in_best_unit;
-	using ::byte_to_binary;
-	using ::buffer_scramble;
-	using ::buffer_unscramble;
-	using ::xor_bytes;
-	using ::swap;
-	using ::debug_buffer_to_string;
-	using ::rotate_bits_left;
-	using::rotate_bits_right;
+    using ::byte_t;
+    using ::size_unit_t;
+    using ::size_in_unit;
+    using ::size_in_best_unit;
+    using ::byte_to_binary;
+    using ::buffer_scramble;
+    using ::buffer_unscramble;
+    using ::xor_bytes;
+    using ::swap;
+    using ::debug_buffer_to_string;
+    using ::rotate_bits_left;
+    using::rotate_bits_right;
 } /* namespace */
 #endif
 #endif /* _XTD_MEMORY_H_ */

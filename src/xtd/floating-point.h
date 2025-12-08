@@ -32,16 +32,16 @@
 extern "C" {
 #endif
 
-bool float_is_equal       ( float a, float b );
-bool double_is_equal      ( double a, double b );
-bool long_double_is_equal ( long double a, long double b );
+bool float_is_equal       (float a, float b);
+bool double_is_equal      (double a, double b);
+bool long_double_is_equal (long double a, long double b);
 
 #ifdef __cplusplus
 } /* extern "C" */
 namespace xtd {
-	using ::float_is_equal;
-	using ::double_is_equal;
-	using ::long_double_is_equal;
+    using ::float_is_equal;
+    using ::double_is_equal;
+    using ::long_double_is_equal;
 } /* namespace */
 #endif
 #endif /* _FLOATING_POINT_H_ */

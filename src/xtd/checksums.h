@@ -37,22 +37,22 @@ extern "C" {
 /*
  * Checksums
  */
-uint32_t java_hash         ( const uint8_t* data, size_t len );
-uint32_t xor8              ( const uint8_t* data, size_t len );
-uint32_t adler32           ( const uint8_t* data, size_t len );
-uint16_t fletcher16_simple ( uint8_t* data, size_t len );
-void     fletcher16        ( uint8_t* check_a, uint8_t* check_b, uint8_t* data, size_t len ); /* faster */
-uint32_t fletcher32        ( uint16_t* data, size_t len );
+uint32_t java_hash         (const uint8_t* data, size_t len);
+uint32_t xor8              (const uint8_t* data, size_t len);
+uint32_t adler32           (const uint8_t* data, size_t len);
+uint16_t fletcher16_simple (uint8_t* data, size_t len);
+void     fletcher16        (uint8_t* check_a, uint8_t* check_b, uint8_t* data, size_t len); /* faster */
+uint32_t fletcher32        (uint16_t* data, size_t len);
 
 #ifdef __cplusplus
 } /* extern "C" */
 namespace xtd {
-	using ::java_hash;
-	using ::xor8;
-	using ::adler32;
-	using ::fletcher16_simple;
-	using ::fletcher16;
-	using ::fletcher32;
+    using ::java_hash;
+    using ::xor8;
+    using ::adler32;
+    using ::fletcher16_simple;
+    using ::fletcher16;
+    using ::fletcher32;
 } /* namespace */
 #endif
 #endif /* _XTD_CHECKSUMS_H_ */

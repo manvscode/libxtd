@@ -26,31 +26,31 @@
 #include "xtd/all.h"
 
 
-int main( int argc, char *argv[] )
+int main(int argc, char *argv[])
 {
-	int32_t nums[128];
+    int32_t nums[128];
 
-	for( size_t i = 0; i < 128; i++ )
-	{
-		nums[ i ] = (int32_t) rand( );
-	}
+    for (size_t i = 0; i < 128; i++)
+    {
+        nums[ i ] = (int32_t) rand();
+    }
 
-	{
-		char* str = debug_buffer_to_string( nums, sizeof(nums), 1, true );
-		printf( "%s\n\n", str );
-		free( str );
-	}
+    {
+        char* str = debug_buffer_to_string(nums, sizeof(nums), 1, true);
+        printf("%s\n\n", str);
+        free(str);
+    }
 
-	{
-		char* str = debug_buffer_to_string( nums, sizeof(nums), 2, true );
-		printf( "%s\n\n", str );
-		free( str );
-	}
+    {
+        char* str = debug_buffer_to_string(nums, sizeof(nums), 2, true);
+        printf("%s\n\n", str);
+        free(str);
+    }
 
-	{
-		char* str = debug_buffer_to_string( nums, sizeof(nums), 4, true );
-		printf( "%s\n\n", str );
-		free( str );
-	}
-	return 0;
+    {
+        char* str = debug_buffer_to_string(nums, sizeof(nums), 4, true);
+        printf("%s\n\n", str);
+        free(str);
+    }
+    return 0;
 }

@@ -32,82 +32,81 @@
 #define snprintf  _snprintf
 #endif
 
-
-bool file_exists( const char* path )
+bool file_exists(const char* path)
 {
-	bool result = true;
-	assert( path );
-	DWORD attributes = GetFileAttributes( path ); // from winbase.h
+    bool result = true;
+    assert(path);
+    DWORD attributes = GetFileAttributes(path); // from winbase.h
 
-	if( INVALID_FILE_ATTRIBUTES == attributes )
-	{
-		result = false;
-	}
-	else if( attributes & FILE_ATTRIBUTE_DIRECTORY )
-	{
-		result = false;
-	}
-	else
-	{
-		switch( GetLastError() )
-		{
-			case ERROR_FILE_NOT_FOUND:
-			case ERROR_PATH_NOT_FOUND:
-			case ERROR_INVALID_NAME:
-			case ERROR_INVALID_DRIVE:
-			case ERROR_NOT_READY:
-			case ERROR_INVALID_PARAMETER:
-			case ERROR_BAD_PATHNAME:
-			case ERROR_BAD_NETPATH:
-				result = false;
-				break;
-			default:
-				break;
-		}
-	}
+    if (INVALID_FILE_ATTRIBUTES == attributes)
+    {
+        result = false;
+    }
+    else if (attributes & FILE_ATTRIBUTE_DIRECTORY)
+    {
+        result = false;
+    }
+    else
+    {
+        switch (GetLastError())
+        {
+            case ERROR_FILE_NOT_FOUND:
+            case ERROR_PATH_NOT_FOUND:
+            case ERROR_INVALID_NAME:
+            case ERROR_INVALID_DRIVE:
+            case ERROR_NOT_READY:
+            case ERROR_INVALID_PARAMETER:
+            case ERROR_BAD_PATHNAME:
+            case ERROR_BAD_NETPATH:
+                result = false;
+                break;
+            default:
+                break;
+        }
+    }
 
-	return result;
+    return result;
 }
 
-bool file_is_writeable( const char* path )
+bool file_is_writeable(const char* path)
 {
-	assert( path );
-	assert( false && "Not implemented!" );
-	return false;
+    assert(path);
+    assert(false && "Not implemented!");
+    return false;
 }
 
-bool file_is_readable( const char* path )
+bool file_is_readable(const char* path)
 {
-	assert( path );
-	assert(false && "Not implemented!");
-	return false;
+    assert(path);
+    assert(false && "Not implemented!");
+    return false;
 }
 
-bool file_is_executable( const char* path )
+bool file_is_executable(const char* path)
 {
-	assert( path );
-	assert(false && "Not implemented!");
-	return false;
+    assert(path);
+    assert(false && "Not implemented!");
+    return false;
 }
 
-bool file_delete( const char* path )
+bool file_delete(const char* path)
 {
-	assert( path );
-	return DeleteFile( path );
+    assert(path);
+    return DeleteFile(path);
 }
 
-int64_t file_size( const char* path )
+int64_t file_size(const char* path)
 {
-	WIN32_FILE_ATTRIBUTE_DATA fad;
-	assert( path );
+    WIN32_FILE_ATTRIBUTE_DATA fad;
+    assert(path);
 
-    if( GetFileAttributesEx(path, GetFileExInfoStandard, &fad) )
-	{
-		LARGE_INTEGER size;
-		size.HighPart = fad.nFileSizeHigh;
-		size.LowPart = fad.nFileSizeLow;
-		return size.QuadPart;
-	}
+    if (GetFileAttributesEx(path, GetFileExInfoStandard, &fad))
+    {
+        LARGE_INTEGER size;
+        size.HighPart = fad.nFileSizeHigh;
+        size.LowPart = fad.nFileSizeLow;
+        return size.QuadPart;
+    }
 
     return -1; // error condition, could call GetLastError to find out more
 }
@@ -116,164 +115,164 @@ int64_t file_size( const char* path )
 #define WINDOWS_TICK       10000000
 #define SEC_TO_UNIX_EPOCH  11644473600LL
 
-int64_t file_age( const char* path ) // Return age of file in seconds. -1 = doesnt exist or error
+int64_t file_age(const char* path) // Return age of file in seconds. -1 = doesnt exist or error
 {
-	WIN32_FILE_ATTRIBUTE_DATA fad;
-	assert(path);
+    WIN32_FILE_ATTRIBUTE_DATA fad;
+    assert(path);
 
-	if( GetFileAttributesEx(path, GetFileExInfoStandard, &fad) )
-	{
-		int64_t timeInWindowsEpoch = ((int64_t)fad.ftCreationTime.dwHighDateTime << 32) | fad.ftCreationTime.dwLowDateTime;
-		return (timeInWindowsEpoch / WINDOWS_TICK - SEC_TO_UNIX_EPOCH);
-	}
+    if (GetFileAttributesEx(path, GetFileExInfoStandard, &fad))
+    {
+        int64_t timeInWindowsEpoch = ((int64_t)fad.ftCreationTime.dwHighDateTime << 32) | fad.ftCreationTime.dwLowDateTime;
+        return (timeInWindowsEpoch / WINDOWS_TICK - SEC_TO_UNIX_EPOCH);
+    }
 
-	return -1; // error condition, could call GetLastError to find out more
+    return -1; // error condition, could call GetLastError to find out more
 }
 
-extern const char* basename( const char* path, char dir_separator );
+extern const char* basename(const char* path, char dir_separator);
 
-const char* file_basename( const char* filename )
+const char* file_basename(const char* filename)
 {
-	assert( filename );
-	return basename( filename, '\\' );
+    assert(filename);
+    return basename(filename, '\\');
 }
 
-bool is_file( const char* path )
+bool is_file(const char* path)
 {
-	bool result = true;
-	assert( path );
-	DWORD attributes = GetFileAttributes( path );
+    bool result = true;
+    assert(path);
+    DWORD attributes = GetFileAttributes(path);
 
-	if( attributes == INVALID_FILE_ATTRIBUTES )
-	{
-		result = false;
-	}
-	else if( attributes & FILE_ATTRIBUTE_DIRECTORY )
-	{
-		result = false;
-	}
+    if (attributes == INVALID_FILE_ATTRIBUTES)
+    {
+        result = false;
+    }
+    else if (attributes & FILE_ATTRIBUTE_DIRECTORY)
+    {
+        result = false;
+    }
 
-	return result;
+    return result;
 }
 
-bool is_directory( const char* path )
+bool is_directory(const char* path)
 {
-	bool result = false;
-	assert( path );
-	DWORD attributes = GetFileAttributes( path );
+    bool result = false;
+    assert(path);
+    DWORD attributes = GetFileAttributes(path);
 
-	if( attributes == INVALID_FILE_ATTRIBUTES )
-	{
-		result = false;
-	}
-	else if( attributes & FILE_ATTRIBUTE_DIRECTORY )
-	{
-		result = true;
-	}
+    if (attributes == INVALID_FILE_ATTRIBUTES)
+    {
+        result = false;
+    }
+    else if (attributes & FILE_ATTRIBUTE_DIRECTORY)
+    {
+        result = true;
+    }
 
-	return result;
+    return result;
 }
 
-bool directory_exists( const char* path )
+bool directory_exists(const char* path)
 {
-	assert( path );
-	DWORD attributes = GetFileAttributes(path);
+    assert(path);
+    DWORD attributes = GetFileAttributes(path);
 
-	if( attributes == INVALID_FILE_ATTRIBUTES )
-	{
-		return false;
-	}
-	else if( attributes & FILE_ATTRIBUTE_DIRECTORY )
-	{
-		return true;
-	}
+    if (attributes == INVALID_FILE_ATTRIBUTES)
+    {
+        return false;
+    }
+    else if (attributes & FILE_ATTRIBUTE_DIRECTORY)
+    {
+        return true;
+    }
 
-	return false;
+    return false;
 }
 
-bool directory_create( const char* path )
+bool directory_create(const char* path)
 {
-	assert( path );
-	return CreateDirectory(path, NULL);
+    assert(path);
+    return CreateDirectory(path, NULL);
 }
 
-bool directory_delete( const char* path, bool recursive )
+bool directory_delete(const char* path, bool recursive)
 {
-	// TODO: Need to implement this.
-	return false;
+    // TODO: Need to implement this.
+    return false;
 }
 
-extern char* __path_r( const char* path, char dir_separator, char* buffer, size_t size ); /* returns NULL on error  */
-extern char* __path( const char* path, char dir_separator ); /* allocates memory */
+extern char* __path_r(const char* path, char dir_separator, char* buffer, size_t size); /* returns NULL on error  */
+extern char* __path(const char* path, char dir_separator); /* allocates memory */
 
-char* directory_path_r( const char* path, char* buffer, size_t size )
+char* directory_path_r(const char* path, char* buffer, size_t size)
 {
-	return __path_r( path, '\\', buffer, size );
+    return __path_r(path, '\\', buffer, size);
 }
 
-char* directory_path( const char* p ) /* allocates memory */
+char* directory_path(const char* p) /* allocates memory */
 {
-	assert( p );
-	return __path( p, '\\' );
+    assert(p);
+    return __path(p, '\\');
 }
 
-static void __directory_enumerate( const char* path, bool recursive, directory_enumerate_mode_t mode, file_enumerate_fxn_t process_file, void* args );
+static void __directory_enumerate(const char* path, bool recursive, directory_enumerate_mode_t mode, file_enumerate_fxn_t process_file, void* args);
 
-void directory_enumerate( const char* path, bool recursive, directory_enumerate_mode_t mode, file_enumerate_fxn_t process_file, void* args )
+void directory_enumerate(const char* path, bool recursive, directory_enumerate_mode_t mode, file_enumerate_fxn_t process_file, void* args)
 {
-	if( path )
-	{
-		size_t len = strlen( path );
-		bool ends_with_slash = len > 0 && path[ len - 1 ] == '\\';
-		size_t sz = ends_with_slash ? len : (len + 1);
+    if (path)
+    {
+        size_t len = strlen(path);
+        bool ends_with_slash = len > 0 && path[ len - 1 ] == '\\';
+        size_t sz = ends_with_slash ? len : (len + 1);
 
-		char path_no_trailing_slash[ MAX_PATH + 1 ];
-		strncpy( path_no_trailing_slash, path, sz );
-		path_no_trailing_slash[ sz - 1 ] = '\0';
+        char path_no_trailing_slash[ MAX_PATH + 1 ];
+        strncpy(path_no_trailing_slash, path, sz);
+        path_no_trailing_slash[ sz - 1 ] = '\0';
 
-		__directory_enumerate( path_no_trailing_slash, recursive, mode, process_file, args );
-	}
+        __directory_enumerate(path_no_trailing_slash, recursive, mode, process_file, args);
+    }
 }
 
-void __directory_enumerate( const char* path, bool recursive, directory_enumerate_mode_t mode, file_enumerate_fxn_t process_file, void* args )
+void __directory_enumerate(const char* path, bool recursive, directory_enumerate_mode_t mode, file_enumerate_fxn_t process_file, void* args)
 {
-	WIN32_FIND_DATA find_data;
-	BOOL enumerating = true;
+    WIN32_FIND_DATA find_data;
+    BOOL enumerating = true;
 
-	char path_with_wildcard[ MAX_PATH + 1 ];
-	snprintf( path_with_wildcard, sizeof(path_with_wildcard), "%s\\*", path );
-	path_with_wildcard[ sizeof(path_with_wildcard) - 1 ] = '\0';
+    char path_with_wildcard[ MAX_PATH + 1 ];
+    snprintf(path_with_wildcard, sizeof(path_with_wildcard), "%s\\*", path);
+    path_with_wildcard[ sizeof(path_with_wildcard) - 1 ] = '\0';
 
 
-	for (HANDLE find = FindFirstFile( path_with_wildcard, &find_data );
-		 find != INVALID_HANDLE_VALUE && enumerating;
-		 enumerating = FindNextFile( find, &find_data ) )
-	{
-		if( strcmp(find_data.cFileName, ".") == 0 ) continue;
-		else if( strcmp(find_data.cFileName, "..") == 0 ) continue;
+    for (HANDLE find = FindFirstFile(path_with_wildcard, &find_data);
+            find != INVALID_HANDLE_VALUE && enumerating;
+            enumerating = FindNextFile(find, &find_data))
+    {
+        if (strcmp(find_data.cFileName, ".") == 0) continue;
+        else if (strcmp(find_data.cFileName, "..") == 0) continue;
 
-		char absolute_path[ MAX_PATH + 1 ];
-		snprintf( absolute_path, sizeof(absolute_path), "%s\\%s", path, find_data.cFileName );
-		absolute_path[ sizeof(absolute_path) - 1] = '\0';
+        char absolute_path[ MAX_PATH + 1 ];
+        snprintf(absolute_path, sizeof(absolute_path), "%s\\%s", path, find_data.cFileName);
+        absolute_path[ sizeof(absolute_path) - 1] = '\0';
 
-		bool is_dir = find_data.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY;
+        bool is_dir = find_data.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY;
 
-		if( mode == ENUMERATE_FILES && is_dir )
-		{
-			// Ignore this.
-		}
-		else if( mode == ENUMERATE_DIRECTORIES && !is_dir )
-		{
-			// Ignore this.
-		}
-		else
-		{
-			process_file( absolute_path, args );
-		}
+        if (mode == ENUMERATE_FILES && is_dir)
+        {
+            // Ignore this.
+        }
+        else if (mode == ENUMERATE_DIRECTORIES && !is_dir)
+        {
+            // Ignore this.
+        }
+        else
+        {
+            process_file(absolute_path, args);
+        }
 
-		if( recursive && is_dir )
-		{
-			__directory_enumerate( absolute_path, recursive, mode, process_file, args);
-		}
-	}
+        if (recursive && is_dir)
+        {
+            __directory_enumerate(absolute_path, recursive, mode, process_file, args);
+        }
+    }
 }

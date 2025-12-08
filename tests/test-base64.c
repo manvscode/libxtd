@@ -24,28 +24,28 @@
 #include "xtd/all.h"
 
 
-int main( int argc, char *argv[] )
+int main(int argc, char *argv[])
 {
 #if 0
-	const char* input = "Man is distinguished, not only by his reason, but by this singular passion from other animals, which is a lust of the mind, that by a perseverance of delight in the continued and indefatigable generation of knowledge, exceeds the short vehemence of any carnal pleasure.";
+    const char* input = "Man is distinguished, not only by his reason, but by this singular passion from other animals, which is a lust of the mind, that by a perseverance of delight in the continued and indefatigable generation of knowledge, exceeds the short vehemence of any carnal pleasure.";
 #else
-	const char* input = "any carnal pleas";
+    const char* input = "any carnal pleas";
 #endif
-	size_t input_len = strlen(input);
+    size_t input_len = strlen(input);
 
-	size_t base64_encoded_len = 0;
-	char* base64_encoded = base64_encode( input, input_len + 1, &base64_encoded_len );
+    size_t base64_encoded_len = 0;
+    char* base64_encoded = base64_encode(input, input_len + 1, &base64_encoded_len);
 
-	if( base64_encoded )
-	{
-		size_t original_size = 0;
-		char* original = base64_decode( base64_encoded, base64_encoded_len, &original_size );
+    if (base64_encoded)
+    {
+        size_t original_size = 0;
+        char* original = base64_decode(base64_encoded, base64_encoded_len, &original_size);
 
-		printf( "   Input: %s (len = %zu)\n", input, input_len + 1 );
-		printf( "  Base64: %s (len = %zu)\n", base64_encoded, base64_encoded_len );
-		printf( "Original: %s (len = %zu)\n", original, original_size );
-	}
+        printf("   Input: %s (len = %zu)\n", input, input_len + 1);
+        printf("  Base64: %s (len = %zu)\n", base64_encoded, base64_encoded_len);
+        printf("Original: %s (len = %zu)\n", original, original_size);
+    }
 
 
-	return  0;
+    return  0;
 }

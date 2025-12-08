@@ -28,34 +28,34 @@
 
 const char* FILESYSTEM_TEST_DESCRIPTION = "Testing functions in <xtd/filesystem.h>";
 const test_case_t FILESYSTEM_TEST_CASES[] = {
-	{ "Test file_exists()", test_nil },
-	{ "Test file_is_writeable()", test_nil },
-	{ "Test file_is_readable()", test_nil },
-	{ "Test file_is_executable()", test_nil },
-	{ "Test file_copy()", test_nil },
-	{ "Test file_delete()", test_nil },
-	{ "Test file_size()", test_nil },
-	{ "Test file_size_string()", test_nil },
-	{ "Test file_age()", test_nil },
-	{ "Test file_basename()", test_nil },
-	{ "Test file_extension()", test_nil },
-	{ "Test file_slurp()", test_nil },
-	{ "Test file_readline()", test_nil },
-	{ "Test is_file()", test_nil },
-	{ "Test is_directory()", test_nil },
-	{ "Test directory_exists()", test_nil },
-	{ "Test directory_create()", test_nil },
-	{ "Test directory_delete()", test_nil },
-	{ "Test directory_path_r()", test_nil },
-	{ "Test directory_path()", test_nil },
-	{ "Test directory_enumerate()", test_nil },
+    { "Test file_exists()", test_nil },
+    { "Test file_is_writeable()", test_nil },
+    { "Test file_is_readable()", test_nil },
+    { "Test file_is_executable()", test_nil },
+    { "Test file_copy()", test_nil },
+    { "Test file_delete()", test_nil },
+    { "Test file_size()", test_nil },
+    { "Test file_size_string()", test_nil },
+    { "Test file_age()", test_nil },
+    { "Test file_basename()", test_nil },
+    { "Test file_extension()", test_nil },
+    { "Test file_slurp()", test_nil },
+    { "Test file_readline()", test_nil },
+    { "Test is_file()", test_nil },
+    { "Test is_directory()", test_nil },
+    { "Test directory_exists()", test_nil },
+    { "Test directory_create()", test_nil },
+    { "Test directory_delete()", test_nil },
+    { "Test directory_path_r()", test_nil },
+    { "Test directory_path()", test_nil },
+    { "Test directory_enumerate()", test_nil },
 };
 const size_t FILESYSTEM_TEST_COUNT = sizeof(FILESYSTEM_TEST_CASES) / sizeof(FILESYSTEM_TEST_CASES[0]);
 
 #ifdef TEST_FILESYSTEM
 int main(int argc, char* argv[])
 {
-	size_t pass_count = test_features( FILESYSTEM_TEST_DESCRIPTION, FILESYSTEM_TEST_CASES, FILESYSTEM_TEST_COUNT, true );
-	return FILESYSTEM_TEST_COUNT - pass_count;
+    size_t pass_count = test_features(FILESYSTEM_TEST_DESCRIPTION, FILESYSTEM_TEST_CASES, FILESYSTEM_TEST_COUNT, true);
+    return FILESYSTEM_TEST_COUNT - pass_count;
 }
 #endif

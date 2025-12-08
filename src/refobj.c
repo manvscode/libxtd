@@ -35,41 +35,41 @@ typedef SSIZE_T ssize_t;
 #endif
 
 typedef struct refobj {
-	void (*destroy) ( void* ptr );
-	ssize_t count;
+    void (*destroy) (void* ptr);
+    ssize_t count;
 } refobj_t;
 
-#define refobj_data( r )         ((void*)( ((char*)r) + sizeof(refobj_t) ))
-#define refobj_base( d )         ((refobj_t*)( ((char*)d) - sizeof(refobj_t) ))
+#define refobj_data(r)         ((void*)(((char*)r) + sizeof(refobj_t)))
+#define refobj_base(d)         ((refobj_t*)(((char*)d) - sizeof(refobj_t)))
 
-void* refobj_alloc( size_t size, void (*destroy) ( void* ptr ) )
+void* refobj_alloc(size_t size, void (*destroy) (void* ptr))
 {
-	refobj_t* r = malloc( sizeof(refobj_t) + size );
+    refobj_t* r = malloc(sizeof(refobj_t) + size);
 
-	if( r )
-	{
-		r->destroy = destroy;
-		r->count   = 1;
-	}
+    if (r)
+    {
+        r->destroy = destroy;
+        r->count   = 1;
+    }
 
-	return refobj_data( r );
+    return refobj_data(r);
 }
 
-void refobj_retain( void* o )
+void refobj_retain(void* o)
 {
-	refobj_t* obj = refobj_base( o );
-	obj->count += 1;
+    refobj_t* obj = refobj_base(o);
+    obj->count += 1;
 }
 
-void refobj_release( void* o )
+void refobj_release(void* o)
 {
-	refobj_t* obj = refobj_base( o );
-	obj->count -= 1;
+    refobj_t* obj = refobj_base(o);
+    obj->count -= 1;
 
-	if( obj->count == 0 )
-	{
-		obj->destroy( refobj_data(obj) );
-		free( obj );
-	}
+    if (obj->count == 0)
+    {
+        obj->destroy(refobj_data(obj));
+        free(obj);
+    }
 }
 

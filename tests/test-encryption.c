@@ -32,17 +32,17 @@
 
 const char* ENCRYPTION_TEST_DESCRIPTION = "Testing functions in <xtd/encryption.h>";
 const test_case_t ENCRYPTION_TEST_CASES[] = {
-	{ "Test caesar_cypher_encrypt_buffer()", test_nil },
-	{ "Test caesar_cypher_decrypt_buffer()", test_nil },
-	{ "Test caesar_cypher_encrypt_text()", test_nil },
-	{ "Test caesar_cypher_decrypt_text()", test_nil },
+    { "Test caesar_cypher_encrypt_buffer()", test_nil },
+    { "Test caesar_cypher_decrypt_buffer()", test_nil },
+    { "Test caesar_cypher_encrypt_text()", test_nil },
+    { "Test caesar_cypher_decrypt_text()", test_nil },
 };
 const size_t ENCRYPTION_TEST_COUNT = sizeof(ENCRYPTION_TEST_CASES) / sizeof(ENCRYPTION_TEST_CASES[0]);
 
 #ifdef TEST_ENCRYPTION
 int main(int argc, char* argv[])
 {
-	size_t pass_count = test_features( ENCRYPTION_TEST_DESCRIPTION, ENCRYPTION_TEST_CASES, ENCRYPTION_TEST_COUNT, true );
-	return ENCRYPTION_TEST_COUNT - pass_count;
+    size_t pass_count = test_features(ENCRYPTION_TEST_DESCRIPTION, ENCRYPTION_TEST_CASES, ENCRYPTION_TEST_COUNT, true);
+    return ENCRYPTION_TEST_COUNT - pass_count;
 }
 #endif

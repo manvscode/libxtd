@@ -32,16 +32,16 @@
 extern "C" {
 #endif
 
-bool is_big_endian ( void );
-void hton          ( void* mem, size_t size );
-void ntoh          ( void* mem, size_t size );
+bool is_big_endian (void);
+void hton          (void* mem, size_t size);
+void ntoh          (void* mem, size_t size);
 
 #ifdef __cplusplus
 } /* extern "C" */
 namespace xtd {
-	using ::is_big_endian;
-	using ::hton;
-	using ::ntoh;
+    using ::is_big_endian;
+    using ::hton;
+    using ::ntoh;
 } /* namespace */
 #endif
 #endif /* _ENDIAN_H_ */

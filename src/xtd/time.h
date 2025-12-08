@@ -35,32 +35,32 @@
 extern "C" {
 #endif
 
-double      time_seconds             ( void );
-double      time_milliseconds        ( void );
-uint64_t    time_secs                ( void );
-uint64_t    time_msecs               ( void );
-void        time_msleep              ( int milliseconds );
-const char* time_iso8601             ( time_t t ); /* not thread safe */
-bool        time_iso8601_r           ( time_t t, char* iso_8601, size_t len );
-const char* time_iso8601_precision   ( time_t t, unsigned int milliseconds ); /* not thread safe */
-bool        time_iso8601_precision_r ( time_t t, unsigned int milliseconds, char* iso_8601, size_t size );
-double      time_utc_offset          ( const char* tz ); /* Expects IANA or Windows zone id. */
-struct tm*  time_local               ( time_t t, const char* tz ); /* Expects IANA or Windows zone id. */
+double      time_seconds             (void);
+double      time_milliseconds        (void);
+uint64_t    time_secs                (void);
+uint64_t    time_msecs               (void);
+void        time_msleep              (int milliseconds);
+const char* time_iso8601             (time_t t); /* not thread safe */
+bool        time_iso8601_r           (time_t t, char* iso_8601, size_t len);
+const char* time_iso8601_precision   (time_t t, unsigned int milliseconds); /* not thread safe */
+bool        time_iso8601_precision_r (time_t t, unsigned int milliseconds, char* iso_8601, size_t size);
+double      time_utc_offset          (const char* tz); /* Expects IANA or Windows zone id. */
+struct tm*  time_local               (time_t t, const char* tz); /* Expects IANA or Windows zone id. */
 
 #ifdef __cplusplus
 } /* extern "C" */
 namespace xtd {
-	using ::time_seconds;
-	using ::time_milliseconds;
-	using ::time_secs;
-	using ::time_msecs;
-	using ::time_msleep;
-	using ::time_iso8601;
-	using ::time_iso8601_r;
-	using ::time_iso8601_precision;
-	using ::time_iso8601_precision_r;
-	using ::time_utc_offset;
-	using ::time_local;
+    using ::time_seconds;
+    using ::time_milliseconds;
+    using ::time_secs;
+    using ::time_msecs;
+    using ::time_msleep;
+    using ::time_iso8601;
+    using ::time_iso8601_r;
+    using ::time_iso8601_precision;
+    using ::time_iso8601_precision_r;
+    using ::time_utc_offset;
+    using ::time_local;
 } /* namespace */
 #endif
 #endif /* _XTD_TIME_H_ */

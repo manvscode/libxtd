@@ -27,22 +27,22 @@
 extern "C" {
 #endif
 
-typedef void (*refobj_destroy_fxn_t) ( void* ptr );
+typedef void (*refobj_destroy_fxn_t) (void* ptr);
 
 /*
  * Reference Counting
  */
-void* refobj_alloc   ( size_t size, refobj_destroy_fxn_t destroy );
-void  refobj_retain  ( void* obj );
-void  refobj_release ( void* obj );
+void* refobj_alloc   (size_t size, refobj_destroy_fxn_t destroy);
+void  refobj_retain  (void* obj);
+void  refobj_release (void* obj);
 
 #ifdef __cplusplus
 } /* extern "C" */
 namespace xtd {
-	using ::refobj_destroy_fxn_t;
-	using ::refobj_alloc;
-	using ::refobj_retain;
-	using ::refobj_release;
+    using ::refobj_destroy_fxn_t;
+    using ::refobj_alloc;
+    using ::refobj_retain;
+    using ::refobj_release;
 } /* namespace */
 #endif
 #endif /* _XTD_REFOBJ_H_ */

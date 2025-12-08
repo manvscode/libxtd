@@ -42,23 +42,23 @@ typedef struct cmd_opt_ctx cmd_opt_ctx_t;
  * This is equivalent to the argc passed to cmd_opt_process(). This should
  * be equivalent to the argc in main(int argc, char* argv[]).
  */
-int cmd_opt_argc( const cmd_opt_ctx_t* ctx );
+int cmd_opt_argc(const cmd_opt_ctx_t* ctx);
 
 /*
  * Returns a point to the argument strings passed to cmd_opt_process(). This
  * should be equivalent to the argv in main(int argc, char* argv[]).
  */
-const char** cmd_opt_argv( const cmd_opt_ctx_t* ctx );
+const char** cmd_opt_argv(const cmd_opt_ctx_t* ctx);
 
 /*
  * Returns the number of arguments that the option is expecting.
  */
-size_t cmd_opt_args_count( const cmd_opt_ctx_t* ctx );
+size_t cmd_opt_args_count(const cmd_opt_ctx_t* ctx);
 
 /*
  * Returns a point to the first argument.
  */
-const char** cmd_opt_args( const cmd_opt_ctx_t* ctx );
+const char** cmd_opt_args(const cmd_opt_ctx_t* ctx);
 
 /*
  * When calling cmd_opt_process() it is possible that an error can occur. These
@@ -66,11 +66,11 @@ const char** cmd_opt_args( const cmd_opt_ctx_t* ctx );
  * code that will be passed to the error handler (see cmd_opt_error_t).
  */
 typedef enum cmd_opt_result {
-	CMD_OPT_SUCCESS               = (0),
-	CMD_OPT_ERR_NO_OPTIONS        = (-1),
-	CMD_OPT_ERR_UNEXPECTED_OPTION = (-2),
-	CMD_OPT_ERR_INVALID_ARG_COUNT = (-3),
-	CMD_OPT_ERR_ABORTED           = (-4)
+    CMD_OPT_SUCCESS               = (0),
+    CMD_OPT_ERR_NO_OPTIONS        = (-1),
+    CMD_OPT_ERR_UNEXPECTED_OPTION = (-2),
+    CMD_OPT_ERR_INVALID_ARG_COUNT = (-3),
+    CMD_OPT_ERR_ABORTED           = (-4)
 } cmd_opt_result_t;
 
 /*
@@ -78,22 +78,22 @@ typedef enum cmd_opt_result {
  * structure). Return true if the arguments can be handled. Otherwise, return
  * false and abort the processing of the remaining command line options.
  */
-typedef bool (*cmd_opt_handler_t) ( const cmd_opt_ctx_t* ctx, void* user_data );
+typedef bool (*cmd_opt_handler_t) (const cmd_opt_ctx_t* ctx, void* user_data);
 
 /*
  * A callback for handling an errors when processing options.
  */
-typedef void (*cmd_opt_error_t) ( cmd_opt_result_t error, const char* opt, void* user_data );
+typedef void (*cmd_opt_error_t) (cmd_opt_result_t error, const char* opt, void* user_data);
 
 /*
  * A structure that defines an accepted command line option.
  */
 typedef struct cmd_opt {
-	const char* opt_short; // The option's short form (i.e. "-h").
-	const char* opt_long; // The option's long form (i.e. "--help").
-	const int opt_arg_count; // How many arguments are expected to follow.
-	const char* opt_description; // A description of the option.
-	cmd_opt_handler_t callback; // Set to cmd_opt_nop() for ignoring an option.
+    const char* opt_short; // The option's short form (i.e. "-h").
+    const char* opt_long; // The option's long form (i.e. "--help").
+    const int opt_arg_count; // How many arguments are expected to follow.
+    const char* opt_description; // A description of the option.
+    cmd_opt_handler_t callback; // Set to cmd_opt_nop() for ignoring an option.
 } cmd_opt_t;
 
 /*
@@ -104,39 +104,39 @@ typedef struct cmd_opt {
  * This function returns 0 on success, and a negative value on error (see the
  * various CMD_OPT_* constants).
  */
-cmd_opt_result_t cmd_opt_process( int argc, char* argv[],
-		const cmd_opt_t* options, size_t option_count,
-		cmd_opt_error_t on_error, cmd_opt_handler_t on_unexpected,
-		void* user_data );
+cmd_opt_result_t cmd_opt_process(int argc, char* argv[],
+        const cmd_opt_t* options, size_t option_count,
+        cmd_opt_error_t on_error, cmd_opt_handler_t on_unexpected,
+        void* user_data);
 
 /*
  * Print out the command-line help for the options to stdout.
  */
-void cmd_opt_print_help( const cmd_opt_t* options, size_t option_count );
+void cmd_opt_print_help(const cmd_opt_t* options, size_t option_count);
 
 /*
  * Search for a matching option. Returns NULL if no matching option is found.
  * This is useful if you need to find the cmd_opt_t when inside a callback but
  * do not want to assume any hard-coded data.
  */
-const cmd_opt_t* cmd_opt_find( const cmd_opt_t* options, size_t option_count, const char* argv );
+const cmd_opt_t* cmd_opt_find(const cmd_opt_t* options, size_t option_count, const char* argv);
 
 /*
  * A convenience for a options's no-operation behavioour. Useful for
  * temporarily ignoring an option.
  */
-bool cmd_opt_nop( const char* arguments[], size_t count, void* user_data );
+bool cmd_opt_nop(const char* arguments[], size_t count, void* user_data);
 
 #ifdef __cplusplus
 } /* extern "C" */
 namespace xtd {
-	using ::cmd_opt_result_t;
-	using ::cmd_opt_handler_t;
-	using ::cmd_opt_error_t;
-	using ::cmd_opt_t;
-	using ::cmd_opt_process;
-	using ::cmd_opt_print_help;
-	using ::cmd_opt_nop;
+    using ::cmd_opt_result_t;
+    using ::cmd_opt_handler_t;
+    using ::cmd_opt_error_t;
+    using ::cmd_opt_t;
+    using ::cmd_opt_process;
+    using ::cmd_opt_print_help;
+    using ::cmd_opt_nop;
 } /* namespace */
 #endif
 #endif /* _XTD_CMDOPT_H_ */

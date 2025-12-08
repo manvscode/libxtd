@@ -27,16 +27,16 @@
 
 const char* ENDIAN_TEST_DESCRIPTION = "Testing functions in <xtd/endian.h>";
 const test_case_t ENDIAN_TEST_CASES[] = {
-	{ "Test is_big_endian()", test_nil },
-	{ "Test hton()", test_nil },
-	{ "Test ntoh()", test_nil },
+    { "Test is_big_endian()", test_nil },
+    { "Test hton()", test_nil },
+    { "Test ntoh()", test_nil },
 };
 const size_t ENDIAN_TEST_COUNT = sizeof(ENDIAN_TEST_CASES) / sizeof(ENDIAN_TEST_CASES[0]);
 
 #ifdef TEST_ENDIAN
 int main(int argc, char* argv[])
 {
-	size_t pass_count = test_features( ENDIAN_TEST_DESCRIPTION, ENDIAN_TEST_CASES, ENDIAN_TEST_COUNT, true );
-	return ENDIAN_TEST_COUNT - pass_count;
+    size_t pass_count = test_features(ENDIAN_TEST_DESCRIPTION, ENDIAN_TEST_CASES, ENDIAN_TEST_COUNT, true);
+    return ENDIAN_TEST_COUNT - pass_count;
 }
 #endif
