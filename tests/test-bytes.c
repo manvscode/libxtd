@@ -36,19 +36,19 @@ int main(int argc, char *argv[])
     }
 
     {
-        char* str = debug_buffer_to_string(nums, sizeof(nums), 1, true);
+        char* str = buffer_to_hex_string(nums, sizeof(nums), 1, true);
         printf("%s\n\n", str);
         free(str);
     }
 
     {
-        char* str = debug_buffer_to_string(nums, sizeof(nums), 2, true);
+        char* str = buffer_to_hex_string(nums, sizeof(nums), 2, true);
         printf("%s\n\n", str);
         free(str);
     }
 
     {
-        char* str = debug_buffer_to_string(nums, sizeof(nums), 4, true);
+        char* str = buffer_to_hex_string(nums, sizeof(nums), 4, true);
         printf("%s\n\n", str);
         free(str);
     }

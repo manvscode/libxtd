@@ -6,6 +6,7 @@ xtd_sources = \
 			  cmdopt.c \
 			  encoding-base64.c \
 			  encoding-huffman.c \
+			  encryption-aes.c \
 			  encryption-caesar.c \
 			  endian.c \
 			  exceptions.c \

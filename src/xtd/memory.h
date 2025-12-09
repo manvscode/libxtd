@@ -54,16 +54,16 @@ typedef enum size_unit {
     unit_exibytes
 } size_unit_t;
 
-const char*  size_in_unit           (size_t size, size_unit_t unit, int precision);
-const char*  size_in_best_unit      (size_t size, bool use_base_two, int precision);
-const char*  byte_to_binary         (uint8_t x);
-void         buffer_scramble        (const char* key, void* buffer, size_t size, unsigned short pivot);
-void         buffer_unscramble      (const char* key, void* buffer, size_t size, unsigned short pivot);
-void         xor_bytes              (const void* a, size_t a_size, const void* b, size_t b_size, void* result);
-void         swap                   (void* left, void* right, size_t size);
-char*        debug_buffer_to_string (const void* data, size_t size, size_t grouping, bool with_spaces); /* allocates memory */
-unsigned int rotate_bits_left       (unsigned int value, int shift);
-unsigned int rotate_bits_right      (unsigned int value, int shift);
+const char*  size_in_unit          (size_t size, size_unit_t unit, int precision);
+const char*  size_in_best_unit     (size_t size, bool use_base_two, int precision);
+const char*  byte_to_binary        (uint8_t x);
+void         buffer_scramble       (const char* key, void* buffer, size_t size, unsigned short pivot);
+void         buffer_unscramble     (const char* key, void* buffer, size_t size, unsigned short pivot);
+void         xor_bytes             (const void* a, size_t a_size, const void* b, size_t b_size, void* result);
+void         swap                  (void* left, void* right, size_t size);
+char*        buffer_to_hex_string  (const void* data, size_t size, size_t grouping, bool with_spaces); /* allocates memory */
+unsigned int rotate_bits_left      (unsigned int value, int shift);
+unsigned int rotate_bits_right     (unsigned int value, int shift);
 
 /*
  * Macros
@@ -89,7 +89,7 @@ namespace xtd {
     using ::buffer_unscramble;
     using ::xor_bytes;
     using ::swap;
-    using ::debug_buffer_to_string;
+    using ::buffer_to_hex_string;
     using ::rotate_bits_left;
     using::rotate_bits_right;
 } /* namespace */

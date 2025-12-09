@@ -189,9 +189,8 @@ void swap(void* left, void* right, size_t size)
 #endif
 }
 
-char* debug_buffer_to_string(const void* data, size_t size, size_t grouping, bool with_spaces)
+char* buffer_to_hex_string(const void* data, size_t size, size_t grouping, bool with_spaces)
 {
-    //if ((grouping < 1 || grouping > 8) || (grouping & (grouping - 1)) != 0)
     if ((grouping < 1 || grouping > 8))
     {
         grouping = 1;

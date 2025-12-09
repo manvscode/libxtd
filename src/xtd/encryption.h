@@ -27,7 +27,20 @@ extern "C" {
 #endif
 
 /*
- *  Encryption
+ *  AES Encryption (ECB single-block primitive).
+ */
+void aes256_initialize_key (uint8_t key[32], int seed);
+void aes256_encrypt_block  (const uint8_t key[32], const uint8_t in[16], uint8_t out[16]);
+void aes256_decrypt_block  (const uint8_t key[32], const uint8_t in[16], uint8_t out[16]);
+
+/*
+ * AES Encryption for buffers.
+ */
+void* aes256_encrypt_buffer (const uint8_t key[32], const void* buffer, size_t size, size_t* output_size);
+void* aes256_decrypt_buffer (const uint8_t key[32], const void* buffer, size_t size);
+
+/*
+ * Insecure Caesar Cypher; for scrambling text naively.
  */
 void caesar_cypher_encrypt_buffer (void* buffer, size_t size, int n);
 void caesar_cypher_decrypt_buffer (void* buffer, size_t size, int n);
@@ -38,6 +51,8 @@ void caesar_cypher_decrypt_text   (char* text, size_t size, int n);
 #ifdef __cplusplus
 } /* extern "C" */
 namespace xtd {
+    using ::aes256_encrypt_block;
+    using ::aes256_decrypt_block;
     using ::caesar_cypher_encrypt_buffer;
     using ::caesar_cypher_decrypt_buffer;
     using ::caesar_cypher_encrypt_text;
