@@ -130,30 +130,41 @@ char* file_slurp(const char* path, size_t *size)
 
 int file_readline(FILE* stream, char* buffer, size_t size)
 {
+    if (size == 0)
+    {
+        return -1;
+    }
+
     if (fgets(buffer, size, stream) == NULL)
     {
-        return EOF;
+        return -1;  // EOF and nothing read
     }
 
-    char *n = strchr(buffer, '\n');
+    size_t len = strlen(buffer);
 
-    if (n)
+    // Check if we got a full line (newline present)
+    if (buffer[len - 1] == '\n')
     {
-        *n = '\0';
-        /* A line was read successfully without truncation. */
-    }
-    else
-    {
-        int c;
-        while ((c = getc(stream)) != EOF && c != '\n');
-        if (c == EOF)
-        {
-            return EOF;
-        }
-        /* A line was read successfully but was truncated. */
+        buffer[len - 1] = '\0';   // remove newline
+        return len;    // return number of chars read
     }
 
-    return 0;
+    // No newline: could be EOF or truncation
+    // Read until newline or EOF to maintain correct stream position
+    int c = getc(stream);
+    while (c != EOF && c != '\n')
+    {
+        c = getc(stream);
+    }
+
+    if (c == '\n')
+    {
+        // Truncated; buffer was not large enough.
+        return -2;
+    }
+
+    // Not truncated; last line without newline
+    return (int) len;
 }
 
 const char* basename(const char* path, char dir_separator)

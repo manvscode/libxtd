@@ -26,6 +26,28 @@
 #include "xtd/filesystem.h"
 #include "xtd/test.h"
 
+
+static bool test_file_readline(test_ctx_t* ctx)
+{
+    FILE* f = fopen("tests/myfile.txt", "r");
+    char buffer[200] = {0};
+    if (!f)
+    {
+        return false;
+    }
+
+    //int line = 1;
+    while(file_readline(f, buffer, sizeof(buffer)) > 0)
+    {
+        //printf("%d \t%s\n", line, buffer);
+        //line += 1;
+    }
+
+    fclose(f);
+    return true;
+}
+
+
 const char* FILESYSTEM_TEST_DESCRIPTION = "Testing functions in <xtd/filesystem.h>";
 const test_case_t FILESYSTEM_TEST_CASES[] = {
     { "Test file_exists()", test_nil },
@@ -40,7 +62,7 @@ const test_case_t FILESYSTEM_TEST_CASES[] = {
     { "Test file_basename()", test_nil },
     { "Test file_extension()", test_nil },
     { "Test file_slurp()", test_nil },
-    { "Test file_readline()", test_nil },
+    { "Test file_readline()", test_file_readline },
     { "Test is_file()", test_nil },
     { "Test is_directory()", test_nil },
     { "Test directory_exists()", test_nil },
