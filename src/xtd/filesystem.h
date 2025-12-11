@@ -44,6 +44,7 @@ int64_t     file_size                (const char* path);
 const char* file_size_string         (const char* path, bool use_base_two, int precision);
 int64_t     file_age                 (const char* path); /* returns -1 on error */
 const char* file_basename            (const char* path);
+void        file_normalize_path      (const char *input, char *output, size_t out_size);
 const char* file_extension           (const char* filename);
 char*       file_slurp               (const char* path, size_t* size); /* allocates memory */
 int         file_readline            (FILE* stream, char* buffer, size_t size);
@@ -77,6 +78,7 @@ namespace xtd {
     using ::file_size_string;
     using ::file_age;
     using ::file_basename;
+    using ::file_normalize_path;
     using ::file_slurp;
     using ::file_readline;
     using ::is_file;

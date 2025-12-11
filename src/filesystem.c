@@ -275,3 +275,98 @@ char* __path(const char* path, char dir_separator) /* allocates memory */
 
     return result;
 }
+
+void file_normalize_path(const char *input, char *output, size_t out_size)
+{
+    if (!input || !output || out_size == 0)
+    {
+        return;
+    }
+
+    char temp[4096];
+    char *segments[1024];
+    int seg_count = 0;
+    int absolute = (input[0] == '/');
+
+    strncpy(temp, input, sizeof(temp));
+    temp[sizeof(temp) - 1] = '\0';
+
+    // Tokenize the path
+    char *token = strtok(temp, "/");
+    while (token)
+    {
+        if (strcmp(token, "..") == 0)
+        {
+            if (seg_count > 0 && strcmp(segments[seg_count-1], "..") != 0)
+            {
+                // Pop the previous segment if possible
+                if (!(absolute && seg_count == 0)) {
+                    seg_count--;
+                }
+            }
+            else
+            {
+                // Keep ".." if relative path can't collapse it
+                if (!absolute)
+                {
+                    segments[seg_count++] = token;
+                }
+            }
+        } else if (strcmp(token, ".") != 0 && strlen(token) > 0)
+        {
+            // Normal segment
+            segments[seg_count++] = token;
+        }
+        token = strtok(NULL, "/");
+    }
+
+    // Rebuild path
+    char *p = output;
+    size_t remaining = out_size;
+
+    if (absolute)
+    {
+        if (remaining > 1)
+        {
+            *p++ = '/';
+            remaining--;
+        }
+    }
+
+    for (int i = 0; i < seg_count; i++)
+    {
+        size_t len = strlen(segments[i]);
+
+        if (len + 1 > remaining)  // +1 for '/' or '\0'
+            break;
+
+        memcpy(p, segments[i], len);
+        p += len;
+        remaining -= len;
+
+        if (i < seg_count - 1)
+        {
+            if (remaining > 1)
+            {
+                *p++ = '/';
+                remaining--;
+            }
+        }
+    }
+
+    *p = '\0';
+
+    // special case: empty relative → "."
+    if (!absolute && seg_count == 0)
+    {
+        strncpy(output, ".", out_size);
+        output[out_size - 1] = '\0';
+    }
+
+    // special case: empty absolute → "/"
+    if (absolute && seg_count == 0)
+    {
+        strncpy(output, "/", out_size);
+        output[out_size - 1] = '\0';
+    }
+}

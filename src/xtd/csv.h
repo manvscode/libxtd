@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2010-20215 by Joseph A. Marrero. https://joemarrero.com/
+ * Copyright (C) 2010-2025 by Joseph A. Marrero. https://joemarrero.com/
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -35,5 +35,6 @@
 extern "C" {
 #endif
 
+char* string_csv_parse_r(char* str, const char* delims, char string_escape, char** saveptr);
 
 #endif /* _XTD_ALL_H_ */
