@@ -63,7 +63,7 @@ cmd_opt_result_t cmd_opt_process(
     assert(options && "Options cannot be null.");
     cmd_opt_result_t result = CMD_OPT_SUCCESS;
 
-    if (argc <= 1)
+    if (argc <= 1 && on_unexpected)
     {
         result = CMD_OPT_ERR_NO_OPTIONS;
         if (on_error) on_error(result, NULL, user_data);
