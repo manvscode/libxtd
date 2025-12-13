@@ -32,6 +32,7 @@ xtd_headers = \
 			  xtd/cmdopt.h \
 			  xtd/console.h \
 			  xtd/encoding.h \
+			  xtd/encryption.h \
 			  xtd/endian.h \
 			  xtd/exceptions.h \
 			  xtd/filesystem.h \
